@@ -1,0 +1,64 @@
+
+.searching-container{
+    width:100%;
+    height:200px;
+    margin: 0 auto;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid gray;
+}
+
+.searching{
+    display: flex;
+    width: 50%;
+    height: 40px;
+    border-radius: 10px 10px;
+    border: 2px solid #3C3D45;
+    overflow:hidden;
+}
+
+.searching-browser{
+    width:100%;
+    border: 0px;
+    outline: none;
+    z-index:1;
+}
+.searching-browser-button{
+    width: 40px;
+    line-height: 35px;
+    border-radius: 10px 10px;
+    color: #3C3D45;
+    margin-right:5px;
+}
+
+.page-container{
+    width:100%;
+    height: 600px;
+    background-color: #F8F9FF;
+    margin-top:20px;
+
+}
+
+.artist-name-container{
+    width: 300px;
+    height: 40px;
+    display: flex;
+    border:1px solid #444655;
+    border-radius: 10px 10px;
+    overflow: hidden;
+}
+
+.artist-name-input{
+    width:100%;
+    line-height: 40px;
+    border: 0;
+    outline: none;
+
+}
+.artist-name-input-button{
+    width:30px;
+    height:30px;
+    border-radius: 10px;
+    background-color: #A8AABC;
+}

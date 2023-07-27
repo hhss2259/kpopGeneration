@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+
+    <link rel ="stylesheet" href="./css/basic/basic.css"/>
+    <link rel ="stylesheet" href="./css/basic/nav.css"/>
+    <link rel ="stylesheet" href="./css/main.css"/>
+
+    
+    <!-- <link rel ="stylesheet" href="../static/css/basic/basic.css"/> 
+    <link rel ="stylesheet" href="../static/css/basic/nav.css"/>
+    <link rel ="stylesheet" href="../static/css/main.css"/> -->
+</head>
+<body>
+    <section >
+        <div class="login-container">
+        </div>
+    </section>
+    <nav>
+        <div class="inner">
+            <div class="nav-container">
+                <a href="/main" class="nav-link"><div class="nav-content">Home</div></a><div class="line"></div>
+                <a href="/main" class="nav-link"><div class="nav-content">New</div></a><div class="line"></div>
+                <a href="/main" class="nav-link"><div class="nav-content">Chart</div></a><div class="line"></div>
+                <a href="/main" class="nav-link"><div class="nav-content">Genre</div></a><div class="line"></div>
+                <a href="/main" class="nav-link"><div class="nav-content">Propose</div></a>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <div class="inner">
+           <div class="header-container">
+                <div class="header-title">Black Star</div>
+                <div class="header-content">내가 좋아하는 아티스트를 다른 사람들에게 추천해보세요!</div>
+                <div class="header-input">
+                    <input type="text" class="header-browser" placeholder="아티스트/앨범"></input>
+                    <div class="header-browser-button">click</div>
+                </div>
+           </div> 
+        </div>
+    </header>
+  
+    <section>
+        <div class="inner"> 
+            <div class="main-container">
+                <a href="/main">
+                <div class="main-article" >
+                    <div class="main-article-title">
+                        New 앨범
+                    </div>
+                    <div class="main-article-content">
+                    </div>
+                </div>
+                </a>
+                <div class="main-article" >
+                    <div class="main-article-title">
+                        차트
+                    </div>
+                    <div class="main-article-content">
+                    </div>
+                </div>
+                <div class="main-article" >
+                    <div class="main-article-title">
+                        장르
+                    </div>
+                    <div class="main-article-content">
+                    </div>
+                </div>
+                <div class="main-article" >
+                    <a href="/propose">
+                    <div class="main-article-title">
+                        아티스트/앨범<br/>
+                        신청하기
+                    </div>
+                    <div class="main-article-content">
+                    </div>
+                    </a>
+                </div>
+            </div>
+            </div>
+    </section>
+    <footer>
+
+    </footer>
+</body>
+</html>
