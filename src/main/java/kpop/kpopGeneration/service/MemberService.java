@@ -1,11 +1,12 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.entity.Member;
-import kpop.kpopGeneration.exception.Duplicate;
+import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,31 +15,32 @@ import java.lang.annotation.Retention;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class MemberService {
 
+    private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
-    @Transactional(readOnly = true)
     public boolean checkDuplicateUsername(String username){
-        int byUsername = memberRepository.findCntByUsername(username);
-        if(byUsername > 0 ){
-            throw new Duplicate();
+        int cnt = memberRepository.findCntByUsername(username);
+        if(cnt > 0 ){
+            throw new DuplicateException();
         }
         return true;
     }
 
-    @Transactional(readOnly = true)
     public boolean checkDuplicateNickname(String nickname){
-        int byNickname = memberRepository.findCntByNickname(nickname);
-        if(byNickname > 0 ){
-            throw new Duplicate();
+        int cnt = memberRepository.findCntByNickname(nickname);
+        if(cnt > 0 ){
+            throw new DuplicateException();
         }
         return true;
     }
 
     @Transactional
     public int save(Member member){
-        Member save = memberRepository.save(member);
+        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        Member save = memberRepository.save(new Member(member.getUsername(), encodedPassword, member.getNickName()));
         return save.getId();
     }
 

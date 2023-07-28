@@ -1,79 +1,111 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.entity.Member;
-import kpop.kpopGeneration.exception.Duplicate;
+import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.repository.MemberRepository;
-import net.bytebuddy.asm.Advice;
-import org.aspectj.lang.annotation.After;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.webservices.server.AutoConfigureMockWebServiceClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-
-@ExtendWith(MockitoExtension.class)
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @Transactional
 @Rollback
-class MemberRepositoryTest {
+class MemberServiceTest {
+
+    @Autowired
+    MemberService memberService;
 
     @Autowired
     MemberRepository memberRepository;
 
-    @AfterEach
-    void afterEach(){
-        memberRepository.deleteAllMember();
-    }
-    @Test
-    @DisplayName("회원가입 확인")
-    void join() {
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
+    @Test
+    @DisplayName("회원 가입 정상 작동확인")
+    void save(){
         //given
         Member member1 = new Member("aaaa", "1111", "member1");
-        Member member2 = new Member("bbbb", "2222", "member2");
+
         //when
-        Member savedMember1 = memberRepository.save(member1);
-        Member savedMember2 = memberRepository.save(member2);
+        int savedId = memberService.save(member1);
 
         //then
-        Assertions.assertEquals(1, savedMember1.getId(), "회원가입 첫 번째 id는 1입니다");
-        Assertions.assertEquals(2, savedMember2.getId(), "회원가입 두 번째 id는 2입니다");
+        assertNotEquals(0, savedId);
     }
+
+    @Test
+    @DisplayName("회원 가입 시 password 암호화 확인")
+    void savePassword(){
+
+        //given
+        String username = "aaaa";
+        String password = "1111";
+        String nickname = "member1";
+        Member member1 = new Member(username,password,nickname);
+
+        //when
+        int savedId = memberService.save(member1);
+        Member savedMember= memberRepository.findByUsername(username).get();
+
+        //then
+        assertEquals(username, savedMember.getUsername());
+        assertTrue(passwordEncoder.matches( password, savedMember.getPassword()));
+    }
+
+
     @Test
     @DisplayName("중복된 username 확인")
-    void duplicateUsername(){
-
+    void checkDuplicateUsername() {
         //given
-        Member member1 = new Member("aaaa", "1111","member1");
+        String username = "aaaa";
+        String password = "1111";
+        String nickname = "member1";
+        Member member1 = new Member(username,password,nickname);
 
         //when
-        memberRepository.save(member1);
+        memberService.save(member1);
 
         //then
-        assertEquals(0, memberRepository.findCntByUsername("bbbb"));
-        assertEquals(1, memberRepository.findCntByUsername("aaaa"));
+        assertTrue(memberService.checkDuplicateUsername("bbbb"));
+        assertThrows(DuplicateException.class, () -> memberService.checkDuplicateUsername(username));
+
     }
+
     @Test
     @DisplayName("중복된 nickname 확인")
-    void duplicateNickname(){
-
+    void checkDuplicateNickname() {
         //given
-        Member member1 = new Member("aaaa", "1111","member1");
+        String username = "aaaa";
+        String password = "1111";
+        String nickname = "member1";
+        Member member1 = new Member(username,password,nickname);
 
         //when
-        memberRepository.save(member1);
+        memberService.save(member1);
 
         //then
-        assertEquals(0, memberRepository.findCntByNickname("member2"));
-        assertEquals(1, memberRepository.findCntByNickname("member1"));
+        assertTrue(memberService.checkDuplicateNickname("member2"));
+        assertThrows(DuplicateException.class, () -> memberService.checkDuplicateNickname(nickname));
+
     }
 
 

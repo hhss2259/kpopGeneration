@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+
+    <link rel ="stylesheet" href="./css/basic/basic.css"/>
+    <!-- <link rel ="stylesheet" href="./css/basic/nav.css"/>
+        <link rel ="stylesheet" href="./css/main.css"/> -->
+    <link rel ="stylesheet" href="./css/write.css"/> 
+
+
+</head>
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="titile">
+                      KpopGeneration
+                    </div>
+                    <div class="main-menu">
+                       <div class="news">
+                            뉴스
+                       </div>
+                       <div class="topic">
+                            토픽
+                       </div>
+                       <div class="community">
+                            커뮤니티
+                       </div>
+                    </div>
+                </div>
+                <div class="side-menu">
+                    side-menu
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <section>
+        <div class="inner">
+            <div class="writing-container">
+                <div class="writing-header-container">
+                    <div class="writing-header-category">
+                        <div class="category-text">
+                            카테고리
+                        </div>
+                        <select class="category" name="category">
+                            <option value="music">음악</option>
+                            <option value="review">리뷰</option>
+                            <option value="certification">인증/후기</option>
+                            <option value="normal">일반</option>
+                        </select>
+                    </div>
+                    <div class="writing-header-titile">
+                        <div class="title-text">
+                            제목
+                        </div>
+                        <input type="text" class="title" name="title"/>
+                    </div>
+                </div>
+                <div class="writing-main">
+                    <textarea name="text" class="text" rows="5" cols="33">
+                        It was a dark and stormy night...
+                    </textarea>
+                </div>
+                <button type="submit">
+                    제출
+                </button>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>
