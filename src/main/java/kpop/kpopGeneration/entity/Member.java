@@ -9,18 +9,18 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Member extends JpaBaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    int id;
+    Long id;
 
     String username;
     String password;
     String nickName;
-    int postCnt;
-    int commentCnt;
+    Long postCnt;
+    Long commentCnt;
 
     String profileImage;
 
@@ -28,6 +28,12 @@ public class Member {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
+        this.postCnt = 0L;
+        this.commentCnt = 0L;
+        this.profileImage = null;
     }
 
+    public void increasePostCnt() {
+        this.postCnt++;
+    }
 }

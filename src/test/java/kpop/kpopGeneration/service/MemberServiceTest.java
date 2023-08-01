@@ -46,7 +46,7 @@ class MemberServiceTest {
         Member member1 = new Member("aaaa", "1111", "member1");
 
         //when
-        int savedId = memberService.save(member1);
+        Long savedId = memberService.save(member1);
 
         //then
         assertNotEquals(0, savedId);
@@ -63,7 +63,7 @@ class MemberServiceTest {
         Member member1 = new Member(username,password,nickname);
 
         //when
-        int savedId = memberService.save(member1);
+        Long savedId = memberService.save(member1);
         Member savedMember= memberRepository.findByUsername(username).get();
 
         //then

@@ -38,7 +38,7 @@ public class MemberService {
     }
 
     @Transactional
-    public int save(Member member){
+    public Long save(Member member){
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         Member save = memberRepository.save(new Member(member.getUsername(), encodedPassword, member.getNickName()));
         return save.getId();
