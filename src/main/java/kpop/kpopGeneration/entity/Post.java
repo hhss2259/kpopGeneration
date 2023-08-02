@@ -55,5 +55,7 @@ public class Post extends JpaBaseTimeEntity{
         this.commentCnt = 0L;
     }
 
-
+    public void increaseCommentCnt(){
+        this.commentCnt++;
+    }
 }

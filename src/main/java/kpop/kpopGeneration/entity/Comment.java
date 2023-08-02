@@ -20,13 +20,13 @@ public class Comment extends JpaBaseTimeEntity{
     String textBody;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_post_id")
-    Post post;
+    Post parentPost;
 
-    boolean isCommentForComment;
+    Boolean isCommentForComment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="parent_comment_id")
-    Comment comment;
+    Comment parentComment;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
@@ -34,10 +34,11 @@ public class Comment extends JpaBaseTimeEntity{
 
     Long likes;
 
-    public Comment(Post post, Comment comment,Member member) {
-        this.post = post;
-        this.comment = comment;
-        if(comment == null){
+    public Comment(String textBody, Post parentPost, Comment parentComment , Member member) {
+        this.textBody = textBody;
+        this.parentPost = parentPost;
+        this.parentComment = parentComment;
+        if(parentComment == null){
             this.isCommentForComment = false;
         }else{
             this.isCommentForComment = true;

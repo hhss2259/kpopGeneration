@@ -36,4 +36,5 @@ public class Member extends JpaBaseTimeEntity {
     public void increasePostCnt() {
         this.postCnt++;
     }
+    public void increaseCommentCnt(){ this.commentCnt++;}
 }
