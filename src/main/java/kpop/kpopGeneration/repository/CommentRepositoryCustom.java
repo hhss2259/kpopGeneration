@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CommentRepositoryCustom  {
-    List<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable);
+    Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable);
 
-    boolean getIsCommentForComment(Long commentId);
+    Boolean getIsCommentForComment(Long commentId);
 }

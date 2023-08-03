@@ -27,10 +27,7 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @AfterEach
-    void afterEach(){
-        memberRepository.deleteAllMember();
-    }
+
     @Test
     @DisplayName("회원가입 확인")
     void join() {

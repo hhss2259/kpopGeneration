@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Parent;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,16 +36,24 @@ public class Comment extends JpaBaseTimeEntity{
 
     Long likes;
 
+    LocalDateTime deletedTime;
+    Boolean deletedTrue;
+    Integer depth;
+
     public Comment(String textBody, Post parentPost, Comment parentComment , Member member) {
         this.textBody = textBody;
         this.parentPost = parentPost;
         this.parentComment = parentComment;
         if(parentComment == null){
             this.isCommentForComment = false;
+            this.depth = 0 ;
         }else{
             this.isCommentForComment = true;
+            this.depth = parentComment.depth+1;
         }
         this.member = member;
+        this.deletedTime = null;
+        this.deletedTrue = false;
     }
 
 }

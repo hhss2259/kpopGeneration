@@ -176,4 +176,8 @@ class BoardRepositoryTest {
         assertTrue(invalidPostById.isEmpty());
     }
 
+    private Member createDefaultMember(){
+       return new Member("aaaa", "1111", "member1");
+    }
+
 }

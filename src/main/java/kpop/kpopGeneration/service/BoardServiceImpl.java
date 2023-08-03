@@ -1,14 +1,12 @@
 package kpop.kpopGeneration.service;
 
-import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.dto.PostDetailDto;
-import kpop.kpopGeneration.dto.PostSaveDto;
-import kpop.kpopGeneration.dto.PostTitleDto;
+import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.exception.NotExistedPostException;
 import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +30,7 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * 게시글 저장
@@ -70,27 +69,27 @@ public class BoardServiceImpl implements BoardService {
                         post.getMember().getNickName(), post.getLastModifiedTime()
                 )
         );
-
         return postTitleList;
     }
 
 
     /**
-     * 게시글 자세히 보기
+     * 게시글 자세히 보기 + 댓글 목록 가져오기
      */
     @Override
-    public PostDetailDto findPostById(Long id) {
+    public PostDetailDto findPostById(Long id, Pageable commentPageable) {
+        // post 가지고 오기
         Optional<Post> postById = boardRepository.findPostById(id);
         Post post = postById.orElseThrow(()->new NotExistedPostException());
 
-//        PostDetailDto postDetailDto = new PostDetailDto(post.getTitle(), post.getBody(), )
+        //  포스트에 달린 댓글들 가져오기
+        Page<CommentViewDto> commentListByPost = commentRepository.findCommentListByPost(id, commentPageable);
+        PageCustomDto<CommentViewDto> commentView = getPageCustom(commentListByPost);
 
-
-        return null;
+        // 포스트 정보와 댓글의 정보를 결합하여 Dto로 리턴하기
+        PostDetailDto postDetailDto = new PostDetailDto(post, commentView);
+        return postDetailDto;
     }
-
-
-
     /**
      * 게시글 좋아요 누르기
      */
@@ -103,4 +102,21 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 삭제
      */
 
+
+    private PageCustomDto<CommentViewDto> getPageCustom(Page<CommentViewDto> list){
+        PageCustomDto<CommentViewDto> dto = new PageCustomDto<>();
+
+        dto.setContent(list.getContent());
+        dto.setSize(list.getSize());
+        dto.setNumberOfElements(list.getNumberOfElements());
+        dto.setTotalElements(list.getTotalElements());
+        dto.setTotalPages(list.getTotalPages());
+        dto.setHasNext(list.hasNext());
+        dto.setHasPrevious(list.hasPrevious());
+        dto.setIsFirst(list.isFirst());
+        dto.setIsLast(list.isLast());
+        dto.setNextPageable(list.nextPageable());
+        dto.setPreviousPageable(list.previousPageable());
+        return dto;
+    }
 }

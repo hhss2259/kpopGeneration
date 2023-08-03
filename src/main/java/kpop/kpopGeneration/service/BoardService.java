@@ -23,9 +23,9 @@ public interface BoardService {
     Page<PostTitleDto> findPostListByCategory(Category category, Pageable pageable);
 
     /**
-     * 게시글 자세히 보기
+     * 게시글 자세히 보기 + 댓글 목록 출력하기
      */
-    PostDetailDto findPostById(Long id);
+    PostDetailDto findPostById(Long id,  Pageable commentPageable);
 
     /**
      * 게시글 좋아요 누르기

@@ -10,6 +10,7 @@ import kpop.kpopGeneration.entity.QComment;
 import kpop.kpopGeneration.entity.QMember;
 import kpop.kpopGeneration.entity.QPost;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -30,7 +31,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
 
     @Override
-    public List<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable) {
+    public Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable) {
         QComment parentComment = new QComment("parentComment");
         List<CommentViewDto> fetch = queryFactory
                 .select(
@@ -43,25 +44,40 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                                 post.id.as("postId"),
                                 parentComment.id.as("parentCommentId"),
                                 comment.isCommentForComment.as("isCommentForComment"),
-                                comment.lastModifiedTime.as("lastModifiedTime")
+                                comment.lastModifiedTime.as("lastModifiedTime"),
+                                comment.depth.as("depth")
                         )
                 )
                 .from(comment)
                 .join(comment.parentPost, post)
                 .join(comment.member, member)
                 .leftJoin(comment.parentComment, parentComment)
-                .where(comment.parentPost.id.eq(postId))
+                .where(
+                        comment.parentPost.id.eq(postId),
+                        comment.deletedTrue.eq(false)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(comment.id.asc())
                 .fetch();
 //        List<Comment> fetch = queryFactory
 //                .selectFrom(comment)
 //                .where(comment.parentPost.id.eq(postId))
 //                .fetch();
 
-        return fetch;
+        int size = queryFactory
+                .selectFrom(comment)
+                .where(
+                        comment.parentPost.id.eq(postId),
+                        comment.deletedTrue.eq(false)
+                )
+                .fetch().size();
+
+        return new PageImpl<>(fetch, pageable, size);
     }
 
     @Override
-    public boolean getIsCommentForComment(Long commentId) {
+    public Boolean getIsCommentForComment(Long commentId) {
         Boolean aBoolean = queryFactory
                 .select(comment.isCommentForComment)
                 .from(comment)

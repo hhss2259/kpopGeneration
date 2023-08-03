@@ -2,6 +2,7 @@ package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.CommentSaveDto;
+import kpop.kpopGeneration.dto.CommentViewDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.repository.BoardRepository;
@@ -13,6 +14,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +39,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("댓글 저장하기")
-    void saveComment(){
+    void saveComment() {
         //given
         Member member = new Member("aaaa", "1111", "member1");
         Member savedMember = memberRepository.save(member);
@@ -47,7 +50,7 @@ class CommentServiceTest {
         assertNotNull(savedMember.getId());
 
         //then
-        CommentSaveDto commentSaveDto = new CommentSaveDto(savedPost.getId(),"테스트 댓글입니다", null, false);
+        CommentSaveDto commentSaveDto = new CommentSaveDto(savedPost.getId(), "테스트 댓글입니다", null, false);
         Long savedComment1 = commentService.saveComment(commentSaveDto, "aaaa");
         assertNotNull(savedComment1);
         assertNotEquals(1, savedMember.getPostCnt());
@@ -61,4 +64,6 @@ class CommentServiceTest {
         assertEquals(2, savedMember.getCommentCnt());
         assertEquals(2, savedPost.getCommentCnt());
     }
+
+
 }

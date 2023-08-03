@@ -1,10 +1,11 @@
 package kpop.kpopGeneration.service;
 
-import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.dto.PostSaveDto;
-import kpop.kpopGeneration.dto.PostTitleDto;
+import kpop.kpopGeneration.dto.*;
+import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
+import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,6 +33,8 @@ class BoardServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
     @Test
     @DisplayName("포스트 저장 하기")
     void savePost() {
@@ -100,5 +106,7 @@ class BoardServiceTest {
         Member savedMember = memberRepository.findByUsername(member.getUsername()).get();
         assertEquals(14, savedMember.getPostCnt());
     }
+
+
 
 }

@@ -21,5 +21,5 @@ public class CommentViewDto {
     Long parentCommentId;
     Boolean isCommentForComment;
     LocalDateTime lastModifiedTime;
-
+    Integer depth;
 }

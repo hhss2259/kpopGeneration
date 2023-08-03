@@ -6,10 +6,12 @@ import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class CommentRepositoryTest {
 
     @Autowired
@@ -33,7 +34,6 @@ class CommentRepositoryTest {
 
     @Autowired
     BoardRepository boardRepository;
-
 
     @Test
     @DisplayName("Comment 엔티티 생성 및 DB 연동 확인")
@@ -75,39 +75,6 @@ class CommentRepositoryTest {
     }
 
 
-    @Test
-    @DisplayName("댓글 조회하기")
-    void commentTest(){
-        //given
-        Member member = new Member("aaaa", "1111", "member1");
-        Member savedMember = memberRepository.save(member);
-
-        Post post = new Post("테스트 포스트", "테스트하기", savedMember, Category.MUSIC);
-        Post savedPost = boardRepository.save(post);
-
-
-        //when
-        Comment commentForPost = new Comment("댓글 테스트입니다", savedPost, null, savedMember);
-        Comment savedCommentForPost = commentRepository.save(commentForPost);
-        assertFalse(savedCommentForPost.getIsCommentForComment());
-
-        Comment commentForComment = new Comment("대댓글 테스트입니다", savedPost, savedCommentForPost, savedMember);
-        assertTrue(commentForComment.getIsCommentForComment());
-        Comment savedCommentForComment = commentRepository.save(commentForComment);
-
-        assertFalse(commentRepository.getIsCommentForComment(commentForPost.getId()));
-        assertTrue(commentRepository.getIsCommentForComment(commentForComment.getId()));
-
-
-        List<CommentViewDto> commentListByPost = commentRepository.findCommentListByPost(savedPost.getId(), PageRequest.of(0, 10));
-        System.out.println("commentListByPost = " + commentListByPost.size());
-        for (CommentViewDto comments : commentListByPost) {
-            System.out.println("comments.getCommentId() = " + comments.getCommentId());
-            System.out.println("comments.isCommentForComment() = " + comments.getIsCommentForComment());
-            System.out.println("comments.getParentCommentId = " + comments.getParentCommentId());
-        }
-
-    }
 
 
 
