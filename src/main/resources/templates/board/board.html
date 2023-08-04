@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}"/>
+    <!-- <link rel ="stylesheet" href="./css/basic/nav.css"/>
+        <link rel ="stylesheet" href="./css/main.css"/> -->
+    <link rel ="stylesheet" type="text/css" href="/css/board/board.css"/>
+
+
+</head>
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="titile">
+                      KpopGeneration
+                    </div>
+                    <div class="main-menu">
+                       <div class="news">
+                            뉴스
+                       </div>
+                       <div class="topic">
+                            토픽
+                       </div>
+                       <div class="community">
+                            커뮤니티
+                       </div>
+                    </div>
+                </div>
+                <div class="side-menu">
+                    side-menu
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <section>
+        <div class="inner">
+            <div class="board-container">
+                <div class="board-header">
+                    <div class="board-header-title">
+                        게시판
+                    </div>
+                    <div class="board-header-category-container">
+                        <div class="board-header-category">
+                            전체
+                        </div>
+                        <div class="board-header-category">
+                            음악
+                        </div>
+                        <div class="board-header-category">
+                            리뷰
+                        </div>
+                        <div class="board-header-category">
+                            인증/후기
+                        </div>
+                        <div class="board-header-category">
+                            일반
+                        </div>
+                    </div>
+                </div>
+                <div class="board-line-container">
+                    <div class="board-line">
+                        <div class="board-line-number">
+                            번호
+                        </div>
+                        <div class="board-line-category">
+                            카테고리
+                        </div>
+                        <div class="board-line-title">
+                            제목
+                        </div>
+                        <div class="board-line-writer">
+                            글쓴이
+                        </div>
+                        <div class="board-line-date">
+                            작성일
+                        </div>
+                    </div>
+                    <div class="board-line">
+                        <div class="board-line-number">
+                            1
+                        </div>
+                        <div class="board-line-category">
+                            일반
+                        </div>
+                        <div class="board-line-title">
+                            엔믹스
+                        </div>
+                        <div class="board-line-writer">
+                            지우
+                        </div>
+                        <div class="board-line-date">
+                            2023.07.27
+                        </div>
+                    </div>
+                    <th:block th:object="${pageDto}">
+                    <th:block  th:each=" content : *{content}">
+                    <div class="board-line" >
+                            <div class="board-line-number" th:text="${content.orderNumber}" >
+                                1
+                            </div>
+                            <div class="board-line-category" th:text="${content.category}">
+                                일반
+                            </div>
+                            <div class="board-line-title" th:text="${content.title}">
+                                엔믹스
+                            </div>
+                            <div class="board-line-writer" th:text="${content.nickname}">
+                                지우
+                            </div>
+                            <div class="board-line-date" th:text="${content.date}">
+                                2023.07.27
+                            </div>
+                    </div>
+                    </th:block>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

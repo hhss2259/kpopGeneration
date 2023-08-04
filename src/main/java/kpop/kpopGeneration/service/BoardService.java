@@ -1,9 +1,6 @@
 package kpop.kpopGeneration.service;
 
-import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.dto.PostDetailDto;
-import kpop.kpopGeneration.dto.PostSaveDto;
-import kpop.kpopGeneration.dto.PostTitleDto;
+import kpop.kpopGeneration.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,7 +17,7 @@ public interface BoardService {
     /**
      * 게시글 목록
      */
-    Page<PostTitleDto> findPostListByCategory(Category category, Pageable pageable);
+    PageCustomDto<PostTitleDto> findPostListByCategory(Category category, Pageable pageable);
 
     /**
      * 게시글 자세히 보기 + 댓글 목록 출력하기

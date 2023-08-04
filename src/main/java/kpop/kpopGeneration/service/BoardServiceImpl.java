@@ -55,7 +55,7 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 목록 조회하기
      */
     @Override
-    public Page<PostTitleDto> findPostListByCategory(Category category, Pageable pageable) {
+    public PageCustomDto<PostTitleDto> findPostListByCategory(Category category, Pageable pageable) {
         Page<Post> postList = null;
         if (category == Category.ALL) {
             postList = boardRepository.findALLPostList(pageable);
@@ -64,12 +64,14 @@ public class BoardServiceImpl implements BoardService {
         }
 
         Page<PostTitleDto> postTitleList = postList.map(
-                (post) -> new PostTitleDto(
+                post -> new PostTitleDto(
                         post.getId(), post.getCategory(), post.getTitle(),
                         post.getMember().getNickName(), post.getLastModifiedTime()
                 )
         );
-        return postTitleList;
+        PageCustomDto<PostTitleDto> postViewDto = getPageCustom_post(postTitleList);
+
+        return postViewDto;
     }
 
 
@@ -119,4 +121,22 @@ public class BoardServiceImpl implements BoardService {
         dto.setPreviousPageable(list.previousPageable());
         return dto;
     }
+
+    private PageCustomDto<PostTitleDto> getPageCustom_post(Page<PostTitleDto> list){
+        PageCustomDto<PostTitleDto> dto = new PageCustomDto<>();
+
+        dto.setContent(list.getContent());
+        dto.setSize(list.getSize());
+        dto.setNumberOfElements(list.getNumberOfElements());
+        dto.setTotalElements(list.getTotalElements());
+        dto.setTotalPages(list.getTotalPages());
+        dto.setHasNext(list.hasNext());
+        dto.setHasPrevious(list.hasPrevious());
+        dto.setIsFirst(list.isFirst());
+        dto.setIsLast(list.isLast());
+        dto.setNextPageable(list.nextPageable());
+        dto.setPreviousPageable(list.previousPageable());
+        return dto;
+    }
+
 }

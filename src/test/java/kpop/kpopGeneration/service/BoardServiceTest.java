@@ -7,6 +7,7 @@ import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.repository.BoardRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +36,20 @@ class BoardServiceTest {
 
     @Autowired
     CommentRepository commentRepository;
+
+
     @Test
     @DisplayName("포스트 저장 하기")
     void savePost() {
         //given
-        Member member = new Member("aaaa", "1111", "member1");
+        Member member = new Member("bbbb", "1111", "member1");
         PostSaveDto postSaveDto = new PostSaveDto("테스트", "테스트용 포스트", Category.NORMAL);
 
         //when
         Long savedMemberId = memberService.save(member);
+        int cntByUsername = memberRepository.findCntByUsername(member.getUsername());
+        System.out.println("cntByUsername = " + cntByUsername);
+
         Member savedMember = memberRepository.findByUsername(member.getUsername()).get(); // savedMember는 영속성 컨텍스트가 관리하고 있다
         assertEquals(0, savedMember.getPostCnt(), "멤버의 최초 포스트 갯수는 0으로 초기화되어야 합니다");
         System.out.println(savedMember.getPostCnt());
@@ -87,22 +93,26 @@ class BoardServiceTest {
         }
 
 
-        Page<PostTitleDto> musicPost = boardService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
+        PageCustomDto<PostTitleDto> musicPost = boardService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
         assertEquals(1, musicPost.getSize());
         assertEquals(2, musicPost.getTotalPages());
         assertEquals(2, musicPost.getTotalElements());
         assertEquals(1, musicPost.getNumberOfElements());
-        assertTrue(musicPost.isFirst());
+        assertTrue(musicPost.getIsFirst());
 
-        Page<PostTitleDto> allPost = boardService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
+        PageCustomDto<PostTitleDto> allPost = boardService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
         assertEquals(3, allPost.getSize());
         assertEquals(5, allPost.getTotalPages());
         assertEquals(14, allPost.getTotalElements());
         assertEquals(3, allPost.getNumberOfElements());
-        assertTrue(allPost.isFirst());
-        for (PostTitleDto post : allPost) {
-            assertTrue(post.getNickname().equals("member1"));
+        assertTrue(allPost.getIsFirst());
+        for(int i = 0 ; i< allPost.getNumberOfElements(); i++){
+            assertTrue(allPost.getContent().get(i).getNickname().equals("member1"));
+
         }
+//        for (PostTitleDto post : allPost) {
+//            assertTrue(post.getNickname().equals("member1"));
+//        }
         Member savedMember = memberRepository.findByUsername(member.getUsername()).get();
         assertEquals(14, savedMember.getPostCnt());
     }
