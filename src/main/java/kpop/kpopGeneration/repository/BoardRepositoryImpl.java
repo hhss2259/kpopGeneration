@@ -35,6 +35,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         return size;
     }
 
+    /**
+     * 포스트 목록 조회하기(카테고리별)
+     */
     @Override
     public Page<Post> findPostListByCategory(Category category, Pageable pageable) {
         List<Post> fetch = queryFactory
@@ -61,7 +64,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         return new PageImpl<Post>(fetch,pageable, size);
     }
-
+    /**
+     * 포스트 목록 조회하기(전체 포스트)
+     */
     @Override
     public Page<Post> findALLPostList(Pageable pageable) {
         List<Post> fetch = queryFactory

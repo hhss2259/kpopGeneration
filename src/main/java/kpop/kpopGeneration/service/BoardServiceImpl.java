@@ -10,14 +10,12 @@ import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import javax.swing.text.View;
 import java.util.Optional;
 
 /**
@@ -55,7 +53,7 @@ public class BoardServiceImpl implements BoardService {
      * 게시글 목록 조회하기
      */
     @Override
-    public PageCustomDto<PostTitleDto> findPostListByCategory(Category category, Pageable pageable) {
+    public PageCustomDto<PostTitleViewDto> findPostListByCategory(Category category, Pageable pageable) {
         Page<Post> postList = null;
         if (category == Category.ALL) {
             postList = boardRepository.findALLPostList(pageable);
@@ -63,13 +61,13 @@ public class BoardServiceImpl implements BoardService {
             postList = boardRepository.findPostListByCategory(category, pageable);
         }
 
-        Page<PostTitleDto> postTitleList = postList.map(
-                post -> new PostTitleDto(
+        Page<PostTitleViewDto> postTitleList = postList.map(
+                post -> new PostTitleViewDto(
                         post.getId(), post.getCategory(), post.getTitle(),
                         post.getMember().getNickName(), post.getLastModifiedTime()
                 )
         );
-        PageCustomDto<PostTitleDto> postViewDto = getPageCustom_post(postTitleList);
+        PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom_post(postTitleList);
 
         return postViewDto;
     }
@@ -105,6 +103,7 @@ public class BoardServiceImpl implements BoardService {
      */
 
 
+
     private PageCustomDto<CommentViewDto> getPageCustom(Page<CommentViewDto> list){
         PageCustomDto<CommentViewDto> dto = new PageCustomDto<>();
 
@@ -122,8 +121,8 @@ public class BoardServiceImpl implements BoardService {
         return dto;
     }
 
-    private PageCustomDto<PostTitleDto> getPageCustom_post(Page<PostTitleDto> list){
-        PageCustomDto<PostTitleDto> dto = new PageCustomDto<>();
+    private PageCustomDto<PostTitleViewDto> getPageCustom_post(Page<PostTitleViewDto> list){
+        PageCustomDto<PostTitleViewDto> dto = new PageCustomDto<>();
 
         dto.setContent(list.getContent());
         dto.setSize(list.getSize());

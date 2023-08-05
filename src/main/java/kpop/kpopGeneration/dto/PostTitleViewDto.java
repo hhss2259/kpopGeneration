@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class PostTitleDto {
+public class PostTitleViewDto{
 
-    Long orderNumber;
+    Long postId;
     Category category;
     String title;
     String nickname;

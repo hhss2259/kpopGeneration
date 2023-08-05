@@ -1,23 +1,16 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.*;
-import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
-import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.repository.BoardRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,14 +86,14 @@ class BoardServiceTest {
         }
 
 
-        PageCustomDto<PostTitleDto> musicPost = boardService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
+        PageCustomDto<PostTitleViewDto> musicPost = boardService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
         assertEquals(1, musicPost.getSize());
         assertEquals(2, musicPost.getTotalPages());
         assertEquals(2, musicPost.getTotalElements());
         assertEquals(1, musicPost.getNumberOfElements());
         assertTrue(musicPost.getIsFirst());
 
-        PageCustomDto<PostTitleDto> allPost = boardService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
+        PageCustomDto<PostTitleViewDto> allPost = boardService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
         assertEquals(3, allPost.getSize());
         assertEquals(5, allPost.getTotalPages());
         assertEquals(14, allPost.getTotalElements());
@@ -110,7 +103,7 @@ class BoardServiceTest {
             assertTrue(allPost.getContent().get(i).getNickname().equals("member1"));
 
         }
-//        for (PostTitleDto post : allPost) {
+//        for (PostTitleViewDto post : allPost) {
 //            assertTrue(post.getNickname().equals("member1"));
 //        }
         Member savedMember = memberRepository.findByUsername(member.getUsername()).get();

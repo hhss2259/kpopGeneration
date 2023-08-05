@@ -16,7 +16,7 @@
     <link rel ="stylesheet" href="./css/basic/basic.css"/>
     <!-- <link rel ="stylesheet" href="./css/basic/nav.css"/>
         <link rel ="stylesheet" href="./css/main.css"/> -->
-    <link rel ="stylesheet" href="./css/community.css"/> 
+    <link rel ="stylesheet" href="./css/board/board.css"/> 
 
 
 </head>
@@ -107,21 +107,27 @@
                             2023.07.27
                         </div>
                     </div>
-                    <div class="board-line">
-                        2
+                    <th:block th:object="${pageDto}">
+                    <th:block  th:each=" content : *{content}">
+                    <div class="board-line" >
+                            <div class="board-line-number" th:text="${content.orderNumber}" >
+                                1
+                            </div>
+                            <div class="board-line-category" th:text="${content.category}">
+                                일반
+                            </div>
+                            <div class="board-line-title" th:text="${content.title}">
+                                엔믹스
+                            </div>
+                            <div class="board-line-writer" th:text="${content.nickname}">
+                                지우
+                            </div>
+                            <div class="board-line-date" th:text="${content.date}">
+                                2023.07.27
+                            </div>
                     </div>
-                    <div class="board-line">
-                        3
-                    </div>
-                    <div class="board-line">
-                        4
-                    </div>
-                    <div class="board-line">
-                        5
-                    </div>
-                    <div class="board-line">
-                        6
-                    </div>
+                    </th:block>
+                    </th:block>
                 </div>
             </div>
         </div>
