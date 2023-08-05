@@ -15,8 +15,5 @@ public class KpopGenerationApplication {
 		SpringApplication.run(KpopGenerationApplication.class, args);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
 }

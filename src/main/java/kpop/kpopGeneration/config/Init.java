@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.PrePersist;
 
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class Init {
 
@@ -24,10 +24,16 @@ public class Init {
     @PostConstruct
     public void init() {
 
-        Member member = new Member("backendDeveloper", "1111", "앤써");
-        memberService.save(member);
+        Member member1 = new Member("xxxx", "1111", "앤써");
+        Member member2 = new Member("yyyy", "1111", "앤써");
+        Member member3 = new Member("zzzz", "1111", "앤써");
+
+        memberService.save(member1);
+        memberService.save(member2);
+        memberService.save(member3);
+
         for (int i = 0; i < 5; i++) {
-            boardService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), "backendDeveloper");
+            boardService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), member1.getUsername());
         }
     }
 
