@@ -4,6 +4,8 @@ import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.exception.NotExistedCommentException;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.repository.MemberRepository;
+import kpop.kpopGeneration.security.entity.MemberRole;
+import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,14 +26,23 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    MemberRoleRepository memberRoleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> byUsername = memberRepository.findByUsername(username);
-        Member member = byUsername.orElseThrow(() -> new NotExistedMemberException());
+
+
+
+        Member member = byUsername.orElseThrow(() -> new UsernameNotFoundException("username not found"));
+        Optional<MemberRole> byMember = memberRoleRepository.findByMember(member);
+        MemberRole memberRole = byMember.orElseThrow(() -> new RuntimeException("ROLE이 반드시 존재해야 합니다"));
+
+
 
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(member.getRole()));
+        roles.add(new SimpleGrantedAuthority(memberRole.getRole().getName()));
         MemberContext memberContext = new MemberContext(member, roles);
 
         return memberContext;

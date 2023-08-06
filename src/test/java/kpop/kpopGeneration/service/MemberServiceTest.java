@@ -3,6 +3,7 @@ package kpop.kpopGeneration.service;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.repository.MemberRepository;
+import kpop.kpopGeneration.security.entity.MemberRole;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,7 @@ class MemberServiceTest {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
 
     @Test
     @DisplayName("회원 가입 정상 작동확인")

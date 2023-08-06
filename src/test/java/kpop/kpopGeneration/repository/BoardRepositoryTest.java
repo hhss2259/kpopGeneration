@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +61,7 @@ class BoardRepositoryTest {
 
     @Test
     @DisplayName("DB 보드 테이블 조회하기 ")
-    void BoardList(){
+    void BoardList() {
         //given
         Member member = new Member("aaaa", "1111", "member1");
         memberRepository.save(member);
@@ -69,21 +71,21 @@ class BoardRepositoryTest {
         int cnt_certification = 4;
         int cnt_normal = 5;
 
-        for(int i = 0 ; i< cnt_music; i++){
+        for (int i = 0; i < cnt_music; i++) {
             boardRepository.save(new Post("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.MUSIC));
         }
-        for(int i = 0 ; i< cnt_review; i++){
+        for (int i = 0; i < cnt_review; i++) {
             boardRepository.save(new Post("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.REVIEW));
         }
-        for(int i = 0 ; i< cnt_certification; i++){
+        for (int i = 0; i < cnt_certification; i++) {
             boardRepository.save(new Post("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, member, Category.CERTIFICATION));
         }
-        for(int i = 0 ; i< cnt_normal; i++){
+        for (int i = 0; i < cnt_normal; i++) {
             boardRepository.save(new Post("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.NORMAL));
         }
 
         // DB 총 갯수 조회
-        assertEquals(cnt_music+cnt_review+cnt_certification+cnt_normal, boardRepository.findCnt());
+        assertEquals(cnt_music + cnt_review + cnt_certification + cnt_normal, boardRepository.findCnt());
 
         PageRequest pageRequest = PageRequest.of(0, 10);
         // 카테고리별 조회
@@ -96,7 +98,7 @@ class BoardRepositoryTest {
         assertEquals(3, reviewPost.getNumberOfElements());
 
         Page<Post> certificationPost = boardRepository.findPostListByCategory(Category.CERTIFICATION, pageRequest);
-        assertEquals(4,certificationPost.getNumberOfElements());
+        assertEquals(4, certificationPost.getNumberOfElements());
 
         Page<Post> normalPost = boardRepository.findPostListByCategory(Category.NORMAL, pageRequest);
         assertEquals(5, normalPost.getNumberOfElements());
@@ -105,7 +107,7 @@ class BoardRepositoryTest {
         // 모든(All) 포스트 조회
         PageRequest pageRequest2 = PageRequest.of(4, 3);
         Page<Post> allPost = boardRepository.findALLPostList(pageRequest2);
-        assertEquals(5,allPost.getTotalPages());
+        assertEquals(5, allPost.getTotalPages());
         assertTrue(allPost.isLast());
         assertEquals(2, allPost.getNumberOfElements());
         assertEquals(3, allPost.getSize());
@@ -115,7 +117,7 @@ class BoardRepositoryTest {
     @Test
     @Disabled
     @DisplayName("본문 길이 확인")
-    void lengthTest(){
+    void lengthTest() {
         //given
         Member member = new Member("aaaa", "1111", "member1");
         String body = "안녕";
@@ -136,13 +138,13 @@ class BoardRepositoryTest {
 
     @Test
     @DisplayName("포스트 자세히 보기")
-    void postDetail(){
+    void postDetail() {
 
         //given
         Member member = new Member("aaaa", "1111", "member1");
         Member savedMember = memberRepository.save(member);
 
-        Post post = new Post("테스트 포스트", "테스트하기", savedMember,Category.REVIEW);
+        Post post = new Post("테스트 포스트", "테스트하기", savedMember, Category.REVIEW);
 
         //when
         Post savedPost = boardRepository.save(post);

@@ -9,9 +9,28 @@ public
 class TestController {
     @GetMapping("/test")
     public String test(){
-        return "index";
+        return "test/testMain";
     }
 
+    @GetMapping("/testLogin")
+    public String login(){
+        return "test/testLogin";
+    }
+
+    @GetMapping("/testMyPage")
+    public String myPage(){
+        return "test/testMyPage";
+    }
+
+    @GetMapping("/testManager")
+    public String manager(){
+        return "test/testManager";
+    }
+
+    @GetMapping("/testAdmin")
+    public String admin(){
+        return "test/testAdmin";
+    }
 
 
 }

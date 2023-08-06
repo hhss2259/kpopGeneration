@@ -24,7 +24,6 @@ public class Member extends JpaBaseTimeEntity {
 
     String profileImage;
 
-    String role;
 
     public Member(String username, String password, String nickname){
         this.username = username;
@@ -33,7 +32,6 @@ public class Member extends JpaBaseTimeEntity {
         this.postCnt = 0L;
         this.commentCnt = 0L;
         this.profileImage = null;
-        this.role = "ROLE_USER";
     }
 
     public void increasePostCnt() {

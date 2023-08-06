@@ -3,6 +3,8 @@ package kpop.kpopGeneration.service;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.repository.MemberRepository;
+import kpop.kpopGeneration.security.entity.MemberRole;
+import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final MemberRoleRepository memberRoleRepository;
 
     public boolean checkDuplicateUsername(String username){
         int cnt = memberRepository.findCntByUsername(username);
@@ -41,6 +44,7 @@ public class MemberService {
     public Long save(Member member){
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         Member save = memberRepository.save(new Member(member.getUsername(), encodedPassword, member.getNickName()));
+//        MemberRole savedRole = memberRoleRepository.save(new MemberRole(save));
         return save.getId();
     }
 
