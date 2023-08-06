@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.View;
+import java.security.Security;
 import java.util.Optional;
 
 /**
@@ -60,7 +62,6 @@ public class BoardServiceImpl implements BoardService {
         }else{
             postList = boardRepository.findPostListByCategory(category, pageable);
         }
-
         Page<PostTitleViewDto> postTitleList = postList.map(
                 post -> new PostTitleViewDto(
                         post.getId(), post.getCategory(), post.getTitle(),

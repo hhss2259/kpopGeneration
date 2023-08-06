@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.parameters.P;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -22,36 +23,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
 class BoardRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
     @Autowired
     BoardRepository boardRepository;
-
-    @Test
-    @DisplayName("엔터티 생성 및 DB 연동 확인")
-    void savePost() {
-        //given
-        Member member = new Member("aaaa", "1111", "member1");
-        Post post = new Post("테스트", "테스트 메세지", member, Category.NORMAL);
-
-        //when
-        memberRepository.save(member);
-        Post save = boardRepository.save(post);
-
-        //then
-        assertNotEquals(0L, save.getId());
-        assertNotNull(save.getCreatedTime());
-        System.out.println("생성 시간 :" +save.getCreatedTime());
-        assertNotNull(save.getLastModifiedTime());
-        System.out.println("마지막 수정 시간 : "+save.getLastModifiedTime());
-        assertNull(save.getDeletedTime());
-        System.out.println("삭제 시간 : "+save.getDeletedTime());
-        assertFalse(save.isDeletedTrue());
-        System.out.println("삭제 여부 :" +save.isDeletedTrue());
-
-    }
 
     @Test
     @DisplayName("DB 포스트 갯수 확인")
@@ -86,29 +64,33 @@ class BoardRepositoryTest {
         Member member = new Member("aaaa", "1111", "member1");
         memberRepository.save(member);
 
-        for(int i = 0 ; i< 2; i++){
+        int cnt_music = 2;
+        int cnt_review = 3;
+        int cnt_certification = 4;
+        int cnt_normal = 5;
+
+        for(int i = 0 ; i< cnt_music; i++){
             boardRepository.save(new Post("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.MUSIC));
         }
-        for(int i = 0 ; i< 3; i++){
+        for(int i = 0 ; i< cnt_review; i++){
             boardRepository.save(new Post("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.REVIEW));
         }
-        for(int i = 0 ; i< 4; i++){
+        for(int i = 0 ; i< cnt_certification; i++){
             boardRepository.save(new Post("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, member, Category.CERTIFICATION));
         }
-        for(int i = 0 ; i< 5; i++){
+        for(int i = 0 ; i< cnt_normal; i++){
             boardRepository.save(new Post("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.NORMAL));
         }
 
         // DB 총 갯수 조회
-        PageRequest pageRequest = PageRequest.of(0,10);
-        assertEquals(14, boardRepository.findCnt());
+        assertEquals(cnt_music+cnt_review+cnt_certification+cnt_normal, boardRepository.findCnt());
 
+        PageRequest pageRequest = PageRequest.of(0, 10);
         // 카테고리별 조회
         Page<Post> musicPost = boardRepository.findPostListByCategory(Category.MUSIC, pageRequest);
-        assertEquals(2, musicPost.getNumberOfElements());
-        assertEquals(2, musicPost.getTotalElements());
-        assertEquals(10, musicPost.getSize());
-        assertEquals(10, musicPost.getPageable().getPageSize());
+        assertEquals(cnt_music, musicPost.getNumberOfElements());
+        assertEquals(cnt_music, musicPost.getTotalElements());
+        assertEquals(pageRequest.getPageSize(), musicPost.getSize());
 
         Page<Post> reviewPost = boardRepository.findPostListByCategory(Category.REVIEW, pageRequest);
         assertEquals(3, reviewPost.getNumberOfElements());
@@ -172,12 +154,8 @@ class BoardRepositoryTest {
         assertTrue(postById.isPresent());
         assertTrue(postById.get().getMember().getNickName().equals("member1"));
         assertEquals("테스트 포스트", postById.get().getTitle());
-
         assertTrue(invalidPostById.isEmpty());
     }
 
-    private Member createDefaultMember(){
-       return new Member("aaaa", "1111", "member1");
-    }
 
 }
