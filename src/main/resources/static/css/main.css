@@ -1,0 +1,121 @@
+
+.header-container{
+    height: 150px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-left{
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.titile{
+    font-size: 2rem;
+    font-family: 300;
+    text-align: center;
+}
+
+.main-menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 250px;
+}
+
+.side-menu{
+    display: flex;
+    width: 200px;
+    height: 40px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+hr{
+    margin:0 0;
+}
+
+
+
+/*
+여기까지는 공통 header
+*/
+
+.topic-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container-name{
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.5rem;
+}
+
+.big-card-container{
+    margin: 20px 0;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.big-card{
+    width: 480px;
+    height: 300px;
+    background-color: white;
+    border-radius: 20px 20px;
+    border: 1px solid black;
+}
+
+.card-picture{
+    height: 60%;
+    border-radius: 20px 20px 0 0 ;
+    background-color: azure;
+}
+
+.card-title{
+    height: 20%;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-date{
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.small-card-container{
+    margin: 20px 0;
+    align-self: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.small-card{
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    border-radius: 20px 20px;
+    margin-bottom: 20px;
+    border: 1px solid black;
+
+}
+

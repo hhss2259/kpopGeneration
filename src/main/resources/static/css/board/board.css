@@ -42,10 +42,11 @@ hr{
 .board-header{
     padding-left: 20px;
     height: 100px;
-    background-color: blanchedalmond;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom:  20px;
+    border-bottom: 1px solid black;
 }
 
 .board-header-title{
@@ -71,6 +72,7 @@ hr{
 .board-line-conatiner{
     display: flex;
     flex-direction: column;
+    
 }
 
 .board-line{
@@ -78,11 +80,10 @@ hr{
     flex-direction: row;
     align-items: center;
     height: 50px;
-    background-color: ghostwhite;
     border-bottom: 1px solid black;
 }
 .board-line-number{
-    width: 6%;
+    width: 10%;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -94,13 +95,13 @@ hr{
     align-items: center
 }
 .board-line-title{
-    width: 62%;
+    width: 60%;
     display: flex;
     justify-content: start;
     align-items: center
 }
 .board-line-writer{
-    width: 12%;
+    width: 10%;
     display:flex;
     justify-content: center;
     align-items: center

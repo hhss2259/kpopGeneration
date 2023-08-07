@@ -1,5 +1,7 @@
 *{
     box-sizing: border-box;
+    font-family: 'Jeju Gothic', sans-serif;/*웹 폰트 지정*/
+    color: orange;
 }
 
 a{

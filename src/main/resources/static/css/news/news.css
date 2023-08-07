@@ -1,0 +1,78 @@
+.header-container{
+    height: 150px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-left{
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.titile{
+    font-size: 2rem;
+    font-family: 300;
+    text-align: center;
+}
+
+.main-menu{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 250px;
+}
+
+.side-menu{
+    margin-top : 20px;
+    margin-right : 20px;
+}
+
+hr{
+    margin:0 0;
+}
+
+/*
+여기까지는 공통 header
+*/
+
+.news-container{
+    margin-top: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;    
+}
+
+.news-line{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.news-image{
+    width:50%;
+    height : 240px;
+    background-color: aquamarine;
+}
+.news-content{
+    width: 50%;
+    height : 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.news-title{
+    height: 120px;
+    font-size: 1.5rem;
+    line-height: 120px;
+}

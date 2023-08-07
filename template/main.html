@@ -17,8 +17,14 @@
     <!-- <link rel ="stylesheet" href="./css/basic/nav.css"/>
         <link rel ="stylesheet" href="./css/main.css"/> -->
     <link rel ="stylesheet" href="./css/main.css"/> 
-
-
+    
+    <style>
+        @import url(//fonts.googleapis.com/earlyaccess/jejumyeongjo.css);
+        .jm-font{
+            font-family: 'Jeju Myeongjo', serif;/*웹 폰트 지정*/
+            color: orange;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -29,15 +35,21 @@
                       KpopGeneration
                     </div>
                     <div class="main-menu">
-                       <div class="news">
-                            뉴스
-                       </div>
-                       <div class="topic">
-                            토픽
-                       </div>
-                       <div class="community">
-                            커뮤니티
-                       </div>
+                        <a th:href="@{/news}">
+                            <div class="news">
+                                뉴스
+                            </div>
+                        </a>
+                        <a th:href="@{/topic}">
+                           <div class="topic">
+                                토픽
+                           </div>
+                        </a>
+                        <a th:href="@{/board}">
+                           <div class="community">
+                                커뮤니티
+                           </div>
+                        </a>
                     </div>
                 </div>
                 <div class="side-menu">

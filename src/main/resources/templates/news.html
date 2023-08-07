@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+    
+    
+    <style>
+        /*구글 웹 폰트 적용*/
+        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+    </style>
+    <link rel ="stylesheet" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" href="../static/css/news/news.css"/> 
+
+
+</head>
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="titile">
+                      KpopGeneration
+                    </div>
+                    <div class="main-menu">
+                        <a th:href="@{/news}">
+                            <div class="news">
+                                뉴스
+                            </div>
+                        </a>
+                        <a th:href="@{/topic}">
+                           <div class="topic">
+                                토픽
+                           </div>
+                        </a>
+                        <a th:href="@{/board}">
+                           <div class="community">
+                                커뮤니티
+                           </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="side-menu">
+                    side-menu
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <section>
+        <div class="inner">
+            <div class="news-container">
+                <div class="news-line">
+                    <div class="news-image">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">
+                            엔믹스
+                        </div>
+                        <div class="news-date">
+                            2023년 8월 7일 
+                        </div>
+                    </div>
+                </div>
+                <div class="news-line">
+                    <div class="news-image">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">
+                            엔믹스
+                        </div>
+                        <div class="news-date">
+                            2023년 8월 7일 
+                        </div>
+                    </div>
+                </div>
+                <div class="news-line">
+                    <div class="news-image">
+                    </div>
+                    <div class="news-content">
+                        <div class="news-title">
+                            엔믹스
+                        </div>
+                        <div class="news-date">
+                            2023년 8월 7일 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>
