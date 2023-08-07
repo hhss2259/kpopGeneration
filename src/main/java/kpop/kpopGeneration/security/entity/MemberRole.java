@@ -25,12 +25,9 @@ public class MemberRole {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public MemberRole(Member member) {
-        this.member = member;
-        this.role = new Role("ROLE_USER");
-    }
 
-    public void updateRole(String name) {
-        this.role = new Role(name);
+    public MemberRole(Member member, Role role) {
+        this.member = member;
+        this.role = role;
     }
 }

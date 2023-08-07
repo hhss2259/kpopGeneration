@@ -1,11 +1,10 @@
 package kpop.kpopGeneration.security.service;
 
 import kpop.kpopGeneration.entity.Member;
-import kpop.kpopGeneration.exception.NotExistedCommentException;
-import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.repository.MemberRepository;
 import kpop.kpopGeneration.security.entity.MemberRole;
 import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
+import kpop.kpopGeneration.security.exception.NotExistedRoleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,15 +35,19 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
         Member member = byUsername.orElseThrow(() -> new UsernameNotFoundException("username not found"));
-        Optional<MemberRole> byMember = memberRoleRepository.findByMember(member);
-        MemberRole memberRole = byMember.orElseThrow(() -> new RuntimeException("ROLE이 반드시 존재해야 합니다"));
+        Optional<List<MemberRole>> byMember = memberRoleRepository.findAllByMemberFetch(member);
+        List<MemberRole> memberRoles = byMember.orElseThrow(() -> new NotExistedRoleException("ROLE이 반드시 존재해야 합니다"));
 
 
 
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(new SimpleGrantedAuthority(memberRole.getRole().getName()));
-        MemberContext memberContext = new MemberContext(member, roles);
 
+        memberRoles.forEach( memberRole -> {
+            roles.add(new SimpleGrantedAuthority(memberRole.getRole().getName()));
+        });
+
+
+        MemberContext memberContext = new MemberContext(member, roles);
         return memberContext;
     }
 }

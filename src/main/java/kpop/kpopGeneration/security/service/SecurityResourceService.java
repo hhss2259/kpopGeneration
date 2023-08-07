@@ -10,9 +10,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,7 +21,8 @@ public class SecurityResourceService {
 
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceRoleList(){
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> result = new LinkedHashMap<>();
-        List<ResourceRole> resourceRoles = resourceRoleRepository.findAll();
+        Optional<List<ResourceRole>> optional = resourceRoleRepository.findAllResourceRole();
+        List<ResourceRole> resourceRoles = optional.orElseGet(() -> null);
 
         // 만약 하나의 Resouce에 role_user, role_manager, role_admin 세 가지가 있다면
         // resource + role_user, resource+ role_user + role_manager, resouce+ role_user + role+manager+role_admin 세 개 생성

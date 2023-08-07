@@ -21,8 +21,11 @@ public class ResourceRole {
     @ManyToOne(fetch = FetchType.LAZY)
     private  Role role;
 
+    private Integer orderPriority;
+
     public ResourceRole(Resource resource, Role role) {
         this.resource = resource;
         this.role = role;
+        this.orderPriority = 100;
     }
 }

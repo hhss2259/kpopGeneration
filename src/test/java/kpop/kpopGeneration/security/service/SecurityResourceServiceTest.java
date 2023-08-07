@@ -1,5 +1,7 @@
 package kpop.kpopGeneration.security.service;
 
+import kpop.kpopGeneration.security.entity.repository.ResourceRoleRepository;
+import kpop.kpopGeneration.security.entity.repository.ResourceRoleRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +25,8 @@ class SecurityResourceServiceTest {
 
     @Autowired
     SecurityResourceService securityResourceService;
+    @Autowired
+    ResourceRoleRepository resourceRoleRepository;
 
     @Test
     @DisplayName("securityResouceService 동작 테스트")
@@ -35,5 +39,15 @@ class SecurityResourceServiceTest {
         assertEquals(3, resourceRoleList.get(new AntPathRequestMatcher("/test/member")).size());
         assertEquals(2, resourceRoleList.get(new AntPathRequestMatcher("/test/manager")).size());
         assertEquals(1, resourceRoleList.get(new AntPathRequestMatcher("/test/admin")).size());
+    }
+
+    @Test
+    @DisplayName("ResouceRole이 아무것도 없을 때도 잘 작동하는가")
+    void testNull(){
+        resourceRoleRepository.deleteAll();
+
+        assertEquals(0, resourceRoleRepository.findAllResourceRole().get().size());
+        assertEquals(0, securityResourceService.getResourceRoleList().size());
+
     }
 }

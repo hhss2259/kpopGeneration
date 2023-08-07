@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,5 +29,17 @@ class RoleRepositoryTest {
         List<Role> all = roleRepository.findAll();
         Assertions.assertEquals(3, all.size());
         all.forEach((role)->System.out.println(role.getName()));
+    }
+
+    List<String> namesList = Arrays.asList("ROLE_USER", "ROLE_MANAGER", "ROLE_ADMIN");
+    @Test
+    @DisplayName("List<String>을 파라미터로 갖는 findAllByName")
+    void findAllByName(){
+
+        List<String> names = new ArrayList<>();
+        for (int i = 0; i < namesList.size(); i++) {
+            names.add(namesList.get(i));
+            assertEquals(i+1, roleRepository.findAllByName(names).get().size());
+        }
     }
 }
