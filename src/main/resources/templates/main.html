@@ -153,6 +153,23 @@
             </div>
         </div>
     </section>
-    
+    <div class="modal">
+        <div class="modal_body">
+            Modal
+        </div>
+    </div>
+
 </body>
+<script>
+    const modal = document.querySelector(".modal");
+    const btnOpenPopup = document.querySelector('.login-button');
+    const body = document.querySelector('body');
+
+    btnOpenPopup.addEventListener('click', ()=>{
+        modal.style.display = "block";
+        modal.classList.toggle('show');
+        body.style.overflow = 'hidden';
+        console.log("hi");
+    })
+</script>
 </html>

@@ -32,8 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> byUsername = memberRepository.findByUsername(username);
 
-
-
         Member member = byUsername.orElseThrow(() -> new UsernameNotFoundException("username not found"));
         Optional<List<MemberRole>> byMember = memberRoleRepository.findAllByMemberFetch(member);
         List<MemberRole> memberRoles = byMember.orElseThrow(() -> new NotExistedRoleException("ROLE이 반드시 존재해야 합니다"));
