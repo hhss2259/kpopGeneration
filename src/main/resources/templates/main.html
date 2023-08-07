@@ -153,23 +153,53 @@
             </div>
         </div>
     </section>
-    <div class="modal">
-        <div class="modal_body">
-            Modal
+    <div class="modal ">
+        <div class="modal-body">
+            <div class="modal-content-container">
+                <div class="modal-close">
+                    X
+                </div>
+                <div class="modal-title">
+                    Login
+                </div>
+                <div class="modal-form-container">
+                    username
+                </div>
+            </div>
         </div>
     </div>
 
 </body>
 <script>
     const modal = document.querySelector(".modal");
-    const btnOpenPopup = document.querySelector('.login-button');
+    const login_button = document.querySelector('.login-button');
     const body = document.querySelector('body');
 
-    btnOpenPopup.addEventListener('click', ()=>{
-        modal.style.display = "block";
-        modal.classList.toggle('show');
-        body.style.overflow = 'hidden';
-        console.log("hi");
+    login_button.addEventListener('click', ()=>{
+        open()
     })
+
+    const modal_close = document.querySelector(".modal-close");
+    modal_close.addEventListener('click',()=>{
+        close()
+    })    
+
+  
+//Hide modal
+    window.addEventListener('click', (e) => {
+        console.log("hi");
+        e.target === modal ?  close() : false
+    })
+
+    function close(){
+        modal.style.display= 'none';
+        body.style.overflow = 'auto';
+    }
+    function open(){
+        modal.style.display= 'block';
+        body.style.overflow = 'hidden';
+        
+    }
+
 </script>
 </html>
