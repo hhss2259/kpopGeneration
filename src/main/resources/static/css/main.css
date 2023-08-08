@@ -34,6 +34,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+    position: relative;
+    
 }
 
 
@@ -41,13 +43,25 @@ hr{
     margin:0 0;
 }
 
-
-.menubars{
+.member-menu{
+    height: 100px;
+    margin-top:5px;
+    width: 200px;
+    right: 0px;
+    position: absolute;
+    z-index : 1;
     display: none;
+    border: 1px solid black;
+    background-color: white;
 }
-.menubars:checked{
-    display: block;
+
+.logout-button{
+    background-color: white;
+    border: 0px;
+
 }
+
+
 
 
 /*

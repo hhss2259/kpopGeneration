@@ -68,16 +68,16 @@
                     </div>
                     <div>
                         <span th:if="${memberDto == null}" class="login-button"> 로그인</span>
-                        <span th:if="${memberDto != null}" class="myInfo-button"> 
-                            <input id="check-btn" type="checkbox" />
-                            <label for="check-btn">개인 정보</label>
-                            <ul class="menubars">
-                                <li>메뉴</li>
-                                <li>메뉴</li>
-                                <li>메뉴</li>
-                                <li>메뉴</li>
-                            </ul>  
-                        </span>
+                        <span th:if="${memberDto != null}" class="member-menu-button"> 로그아웃</span>
+                        <div class="member-menu">
+                            <div class="member-info">
+                                <div>작성한 글</div>
+                                <div>작성한 댓글</div>
+                            </div> 
+                            <form th:action="@{/logout}" th:method="post">
+                                <button th:type="submit" class="logout-button">로그아웃</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -229,14 +229,19 @@
     }
 
 
-
-    const myInfo_button =  document.querySelector('.myInfo-button');
-    const myInfo =  document.querySelector('.myInfo');
-    
+    const myInfo_button =  document.querySelector('.member-menu-button');
     myInfo_button.addEventListener('click',()=>{
-        console.log("버튼");
-        myInfo.classList.toggle('notShow');
+        const menu =  document.querySelector('.member-menu');
+        if(menu.style.display === 'block'){
+            menu.style.display = 'none';
+            console.log("menu");
+        }else{
+            menu.style.display = 'block';
+            console.log("Rkwmasdfasfddk");
+
+        }
     })
+
 
 </script>
 </html>

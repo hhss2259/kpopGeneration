@@ -26,12 +26,12 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @GetMapping("/loginError")
-    public String loginPage(@RequestParam boolean error, @RequestParam String errorMessage){
-        return "redirect:/?loginError="+error+"&errorMessage="+errorMessage;
+    public String loginPage(@RequestParam boolean error, @RequestParam String errorMessage) {
+        return "redirect:/?loginError=" + error + "&errorMessage=" + errorMessage;
     }
 
     @GetMapping("/home")
-    public String getHome(){
+    public String getHome() {
         log.info("로그인 완료");
         return "/home";
     }
