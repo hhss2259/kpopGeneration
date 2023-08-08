@@ -5,6 +5,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         } else if (exception instanceof InsufficientAuthenticationException) {
             errorMessage = LoginInfo.INVALID_SECRET_KEY;
         }
-        setDefaultFailureUrl("/loginError?error=true&errorMessage=" + errorMessage);
+
+
+        setDefaultFailureUrl(request.getHeader("Referer")+"?loginError=true&errorMessage=" + errorMessage);
         super.onAuthenticationFailure(request, response, exception);
     }
 }

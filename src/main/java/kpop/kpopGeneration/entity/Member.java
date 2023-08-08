@@ -24,6 +24,8 @@ public class Member extends JpaBaseTimeEntity {
 
     String profileImage;
 
+    String email;
+
 
     public Member(String username, String password, String nickname){
         this.username = username;

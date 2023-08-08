@@ -25,10 +25,10 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class LoginController {
 
-    @GetMapping("/loginError")
-    public String loginPage(@RequestParam boolean error, @RequestParam String errorMessage) {
-        return "redirect:/?loginError=" + error + "&errorMessage=" + errorMessage;
-    }
+//    @GetMapping("/loginError")
+//    public String loginPage(@RequestParam boolean error, @RequestParam String errorMessage) {
+//        return "redirect:/?loginError=" + error + "&errorMessage=" + errorMessage;
+//    }
 
     @GetMapping("/home")
     public String getHome() {

@@ -17,11 +17,8 @@
         /*구글 웹 폰트 적용*/
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
     </style>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}"/>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
-
-    <link rel ="stylesheet" type="text/css" href="../static/css/basic/basic.css"/>
-    <link rel ="stylesheet" type="text/css" href="../static/css/main.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/join.css}" href="../static/css/join.css"/>
 
 </head>
 <script th:inline="javascript">
@@ -94,92 +91,29 @@
     <hr>
     <section>
         <div class="inner">
-            <div class="topic-container">
-                <div class="container-name">
-                    Topic
+            <div class="join-container">
+                <div class="join-title">
+                    회원가입
                 </div>
-                <div class="big-card-container">
-                    <div class="big-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
+                <form class="join-content" th:action="@{/join}" th:post="post">
+                    <div class="join-agree">
+                        <div class="join-agree-content">약관에 동의하시겠습니까?</div>
+                        <label><input th:type="checkbox" type="checkbox" name="agree"/>네, 동의합니다</label>
                     </div>
-                    <div class="big-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
+                    <div class="join-info">
+                        <div class="join-username info">아이디</div>
+                        <div class="join-password info">비밀번호</div>
+                        <div class="join-password-check info">비밀번호 확인</div>
+                        <div class="join-email info">이메일</div>
+                        <div class="join-nickname info">닉네임임</div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
-    <section>
-        <div class="inner">
-            <div class="news-container">
-                <div class="container-name">
-                    News
-                </div>
-                <div class="small-card-container">
-                    <div class="small-card">
-                        <div class="card-picture">
 
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
 
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
-    </section>
+    <!--modal-->
     <div class="modal ">
         <div class="modal-body">
             <div class="modal-content-container">
@@ -235,23 +169,6 @@
         body.style.overflow = 'hidden';
         
     }
-
-
     const myInfo_button =  document.querySelector('.member-menu-button');
-    
-
-    // myInfo_button.addEventListener('click',()=>{
-    //     const menu =  document.querySelector('.member-menu');
-    //     if(menu.style.display === 'block'){
-    //         menu.style.display = 'none';
-    //         console.log("menu");
-    //     }else{
-    //         menu.style.display = 'block';
-    //         console.log("Rkwmasdfasfddk");
-
-    //     }
-    // })
-
-
 </script>
 </html>
