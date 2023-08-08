@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/login")
+                .loginProcessingUrl("/loginProc")
                 .authenticationDetailsSource(formAuthenticationDetailSource())
                 .defaultSuccessUrl("/")
                 .successHandler(authenticationSuccessHandler())

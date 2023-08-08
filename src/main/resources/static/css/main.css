@@ -36,10 +36,18 @@
     justify-content: space-around;
 }
 
+
 hr{
     margin:0 0;
 }
 
+
+.menubars{
+    display: none;
+}
+.menubars:checked{
+    display: block;
+}
 
 
 /*

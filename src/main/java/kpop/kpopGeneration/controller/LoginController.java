@@ -25,27 +25,15 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final LoginService loginService;
-
-    @GetMapping("/login")
-    public String loginPage(@ModelAttribute MemberDto memberDto){
-
-        return "/member/login";
-    }
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class MemberDto{
-        String username;
-        String password;
+    @GetMapping("/loginError")
+    public String loginPage(@RequestParam boolean error, @RequestParam String errorMessage){
+        return "redirect:/?loginError="+error+"&errorMessage="+errorMessage;
     }
 
-    
     @GetMapping("/home")
     public String getHome(){
         log.info("로그인 완료");
         return "/home";
     }
-
 
 }

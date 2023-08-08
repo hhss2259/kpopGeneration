@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -24,6 +24,15 @@
     <link rel ="stylesheet" type="text/css" href="../static/css/main.css"/>
 
 </head>
+<script th:inline="javascript">
+    const loginError = [[${loginError}]];
+    const errorMessage = [[${errorMessage}]];
+
+    if(loginError === true){
+        window.alert(errorMessage);
+        location.href = "/";
+    }
+</script>
 <body>
     <header>
         <div class="inner">
@@ -57,8 +66,18 @@
                     <div class="searching-button">
                         검색
                     </div>
-                    <div class="login-button">
-                        로그인
+                    <div>
+                        <span th:if="${memberDto == null}" class="login-button"> 로그인</span>
+                        <span th:if="${memberDto != null}" class="myInfo-button"> 
+                            <input id="check-btn" type="checkbox" />
+                            <label for="check-btn">개인 정보</label>
+                            <ul class="menubars">
+                                <li>메뉴</li>
+                                <li>메뉴</li>
+                                <li>메뉴</li>
+                                <li>메뉴</li>
+                            </ul>  
+                        </span>
                     </div>
                 </div>
             </div>
@@ -160,15 +179,24 @@
                     X
                 </div>
                 <div class="modal-title">
-                    Login
+                    로그인
                 </div>
-                <div class="modal-form-container">
-                    username
-                </div>
+                <form th:action="@{/loginProc}" th:method="post"  class="modal-form-container" >
+                    <input th:type="hidden" type="hidden" name="secret_key" value="secret"/>
+                    <input th:type="text" class="modal-form-input" name="username" placeholder="아이디"/>
+                    <input th:type="password" class="modal-form-input" name="password" placeholder="비밀번호"/>
+                    <div class="modal-form-info">
+                        <label><input type="checkbox" th:type="checkbox" class="modal-form-checkBox" name="rememberMe" placeholder="로그인 상태 유지"/>로그인 상태 유지</label>
+                        <a th:href="@{/findAuthentication}" >ID / Password 찾기</a>
+                    </div>
+                    <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
+                    <div class="modal-form-join">
+                        <a  th:href="@{/joinMember}">회원가입</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
 </body>
 <script>
     const modal = document.querySelector(".modal");
@@ -184,7 +212,6 @@
         close()
     })    
 
-  
 //Hide modal
     window.addEventListener('click', (e) => {
         console.log("hi");
@@ -200,6 +227,16 @@
         body.style.overflow = 'hidden';
         
     }
+
+
+
+    const myInfo_button =  document.querySelector('.myInfo-button');
+    const myInfo =  document.querySelector('.myInfo');
+    
+    myInfo_button.addEventListener('click',()=>{
+        console.log("버튼");
+        myInfo.classList.toggle('notShow');
+    })
 
 </script>
 </html>
