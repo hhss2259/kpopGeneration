@@ -26,10 +26,15 @@ public class MainController {
     @GetMapping("/")
     public String main(@RequestParam(required = false) String loginError,
                        @RequestParam(required = false) String errorMessage,
+                       @RequestParam(required = false) String join,
                        Model model) {
         if (loginError != null ){
             model.addAttribute("loginError", true);
             model.addAttribute("errorMessage", errorMessage);
+        }
+
+        if(join !=null && join.equals("success")){
+            model.addAttribute("join", "success");
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -98,7 +98,7 @@
                 <div class="join-title">
                     회원가입
                 </div>
-                <form class="join-content" th:action="@{/join}" th:post="post">
+                <form class="join-content" th:action="@{/join}" action="/join"  th:method="post" >
                     <div class="join-agree">
                         <div class="join-agree-content">약관에 동의하시겠습니까?</div>
                         <label><input th:type="checkbox" type="checkbox" name="agree" id="agreeValue"/>네, 동의합니다</label>
@@ -165,8 +165,8 @@
                                             인증하기
                                         </div>
                                         <div class="email-authentication">
-                                            <input class="email-authentication-number"  disabled/>
-                                            <div class="email-authentication-checker-button noTouch" id="email-authentication" >
+                                            <input class="email-authentication-number" disabled/>
+                                            <div class="email-authentication-checker-button noTouch" id="email-authentication"  >
                                                 확인
                                             </div>
                                         </div>
@@ -198,66 +198,140 @@
         </div>
     </section>
     <script>
-        const username = document.querySelector('#username');
-        const password = document.querySelector('#password');
-        const passwordSecond = document.querySelector('#passwordSecond');
-        const nickname = document.querySelector('#nickname');
+        
+    // 메세지 설정
+        successUsername = function(){
+            const checking = document.querySelector('#username-checker');
+            checking.textContent = '사용 가능한 아이디입니다';
+            checking.style.color = 'green'; 
+            checking.classList.remove('noShow');
+            document.querySelector('#usernameValue').value = true;
+        }
+        failUsername = function(msg){
+            const checking = document.querySelector('#username-checker');
+            checking.textContent = msg;
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#usernameValue').value = false;
+        }
+        successPassword = function(){
+            const checking = document.querySelector('#password-checker');
+            checking.textContent = '사용 가능한 비밀번호입니다';
+            checking.style.color = 'green';
+            checking.classList.remove('noShow');
+            document.querySelector('#passwordValue').value = true;
+        }
+        const failPassword = function(){
+            const checking = document.querySelector('#password-checker');
+            checking.textContent = '사용이 불가능 비밀번호입니다.';
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#passwordValue').value = false;
+        }
+        successPasswordSecond = function(){
+            const checking = document.querySelector('#passwordSecond-checker');
+            checking.textContent = '비밀번호가 일치합니다';
+            checking.style.color = 'green';
+            checking.classList.remove('noShow');
+            document.querySelector('#passwordSecondValue').value = true;
+        }
+        failPasswordSecond = function(){
+            const checking = document.querySelector('#passwordSecond-checker');
+            checking.textContent = '비밀번호가 일치하지 않습니다.';
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#passwordSecondValue').value = false;
+        }
+        const failEmail = function(msg){
+            const checking = document.querySelector('#email-checker');
+            checking.textContent = msg;
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#emailValue').value = false;
+        }
+        const successEmail = function(){
+            const checking = document.querySelector('#email-checker');
+            checking.textContent = '인증번호가 확인되었습니다';
+            checking.style.color = 'green';
+            document.querySelector('#emailValue').value = true;
+            
+            document.querySelector('#email').disabled = true;
+            document.querySelector('.email-authentication-number').disabled = true;
+            document.querySelector('.email-authentication-checker-button').classList.add('noTouch');
+            document.querySelector('.email-send').classList.add('noTouch');
+        }
+        const successNickname = function(){
+            const checking = document.querySelector('#nickname-checker');
+            checking.textContent = '사용 가능한 닉네임입니다';
+            checking.style.color = 'green';
+            checking.classList.remove('noShow');
+            document.querySelector('#nicknameValue').value = true;
+        }
+        const failNickname  = function(){
+            const checking = document.querySelector('#nickname-checker');
+            checking.textContent = '사용할 수 없는 닉네임입니다';
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#nicknameValue').value = false;
+        }
+   // 메세지 설정     
+       
 
+
+
+
+    //이벤트 함수
+        const usernameApi = function(testUsername){
+            fetch("/api/checkUsername", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body :JSON.stringify({
+                    username : testUsername
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data.statusCode === 1){
+                    successUsername();
+                }else{
+                    failUsername("이미 사용 중인 아이디입니다");
+                }
+            });
+        }
 
         const checkUsername = function(){
             const username = document.querySelector('#username').value;
             var regExp =/^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
-            const result = regExp.test(username);
-            const checking = document.querySelector('#username-checker')
-            
-            if(result == true){
-                checking.textContent = '사용 가능한 아이디입니다';
-                checking.style.color = 'green';
-                checking.classList.remove('noShow');
-                document.querySelector('#usernameValue').value = true;
+        
+            if(regExp.test(username)){
+                usernameApi(username);
             }else{
-                checking.textContent = '사용이 불가능한 아이디입니다.';
-                checking.style.color = 'red';
-                checking.classList.remove('noShow');
-                document.querySelector('#usernameValue').value = false;
+                failUsername('사용이 불가능한 아이디입니다');
             }
         }
-
 
         const checkPassword = function(){
             const password = document.querySelector('#password').value;
             var regExp =/^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,16}$/;
             const result = regExp.test(password);
-            const checking = document.querySelector('#password-checker')
             
             if(result == true){
-                checking.textContent = '사용 가능한 비밀번호입니다';
-                checking.style.color = 'green';
-                checking.classList.remove('noShow');
-                document.querySelector('#passwordValue').value = true;
+                successPassword();
             }else{
-                checking.textContent = '사용이 불가능 비밀번호입니다.';
-                checking.style.color = 'red';
-                checking.classList.remove('noShow');
-                document.querySelector('#passwordValue').value = false;
+                failPassword();
             }
-
 
             const passwordSecond = document.querySelector('#passwordSecond').value;
             const checkingSecond = document.querySelector('#passwordSecond-checker');
             if( password !== passwordSecond && document.querySelector('#passwordSecondValue').value === 'true'){
-                    checkingSecond.textContent = '비밀번호가 일치하지 않습니다.';
-                    checkingSecond.style.color = 'red';
-                    checkingSecond.classList.remove('noShow');
-                    document.querySelector('#passwordSecondValue').value = false;
+                failPasswordSecond();
             }
             
             if(password === passwordSecond && document.querySelector('#passwordSecondValue').value === 'false' && document.querySelector('#passwordValue').value === 'true'){
-                checkingSecond.textContent = '비밀번호가 일치합니다';
-                checkingSecond.style.color = 'green';
-                checkingSecond.classList.remove('noShow');
-                document.querySelector('#passwordSecondValue').value = true;
-            
+               successPasswordSecond();
             }
             
         }
@@ -265,91 +339,93 @@
         const checkPasswordSecond = function(){
             const password = document.querySelector('#password').value;
             const passwordSecond = document.querySelector('#passwordSecond').value;
-            const checking = document.querySelector('#passwordSecond-checker')
 
             if(password === passwordSecond && document.querySelector('#passwordValue').value === 'true'){
-                checking.textContent = '비밀번호가 일치합니다';
-                checking.style.color = 'green';
-                checking.classList.remove('noShow');
-                document.querySelector('#passwordSecondValue').value = true;
+                successPasswordSecond();
             }else{
-                checking.textContent = '비밀번호가 일치하지 않습니다.';
-                checking.style.color = 'red';
-                checking.classList.remove('noShow');
-                document.querySelector('#passwordSecondValue').value = false;
+                failPasswordSecond();
             }
         }
+
+
+        //서버에 이메일 api로 접근
+        const emailApi = function(testEmail){
+            fetch("/api/authenticateEmail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body :JSON.stringify({
+                    email : testEmail
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.statusCode === 1){
+                    const checking = document.querySelector('#email-checker')
+                    checking.textContent = '인증번호를 전송했습니다. 이메일을 확인해주세요';
+                    checking.style.color = 'gray';
+                    checking.classList.remove('noShow');
+                    document.querySelector('.email-authentication-number').disabled = false;
+                    document.querySelector('.email-authentication-checker-button').classList.remove('noTouch');
+                }else if(data.statusCode === 2){
+                    failEmail("이미 회원가입한 이메일입니다. 다른 이메일을 입력해주세요");
+                }
+
+
+                console.log("제발." + data.data);
+                document.querySelector('.email-authentication-number').dataset.random = data.data;
+            });
+        }
+
 
 
         const checkEmail = function(){
             const email = document.querySelector('#email').value;
-            const checking = document.querySelector('#email-checker')
-
             const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-            const result=  regExp.test(email);
 
-            if(result == false){
-                checking.textContent = '이메일을 정확하게 입력해주세요';
-                checking.style.color = 'red';
-                checking.classList.remove('noShow');
-                document.querySelector('#emailValue').value = false;
+            if(regExp.test(email) == false){
+                failEmail("이메일을 정확하게 입력해주세요");
             }else{
-                checking.textContent = '인증번호를 전송했습니다. 이메일을 확인해주세요';
-                checking.style.color = 'gray';
-                checking.classList.remove('noShow');
-                
-                document.querySelector('.email-authentication-number').disabled = false;
-                document.querySelector('.email-authentication-checker-button').classList.remove('noTouch');
-                console.log("1111");
+                emailApi(email);    
             }
         }
 
         const authenticateEmail = function(){
-            const number = document.querySelector('.email-authentication-number').value;
-            const checking = document.querySelector('#email-checker')
-
-            if(number == '1111'){
-                checking.textContent = '인증번호가 확인되었습니다';
-                checking.style.color = 'green';
-                document.querySelector('#emailValue').value = true;
-                
-                document.querySelector('#email').disabled = true;
-                document.querySelector('.email-authentication-number').disabled = true;
-                document.querySelector('.email-authentication-checker-button').classList.add('noTouch');
-                document.querySelector('.email-send').classList.add('noTouch');
+            const inputData = document.querySelector('.email-authentication-number');
+            console.log('value '+inputData.value);
+            console.log('random '+inputData.dataset.random);
+            if(inputData.value == inputData.dataset.random){
+                successEmail();
             }else{
-                checking.textContent = '잘못된 인증번호입니다';
-                checking.style.color = 'red';
-               
+               failEmail("잘못된 인증번호입니다");
             }
         }
-        
+
 
         
+
+
+
         const checkNickname = function(){
             const nikcname = document.querySelector('#nickname').value;
             const regExp =/^[a-zA-Zㄱ-힣0-9]{2,11}$/;
-            const checking = document.querySelector('#nickname-checker');
 
             if(regExp.test(nikcname) == true){
-                checking.textContent = '사용 가능한 닉네임입니다';
-                checking.style.color = 'green';
-                checking.classList.remove('noShow');
-                document.querySelector('#nicknameValue').value = true;
+                successNickname();
             }else{
-                checking.textContent = '사용할 수 없는 닉네임입니다';
-                checking.style.color = 'red';
-                checking.classList.remove('noShow');
-                document.querySelector('#nicknameValue').value = false;
+               failNickname(); 
             }
         }
+      //이벤트 함수
 
 
 
-
-
-
-
+    //이벤트 등록
+        const username = document.querySelector('#username');
+        const password = document.querySelector('#password');
+        const passwordSecond = document.querySelector('#passwordSecond');
+        const nickname = document.querySelector('#nickname');
         username.addEventListener('keyup', checkUsername);
         password.addEventListener('keyup', checkPassword);
         passwordSecond.addEventListener('keyup', checkPasswordSecond);
@@ -359,54 +435,62 @@
         const emailAuthentication = document.querySelector('#email-authentication');
         email.addEventListener('click', checkEmail);
         emailAuthentication.addEventListener('click', authenticateEmail);
+    //이벤트 등록
 
 
 
 
+    //최종 이벤트 함수
         const checkAll = function(event){
-            const eror ="";
-
+            event.preventDefault();
             const agree = document.querySelector('#agreeValue');
             const username = document.querySelector('#usernameValue');
             const password = document.querySelector('#passwordValue');
             const passwordSecond = document.querySelector('#passwordSecondValue');
             const email = document.querySelector('#emailValue');
             const nickname = document.querySelector('#nicknameValue');
-    
+            console.log(document.querySelector('.join-content'));
+            
             console.log("why");
             if(agree.checked !== true){
-                event.preventDefault();
+                
                 alert('이용약관에 동의해주세요');
                 return;
             }else if(username.value !== 'true'){
-                event.preventDefault();
                 alert('아이디를 다시 작성해주세요');
+                failUsername("아이디를 지정해주세요");
                 return;
             }else if(password.value !== 'true'){
-                event.preventDefault();
                 alert('비밀번호를 다시 작성해주세요');
+                failPassword();
                 return;
             }
             else if(passwordSecond.value !== 'true'){
-                event.preventDefault();
-                alert('아이디를 비밀번호를 작성해주세요');
+                alert('비밀번호를 작성해주세요');
+                failPasswordSecond();
                 return;
             }
             else if(email.value !== 'true'){
-                event.preventDefault();
-                alert('이메일을 다시 작성해주세요');
+                alert('이메일 인증을 완료해주세요');
+                failEmail();
                 return;
             }
             else if(nickname.value !== 'true'){
-                event.preventDefault();
                 alert('닉네임을 다시 작성해주세요');
+                failNickname();
                 return;
+            }else{
+                document.querySelector('.join-content').submit();
             }
-            console.log('complete');            
+           
         }
+    //최종 이벤트 함수
 
+
+    //최종 이벤트 함수 등록
         const submit = document.querySelector('.submit-button');
         submit.addEventListener('click', checkAll);
+    //최종 이벤트 함수 등록
     </script>
 
 
