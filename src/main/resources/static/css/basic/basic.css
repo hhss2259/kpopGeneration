@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+
 *{
     box-sizing: border-box;
     font-family: 'Jeju Gothic', sans-serif;/*웹 폰트 지정*/

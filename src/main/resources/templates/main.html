@@ -13,18 +13,12 @@
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
 
 
-    <style>
-        /*구글 웹 폰트 적용*/
-        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
-    </style>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}"/>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
-
-    <link rel ="stylesheet" type="text/css" href="../static/css/basic/basic.css"/>
-    <link rel ="stylesheet" type="text/css" href="../static/css/main.css"/>
-
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/main.css}" href="../static/css/main.css"/>
 </head>
-<script th:inline="javascript">
+
+<!-- 공통 자바스크립트(Top)-->
+<script th:inline="javascript" >
     const loginError = [[${loginError}]];
     const errorMessage = [[${errorMessage}]];
 
@@ -33,6 +27,7 @@
         location.href = "/";
         console.log("why");
     }
+
     const showMemberMenu = function(){
         if(document.querySelector('.member-menu').style.display === 'block'){
             menu.style.display = 'none';
@@ -41,7 +36,9 @@
         }
     }
 </script>
+<!-- 공통 자바스크립트(Top)-->
 <body>
+<!--공통 헤더-->
     <header>
         <div class="inner">
             <div class="header-container">
@@ -92,6 +89,9 @@
         </div>
     </header>
     <hr>
+    <!--공통 헤더-->
+    
+    <!-- 구체적 페이지-->
     <section>
         <div class="inner">
             <div class="topic-container">
@@ -180,6 +180,9 @@
             </div>
         </div>
     </section>
+    <!-- 구체적 페이지-->
+
+    <!-- 공통 모달-->    
     <div class="modal ">
         <div class="modal-body">
             <div class="modal-content-container">
@@ -205,53 +208,10 @@
             </div>
         </div>
     </div>
+    <!-- 공통 모달-->    
+
 </body>
-<script>
-    const modal = document.querySelector(".modal");
-    const login_button = document.querySelector('.login-button');
-    const body = document.querySelector('body');
-
-    login_button.addEventListener('click', ()=>{
-        open()
-    })
-
-    const modal_close = document.querySelector(".modal-close");
-    modal_close.addEventListener('click',()=>{
-        close()
-    })    
-
-//Hide modal
-    window.addEventListener('click', (e) => {
-        console.log("hi");
-        e.target === modal ?  close() : false
-    })
-
-    function close(){
-        modal.style.display= 'none';
-        body.style.overflow = 'auto';
-    }
-    function open(){
-        modal.style.display= 'block';
-        body.style.overflow = 'hidden';
-        
-    }
-
-
-    const myInfo_button =  document.querySelector('.member-menu-button');
-    
-
-    // myInfo_button.addEventListener('click',()=>{
-    //     const menu =  document.querySelector('.member-menu');
-    //     if(menu.style.display === 'block'){
-    //         menu.style.display = 'none';
-    //         console.log("menu");
-    //     }else{
-    //         menu.style.display = 'block';
-    //         console.log("Rkwmasdfasfddk");
-
-    //     }
-    // })
-
-
-</script>
+<!-- 공통 자바스크립트(bottom)-->
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+<!-- 공통 자바스크립트(bottom)-->
 </html>

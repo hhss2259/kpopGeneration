@@ -141,7 +141,7 @@ hr{
     
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items:center;
 }
 
@@ -164,9 +164,10 @@ hr{
     height: 40px;
     display: flex;
     align-items: center;
+    color : green;
 }
 
-.show{
+.noShow{
     visibility: hidden;
 }
 

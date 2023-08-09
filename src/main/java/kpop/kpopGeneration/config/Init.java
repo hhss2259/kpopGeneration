@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.PrePersist;
 
 
-//@Component
+@Component
 @RequiredArgsConstructor
 public class Init {
 
