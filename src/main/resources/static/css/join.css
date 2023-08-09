@@ -85,7 +85,7 @@ hr{
 
 .join-content{
     width: 100%;
-    height: 1080px;
+    height: 1180px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -232,4 +232,24 @@ hr{
     justify-content: center;
     background-color: cornflowerblue;
     border-radius: 10px;
+}
+.noTouch{
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+
+.form-submit{
+    width: 80%;
+    display: flex;
+    flex: row;
+    align-items: center;
+    justify-content: end;
+    height: 100px;
+}
+.submit-button{
+    width: 200px;
+    height: 50px;
+    border : 0px;
+    background-color: brown;
 }
