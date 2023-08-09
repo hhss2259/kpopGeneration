@@ -85,7 +85,7 @@ hr{
 
 .join-content{
     width: 100%;
-    height: 1000px;
+    height: 1080px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,7 +95,7 @@ hr{
 
 .join-agree{
     width: 80%;
-    height: 30%;
+    height: 300px;
     display: flex;
     flex-direction: column;
 
@@ -105,7 +105,7 @@ hr{
 
 .join-info{
     width:80%;
-    height: 60%;
+    height: 680px;
     border: 1px solid black;
 
     background-color: white;
@@ -113,6 +113,122 @@ hr{
 
 .info{
     width:100%;
-    height: 20%;
+    height: 120px;
     border: 1px solid black;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.email-container{
+    height: 200px;
+}
+
+.info-title{
+    width: 20%;
+    height: 100%;
+    
+    background-color: whitesmoke;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.info-content{
+    width: 80%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+}
+
+.info-input-container{
+    width: 95%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.info-input{
+    width: 50%;
+    height: 40px;
+}
+
+.info-input-checker{
+    width: 40%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.show{
+    visibility: hidden;
+}
+
+.info-information{
+    height: 40px;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    
+    text-align: start;
+}
+
+
+.email-content{
+    justify-content: center;
+}
+
+.email-css-container{
+    width: 95%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.email-information{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-around;
+}
+
+.email-send{
+    width: 80px;
+    align-self: self-end;
+    height: 40px;
+    background-color: cornflowerblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+
+}
+
+.email-authentication{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.email-authentication-number{
+    width: 70%;
+    height: 40px;
+}
+.email-authentication-checker-button{
+    width:80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: cornflowerblue;
+    border-radius: 10px;
 }
