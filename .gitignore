@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### email 설정 파일 ###
+email.yml
+
+### jwt 생성 정보 ###
+src/main/java/firesea/testserver/jwt/JwtConstants.java

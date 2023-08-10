@@ -243,6 +243,9 @@
             document.querySelector('#passwordSecondValue').value = false;
         }
         const failEmail = function(msg){
+            document.querySelector('#email').disabled = false;
+            document.querySelector('.email-send').classList.remove('noTouch');
+
             const checking = document.querySelector('#email-checker');
             checking.textContent = msg;
             checking.style.color = 'red';
@@ -256,9 +259,9 @@
             document.querySelector('#emailValue').value = true;
             
             document.querySelector('#email').disabled = true;
+            document.querySelector('.email-send').classList.add('noTouch');
             document.querySelector('.email-authentication-number').disabled = true;
             document.querySelector('.email-authentication-checker-button').classList.add('noTouch');
-            document.querySelector('.email-send').classList.add('noTouch');
         }
         const successNickname = function(){
             const checking = document.querySelector('#nickname-checker');
@@ -282,7 +285,7 @@
 
     //이벤트 함수
         const usernameApi = function(testUsername){
-            fetch("/api/checkUsername", {
+            fetch("/api/username", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -350,7 +353,14 @@
 
         //서버에 이메일 api로 접근
         const emailApi = function(testEmail){
-            fetch("/api/authenticateEmail", {
+            document.querySelector('#email').disabled = true;
+            document.querySelector('.email-send').classList.add('noTouch');
+            const checking = document.querySelector('#email-checker')
+            checking.textContent = '잠시만 기다려주세요';
+            checking.style.color = 'gray';
+            checking.classList.remove('noShow');
+
+            fetch("/api/email", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -361,15 +371,20 @@
             })
             .then(response => response.json())
             .then(data => {
-                if(data.statusCode === 1){
-                    const checking = document.querySelector('#email-checker')
+                if(data.statusCode === 20001){
+                   
                     checking.textContent = '인증번호를 전송했습니다. 이메일을 확인해주세요';
                     checking.style.color = 'gray';
                     checking.classList.remove('noShow');
                     document.querySelector('.email-authentication-number').disabled = false;
                     document.querySelector('.email-authentication-checker-button').classList.remove('noTouch');
-                }else if(data.statusCode === 2){
+                
+                    document.querySelector('#email').disabled = false;
+                    document.querySelector('.email-send').classList.remove('noTouch');
+                }else if(data.statusCode === 40001){
                     failEmail("이미 회원가입한 이메일입니다. 다른 이메일을 입력해주세요");
+                }else if(data.statusCode === 40002){
+                    failEmail("이메일을 발송하지 못했습니다. 잠시 후 다시 시도해주세요");
                 }
 
 
@@ -383,7 +398,6 @@
         const checkEmail = function(){
             const email = document.querySelector('#email').value;
             const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
             if(regExp.test(email) == false){
                 failEmail("이메일을 정확하게 입력해주세요");
             }else{

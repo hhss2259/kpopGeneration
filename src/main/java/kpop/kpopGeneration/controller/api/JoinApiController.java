@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class JoinApiController {
 
-    @PostMapping("/api/checkUsername")
+    @PostMapping("/api/username")
     public DefaultResponse<String> checkUsername(@RequestBody UsernameDto dto){
         if(dto.getUsername().equals("hhss2259")){
             return DefaultResponse.res(2, "실패", "Bad");
@@ -25,12 +25,5 @@ public class JoinApiController {
     }
 
 
-    @PostMapping("/api/authenticateEmail")
-    public DefaultResponse<Integer> authenticateEmail(@RequestBody EmailDto dto){
-        return DefaultResponse.res(1, "성공", 20);
-    }
-    @Data
-    static class EmailDto{
-        String email;
-    }
+
 }
