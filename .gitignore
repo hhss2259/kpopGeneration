@@ -40,5 +40,8 @@ out/
 ### email 설정 파일 ###
 email.yml
 
+### ouath 설정 파일 ###
+application-oauth.yml
+
 ### jwt 생성 정보 ###
 src/main/java/firesea/testserver/jwt/JwtConstants.java
