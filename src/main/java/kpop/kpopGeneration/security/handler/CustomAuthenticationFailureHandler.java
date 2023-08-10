@@ -25,8 +25,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             errorMessage = LoginInfo.INVALID_SECRET_KEY;
         }
 
-
-        setDefaultFailureUrl(request.getHeader("Referer")+"?loginError=true&errorMessage=" + errorMessage);
+        setDefaultFailureUrl(request.getHeader("Referer")+"?errorMessage=" + errorMessage);
         super.onAuthenticationFailure(request, response, exception);
     }
 }

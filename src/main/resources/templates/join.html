@@ -421,14 +421,34 @@
 
 
 
-        const checkNickname = function(){
-            const nikcname = document.querySelector('#nickname').value;
-            const regExp =/^[a-zA-Zㄱ-힣0-9]{2,11}$/;
+        const nicknameApi = function(testNickname){
+            fetch("/api/nickname", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body :JSON.stringify({
+                    nickname : testNickname
+                })
+            })
+            .then(response => response.json())
+            .then(data =>{
+                if(data.statusCode === 20001){
+                    successNickname();
+                }else{
+                    failNickname("이미 사용 중인 닉네임입니다");
+                }
+            })
+        }
 
-            if(regExp.test(nikcname) == true){
-                successNickname();
+        const checkNickname = function(){
+            const nickname = document.querySelector('#nickname').value;
+            const regExp =/^[a-zA-Zㄱ-힣0-9]{2,11}$/;
+            if(regExp.test(nickname) == true){
+                nicknameApi(nickname);
             }else{
-               failNickname(); 
+                console.log("읭");
+               failNickname("사용할 수 없는 닉네임입니다"); 
             }
         }
       //이벤트 함수

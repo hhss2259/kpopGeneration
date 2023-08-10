@@ -1,5 +1,6 @@
 package kpop.kpopGeneration.controller;
 
+import kpop.kpopGeneration.config.LoginInfo;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.security.oauth2.Oauth2Member;
 import kpop.kpopGeneration.security.service.MemberContext;
@@ -26,37 +27,33 @@ import java.util.Collection;
 public class MainController {
 
     @GetMapping("/")
-    public String main(@RequestParam(required = false) String loginError,
-                       @RequestParam(required = false) String errorMessage,
+    public String main(@RequestParam(required = false) String errorMessage,
                        @RequestParam(required = false) String join,
                        Model model) {
-        if (loginError != null ){
-            model.addAttribute("loginError", true);
+
+        if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
         }
 
-        if(join !=null && join.equals("success")){
-            model.addAttribute("join", "success");
+        if(join !=null && join.equals(LoginInfo.JOIN_SUCCESS)){
+            model.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("authentication.getPrincipal() = " + authentication.getPrincipal().getClass());
-
-
         if (authentication.getPrincipal() instanceof Member){
             Member loginMember = (Member) authentication.getPrincipal();
             model.addAttribute("memberDto", new MemberDto());
         }
 
         if (authentication.getPrincipal() instanceof Oauth2Member){
-            Oauth2Member loginMember = (Oauth2Member) authentication.getPrincipal();
-            if (loginMember.getMember().getNickName() == null){
-                model.addAttribute("additional", new MemberDto());
+            Oauth2Member oauth2Member = (Oauth2Member) authentication.getPrincipal();
+            Member loginMember = oauth2Member.getMember();
+            if (loginMember.getNickName() == null ){
+                return "oauthJoin";
             }
             model.addAttribute("memberDto", new MemberDto());
         }
         return "main";
-
     }
 
     @Data

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+
+    <style>
+        /*구글 웹 폰트 적용*/
+        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+    </style>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/oauthJoin.css}" href="../static/css/oauthJoin.css"/>
+
+</head>
+<!-- 공통 자바스크립트(Top)-->
+<script th:inline="javascript" >
+    const loginError = [[${loginError}]];
+    const errorMessage = [[${errorMessage}]];
+
+    if(loginError === true){
+        window.alert(errorMessage);
+        location.href = "/";
+        console.log("why");
+    }
+
+    const showMemberMenu = function(){
+        if(document.querySelector('.member-menu').style.display === 'block'){
+            menu.style.display = 'none';
+        }else{
+            document.querySelector('.member-menu').style.display = 'block';
+        }
+    }
+</script>
+<!-- 공통 자바스크립트(Top)-->
+<body>
+    <header>
+        <div class="inner">
+            <div class="header-container">
+                <div class="header-left">
+                    <div class="titile">
+                      KpopGeneration
+                    </div>
+                    <div class="main-menu">
+                        <a th:href="@{/news}">
+                            <div class="news">
+                                뉴스
+                            </div>
+                        </a>
+                        <a th:href="@{/topic}">
+                           <div class="topic">
+                                토픽
+                           </div>
+                        </a>
+                        <a th:href="@{/board}">
+                           <div class="community">
+                                커뮤니티
+                           </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="side-menu">
+                    <div class="developer-button">
+                        관리자
+                    </div>
+                    <div class="searching-button">
+                        검색
+                    </div>
+                    <div>
+                        <span th:if="${memberDto == null}" class="login-button"> 로그인</span>
+                        <span th:if="${memberDto != null}" class="member-menu-button" onclick="showMemberMenu()"> 로그아웃</span>
+                        <div class="member-menu">
+                            <div class="member-info">
+                                <div>작성한 글</div>
+                                <div>작성한 댓글</div>
+                            </div> 
+                            <form th:action="@{/logout}" th:method="post">
+                                <button th:type="submit" class="logout-button">로그아웃</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <section>
+        <div class="inner">
+            <div class="join-container">
+                <div class="join-title">
+                    회원가입
+                </div>
+                <form class="join-content" th:action="@{/join/oauth2}" action="/join/oauth2"  th:method="post" >
+                    <div class="join-agree">
+                        <div class="join-agree-content">약관에 동의하시겠습니까?</div>
+                        <label><input th:type="checkbox" type="checkbox" name="agree" id="agreeValue"/>네, 동의합니다</label>
+                    </div>
+                    <div class="join-info">
+                        <div class="info">
+                            <div class="info-title">
+                                닉네임
+                            </div>
+                            <div class="info-content">
+                                <div class="info-input-container">
+                                    <input class="info-input" type="text" name="nickname" id="nickname"/>
+                                    <input type="hidden" name="nicknameValue" id="nicknameValue" value="false"/>
+                                    <div class="info-input-checker noShow" id="nickname-checker"> 사용 가능한 닉네임입니다</div>
+                                </div>
+                                <div class="info-information">
+                                    공백과 특수문자를 제외한 2~11 문자를 사용할 수 있습니다 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-submit">
+                        <button type="button" class="submit-button" >회원가입하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        
+    // 메세지 설정
+        const successNickname = function(){
+            const checking = document.querySelector('#nickname-checker');
+            checking.textContent = '사용 가능한 닉네임입니다';
+            checking.style.color = 'green';
+            checking.classList.remove('noShow');
+            document.querySelector('#nicknameValue').value = true;
+        }
+        const failNickname  = function(msg){
+            const checking = document.querySelector('#nickname-checker');
+            checking.textContent = msg;
+            checking.style.color = 'red';
+            checking.classList.remove('noShow');
+            document.querySelector('#nicknameValue').value = false;
+        }
+   // 메세지 설정     
+       
+
+
+    //이벤트 함수
+        const nicknameApi = function(testNickname){
+            fetch("/api/nickname", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body :JSON.stringify({
+                    nickname : testNickname
+                })
+            })
+            .then(response => response.json())
+            .then(data =>{
+                if(data.statusCode === 20001){
+                    successNickname();
+                }else{
+                    failNickname("이미 사용 중인 닉네임입니다");
+                }
+            })
+        }
+
+        const checkNickname = function(){
+            const nickname = document.querySelector('#nickname').value;
+            const regExp =/^[a-zA-Zㄱ-힣0-9]{2,11}$/;
+            if(regExp.test(nickname) == true){
+                nicknameApi(nickname);
+            }else{
+                console.log("읭");
+               failNickname("사용할 수 없는 닉네임입니다"); 
+            }
+        }
+      //이벤트 함수
+
+
+
+    //이벤트 등록
+        const nickname = document.querySelector('#nickname');
+        nickname.addEventListener('keyup', checkNickname);
+    //이벤트 등록
+
+
+    //최종 이벤트 함수
+        const checkAll = function(event){
+            event.preventDefault();
+            const agree = document.querySelector('#agreeValue');
+            const username = document.querySelector('#usernameValue');
+            const password = document.querySelector('#passwordValue');
+            const passwordSecond = document.querySelector('#passwordSecondValue');
+            const email = document.querySelector('#emailValue');
+            const nickname = document.querySelector('#nicknameValue');
+            console.log(document.querySelector('.join-content'));
+            
+            if(agree.checked !== true){
+                alert('이용약관에 동의해주세요');
+                return;
+            }else if(nickname.value !== 'true'){
+                alert('닉네임을 다시 작성해주세요');
+                failNickname();
+                return;
+            }else{
+                document.querySelector('.join-content').submit();
+            }
+           
+        }
+    //최종 이벤트 함수
+
+
+    //최종 이벤트 함수 등록
+        const submit = document.querySelector('.submit-button');
+        submit.addEventListener('click', checkAll);
+    //최종 이벤트 함수 등록
+    </script>
+
+
+
+    <!-- 공통 모달-->    
+    <div class="modal ">
+        <div class="modal-body">
+            <div class="modal-content-container">
+                <div class="modal-close">
+                    X
+                </div>
+                <div class="modal-title">
+                    로그인
+                </div>
+                <form th:action="@{/loginProc}" th:method="post"  class="modal-form-container" >
+                    <input th:type="hidden" type="hidden" name="secret_key" value="secret"/>
+                    <input th:type="text" class="modal-form-input" name="username" placeholder="아이디"/>
+                    <input th:type="password" class="modal-form-input" name="password" placeholder="비밀번호"/>
+                    <div class="modal-form-info">
+                        <label><input type="checkbox" th:type="checkbox" class="modal-form-checkBox" name="rememberMe" placeholder="로그인 상태 유지"/>로그인 상태 유지</label>
+                        <a th:href="@{/findAuthentication}" >ID / Password 찾기</a>
+                    </div>
+                    <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
+                    <div class="modal-form-join">
+                        <a  th:href="@{/joinMember}">회원가입</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 공통 모달-->
+</body>
+<!-- 공통 자바스크립트(bottom)-->
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+<!-- 공통 자바스크립트(bottom)-->
+</html>

@@ -19,10 +19,10 @@
 
 <!-- 공통 자바스크립트(Top)-->
 <script th:inline="javascript" >
-    const loginError = [[${loginError}]];
     const errorMessage = [[${errorMessage}]];
 
-    if(loginError === true){
+    if(errorMessage != null){
+        console.log(errorMessage);
         window.alert(errorMessage);
         location.href = "/";
     }
@@ -32,13 +32,6 @@
         alert("회원가입에 성공했습니다.");
         location.href = "/";
     }
-
-    const plus = [[${additional}]];
-    if(plus !== null ){
-        alert("추가 회원가입을 진행합니다.");
-        locatoin.href("/");
-    }    
-
 
     const showMemberMenu = function(){
         if(document.querySelector('.member-menu').style.display === 'block'){
