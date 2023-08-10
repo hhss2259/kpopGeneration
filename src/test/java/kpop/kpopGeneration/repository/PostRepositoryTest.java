@@ -3,19 +3,13 @@ package kpop.kpopGeneration.repository;
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class BoardRepositoryTest {
+class PostRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    BoardRepository boardRepository;
+    PostRepository postRepository;
 
     @Test
     @DisplayName("DB 포스트 갯수 확인")
@@ -45,10 +39,10 @@ class BoardRepositoryTest {
         //when
         memberRepository.save(member); // 반드시 member 먼저 저장해주어야 한다 => 그래야 FK 값을 저장 가능한다
 
-        boardRepository.save(post1);
-        boardRepository.save(post2);
-        boardRepository.save(post3);
-        int cnt = boardRepository.findCnt();
+        postRepository.save(post1);
+        postRepository.save(post2);
+        postRepository.save(post3);
+        int cnt = postRepository.findCnt();
 
         //then
         assertEquals(3, cnt);
@@ -72,41 +66,41 @@ class BoardRepositoryTest {
         int cnt_normal = 5;
 
         for (int i = 0; i < cnt_music; i++) {
-            boardRepository.save(new Post("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.MUSIC));
+            postRepository.save(new Post("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.MUSIC));
         }
         for (int i = 0; i < cnt_review; i++) {
-            boardRepository.save(new Post("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.REVIEW));
+            postRepository.save(new Post("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.REVIEW));
         }
         for (int i = 0; i < cnt_certification; i++) {
-            boardRepository.save(new Post("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, member, Category.CERTIFICATION));
+            postRepository.save(new Post("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, member, Category.CERTIFICATION));
         }
         for (int i = 0; i < cnt_normal; i++) {
-            boardRepository.save(new Post("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.NORMAL));
+            postRepository.save(new Post("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, member, Category.NORMAL));
         }
 
         // DB 총 갯수 조회
-        assertEquals(cnt_music + cnt_review + cnt_certification + cnt_normal, boardRepository.findCnt());
+        assertEquals(cnt_music + cnt_review + cnt_certification + cnt_normal, postRepository.findCnt());
 
         PageRequest pageRequest = PageRequest.of(0, 10);
         // 카테고리별 조회
-        Page<Post> musicPost = boardRepository.findPostListByCategory(Category.MUSIC, pageRequest);
+        Page<Post> musicPost = postRepository.findPostListByCategory(Category.MUSIC, pageRequest);
         assertEquals(cnt_music, musicPost.getNumberOfElements());
         assertEquals(cnt_music, musicPost.getTotalElements());
         assertEquals(pageRequest.getPageSize(), musicPost.getSize());
 
-        Page<Post> reviewPost = boardRepository.findPostListByCategory(Category.REVIEW, pageRequest);
+        Page<Post> reviewPost = postRepository.findPostListByCategory(Category.REVIEW, pageRequest);
         assertEquals(3, reviewPost.getNumberOfElements());
 
-        Page<Post> certificationPost = boardRepository.findPostListByCategory(Category.CERTIFICATION, pageRequest);
+        Page<Post> certificationPost = postRepository.findPostListByCategory(Category.CERTIFICATION, pageRequest);
         assertEquals(4, certificationPost.getNumberOfElements());
 
-        Page<Post> normalPost = boardRepository.findPostListByCategory(Category.NORMAL, pageRequest);
+        Page<Post> normalPost = postRepository.findPostListByCategory(Category.NORMAL, pageRequest);
         assertEquals(5, normalPost.getNumberOfElements());
 
 
         // 모든(All) 포스트 조회
         PageRequest pageRequest2 = PageRequest.of(4, 3);
-        Page<Post> allPost = boardRepository.findALLPostList(pageRequest2);
+        Page<Post> allPost = postRepository.findALLPostList(pageRequest2);
         assertEquals(5, allPost.getTotalPages());
         assertTrue(allPost.isLast());
         assertEquals(2, allPost.getNumberOfElements());
@@ -128,11 +122,11 @@ class BoardRepositoryTest {
 
         //when
         memberRepository.save(member);
-        Post saved = boardRepository.save(post1);
+        Post saved = postRepository.save(post1);
 
 
         //then
-        Optional<Post> byId = boardRepository.findById(saved.getId());
+        Optional<Post> byId = postRepository.findById(saved.getId());
         assertEquals(body, byId.get().getBody());
     }
 
@@ -147,9 +141,9 @@ class BoardRepositoryTest {
         Post post = new Post("테스트 포스트", "테스트하기", savedMember, Category.REVIEW);
 
         //when
-        Post savedPost = boardRepository.save(post);
-        Optional<Post> postById = boardRepository.findPostById(savedPost.getId());
-        Optional<Post> invalidPostById = boardRepository.findPostById(101L);
+        Post savedPost = postRepository.save(post);
+        Optional<Post> postById = postRepository.findPostById(savedPost.getId());
+        Optional<Post> invalidPostById = postRepository.findPostById(101L);
 
 
         //then

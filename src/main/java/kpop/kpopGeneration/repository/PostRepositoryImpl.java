@@ -3,7 +3,6 @@ package kpop.kpopGeneration.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.entity.Post;
-import kpop.kpopGeneration.entity.QPost;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,11 +18,11 @@ import static kpop.kpopGeneration.entity.QMember.*;
 import static kpop.kpopGeneration.entity.QPost.*;
 
 @Slf4j
-public class BoardRepositoryImpl implements BoardRepositoryCustom {
+public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public BoardRepositoryImpl(EntityManager entityManager){
+    public PostRepositoryImpl(EntityManager entityManager){
         queryFactory = new JPAQueryFactory(entityManager);
     }
 

@@ -5,20 +5,16 @@ import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.exception.NotExistedPostException;
-import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.PostRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.View;
-import java.security.Security;
 import java.util.Optional;
 
 /**
@@ -28,8 +24,8 @@ import java.util.Optional;
 @Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class BoardServiceImpl implements BoardService {
-    private final BoardRepository boardRepository;
+public class PostServiceImpl implements PostService {
+    private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
@@ -46,7 +42,7 @@ public class BoardServiceImpl implements BoardService {
         Member member = optional.get();
 
         Post post = new Post(postDto.getTitle(), postDto.getBody(), member, postDto.getCategory());
-        Post savedPost = boardRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
         member.increasePostCnt();
         return savedPost.getId();
@@ -59,9 +55,9 @@ public class BoardServiceImpl implements BoardService {
     public PageCustomDto<PostTitleViewDto> findPostListByCategory(Category category, Pageable pageable) {
         Page<Post> postList = null;
         if (category == Category.ALL) {
-            postList = boardRepository.findALLPostList(pageable);
+            postList = postRepository.findALLPostList(pageable);
         }else{
-            postList = boardRepository.findPostListByCategory(category, pageable);
+            postList = postRepository.findPostListByCategory(category, pageable);
         }
         Page<PostTitleViewDto> postTitleList = postList.map(
                 post -> new PostTitleViewDto(
@@ -81,7 +77,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public PostDetailDto findPostById(Long id, Pageable commentPageable) {
         // post 가지고 오기
-        Optional<Post> postById = boardRepository.findPostById(id);
+        Optional<Post> postById = postRepository.findPostById(id);
         Post post = postById.orElseThrow(()->new NotExistedPostException());
 
         //  포스트에 달린 댓글들 가져오기

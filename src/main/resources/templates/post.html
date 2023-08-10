@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!--favicon 설정-->
-
     <!--css reset-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
     <!--fontawesome-->
@@ -13,11 +11,18 @@
     <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
 
 
-    <link rel ="stylesheet" href="./css/basic/basic.css"/>
-    <!-- <link rel ="stylesheet" href="./css/basic/nav.css"/>
-        <link rel ="stylesheet" href="./css/main.css"/> -->
-    <link rel ="stylesheet" href="./css/write.css"/> 
 
+    
+    
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/post.css}" href="../static/css/post.css"/>
+
+
+
+    <!-- include libraries(jQuery, bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 </head>
 <body>
@@ -59,10 +64,11 @@
     <!--구체적 페이지-->
     <section>
         <div class="inner">
-            <div class="writing-container">
-                <div class="writing-header-container">
-                    <div class="writing-header-category">
-                        <div class="category-text">
+            <div class="post-container">
+            <form class="post" th:action="@{/post}" th:method="post">
+                <div class="post-header">
+                    <div class="post-header-category">
+                        <div class="category-title">
                             카테고리
                         </div>
                         <select class="category" name="category">
@@ -72,20 +78,30 @@
                             <option value="normal">일반</option>
                         </select>
                     </div>
-                    <div class="writing-header-titile">
-                        <div class="title-text">
+                    <div class="post-header-title">
+                        <div class="title-title">
                             제목
                         </div>
                         <input type="text" class="title" name="title"/>
                     </div>
                 </div>
-                <form>
-                    <textarea id="summernote" name="editordata"></textarea>
-                </form>
+                <div class="post-textdata">
+                    <textarea id="summernote" name="textdata"></textarea>
+                </div>
+                <button type="submit" class="post-button">등록하기</button>
+            </form>
             </div>
         </div>
     </section>
     <!--구체적 페이지-->
     
 </body>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+        tabsize: 2,
+        height: 500,
+      });
+    });
+</script>
 </html>

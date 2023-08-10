@@ -1,7 +1,7 @@
 package kpop.kpopGeneration.entity;
 
 import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.PostRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ class PostTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    BoardRepository boardRepository;
+    PostRepository postRepository;
 
     @Test
     @DisplayName("엔터티 생성 및 DB 연동 확인")
@@ -29,7 +29,7 @@ class PostTest {
 
         //when
         memberRepository.save(member);
-        Post save = boardRepository.save(post);
+        Post save = postRepository.save(post);
 
         //then
         assertNotEquals(0L, save.getId());

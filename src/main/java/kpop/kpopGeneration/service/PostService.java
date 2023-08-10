@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 /**
  * 게시판 CRUD 기능을 정의하고 있는 인터페이스입니다.
  */
-public interface BoardService {
+public interface PostService {
     /**
      * 게시글 저장
      */

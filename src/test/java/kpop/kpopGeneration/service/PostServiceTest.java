@@ -2,7 +2,7 @@ package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Member;
-import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.PostRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class BoardServiceTest {
+class PostServiceTest {
 
     @Autowired
-    BoardService boardService;
+    PostService postService;
     @Autowired
-    BoardRepository boardRepository;
+    PostRepository postRepository;
     @Autowired
     MemberService memberService;
     @Autowired
@@ -49,12 +49,12 @@ class BoardServiceTest {
         assertEquals(0, savedMember.getPostCnt(), "멤버의 최초 포스트 갯수는 0으로 초기화되어야 합니다");
         System.out.println(savedMember.getPostCnt());
 
-        Long savePostId = boardService.savePost(postSaveDto, member.getUsername());
+        Long savePostId = postService.savePost(postSaveDto, member.getUsername());
         savedMember = memberRepository.findByUsername(member.getUsername()).get();
         assertEquals(1, savedMember.getPostCnt(), "멤버의 포스트 갯수가 1개 증가해야 합니다");
         System.out.println(savedMember.getPostCnt());
 
-        Long savePostId2 = boardService.savePost(postSaveDto, member.getUsername());
+        Long savePostId2 = postService.savePost(postSaveDto, member.getUsername());
         savedMember = memberRepository.findByUsername(member.getUsername()).get();
         assertEquals(2, savedMember.getPostCnt(), "멤버의 포스트 갯수가 1개 증가해야 합니다");
         System.out.println(savedMember.getPostCnt());
@@ -75,27 +75,27 @@ class BoardServiceTest {
         memberService.save(member);
 
         for(int i = 0 ; i< 2; i++){
-            boardService.savePost(new PostSaveDto("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, Category.MUSIC), member.getUsername());
+            postService.savePost(new PostSaveDto("음악 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, Category.MUSIC), member.getUsername());
         }
         for(int i = 0 ; i< 3; i++){
-            boardService.savePost(new PostSaveDto("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1,Category.REVIEW), member.getUsername());
+            postService.savePost(new PostSaveDto("리뷰 카테고리" + i, "음악 카테고리 테스트 메세지" + 1,Category.REVIEW), member.getUsername());
         }
         for(int i = 0 ; i< 4; i++){
-            boardService.savePost(new PostSaveDto("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, Category.CERTIFICATION), member.getUsername());
+            postService.savePost(new PostSaveDto("인증/후기 카테고리" + i, "인증/후기 카테고리 테스트 메세지" + 1, Category.CERTIFICATION), member.getUsername());
         }
         for(int i = 0 ; i< 5; i++){
-            boardService.savePost(new PostSaveDto("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, Category.NORMAL), member.getUsername());
+            postService.savePost(new PostSaveDto("일반 카테고리" + i, "음악 카테고리 테스트 메세지" + 1, Category.NORMAL), member.getUsername());
         }
 
 
-        PageCustomDto<PostTitleViewDto> musicPost = boardService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
+        PageCustomDto<PostTitleViewDto> musicPost = postService.findPostListByCategory(Category.MUSIC, PageRequest.of(0, 1));
         assertEquals(1, musicPost.getSize());
         assertEquals(2, musicPost.getTotalPages());
         assertEquals(2, musicPost.getTotalElements());
         assertEquals(1, musicPost.getNumberOfElements());
         assertTrue(musicPost.getIsFirst());
 
-        PageCustomDto<PostTitleViewDto> allPost = boardService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
+        PageCustomDto<PostTitleViewDto> allPost = postService.findPostListByCategory(Category.ALL, PageRequest.of(0, 3));
         assertEquals(3, allPost.getSize());
         assertEquals(5, allPost.getTotalPages());
         assertEquals(14, allPost.getTotalElements());

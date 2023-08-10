@@ -7,23 +7,17 @@ import kpop.kpopGeneration.dto.PostDetailDto;
 import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
-import kpop.kpopGeneration.repository.BoardRepository;
+import kpop.kpopGeneration.repository.PostRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -31,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 public class PostsServiceDetailsTest {
     @Autowired
-    BoardService boardService;
+    PostService postService;
     @Autowired
-    BoardRepository boardRepository;
+    PostRepository postRepository;
     @Autowired
     MemberService memberService;
     @Autowired
@@ -49,7 +43,7 @@ public class PostsServiceDetailsTest {
         Member savedMember = memberRepository.save(member);
 
         Post post = new Post("테스트 포스트", "테스트하기", savedMember, Category.MUSIC);
-        Post savedPost = boardRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
 
         Comment[] commentArray = new Comment[11];
@@ -66,7 +60,7 @@ public class PostsServiceDetailsTest {
         }
 
         //then
-        PostDetailDto postById = boardService.findPostById(savedPost.getId(), PageRequest.of(0, 10));
+        PostDetailDto postById = postService.findPostById(savedPost.getId(), PageRequest.of(0, 10));
 
         // 포스트 검증하기
         assertEquals(savedPost.getId(), postById.getId());
