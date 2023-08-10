@@ -43,12 +43,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-/* mail service */
+	/* mail service */
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support
 	implementation("org.springframework:spring-context-support:5.3.27")
 	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
 	implementation("com.sun.mail:javax.mail:1.6.2")//
 	/* mail service */
+
+	// Oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     //querydsl 추가2
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
