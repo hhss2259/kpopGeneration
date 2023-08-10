@@ -33,6 +33,12 @@
         location.href = "/";
     }
 
+    const plus = [[${additional}]];
+    if(plus !== null ){
+        alert("추가 회원가입을 진행합니다.");
+        locatoin.href("/");
+    }    
+
 
     const showMemberMenu = function(){
         if(document.querySelector('.member-menu').style.display === 'block'){
@@ -207,6 +213,7 @@
                         <a th:href="@{/findAuthentication}" >ID / Password 찾기</a>
                     </div>
                     <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
+                    <a href="/oauth2/authorization/naver">네이버 로그인</a>
                     <div class="modal-form-join">
                         <a  th:href="@{/join}">회원가입</a>
                     </div>

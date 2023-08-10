@@ -1,6 +1,9 @@
 package kpop.kpopGeneration.security;
 
+import kpop.kpopGeneration.entity.QMember;
+import kpop.kpopGeneration.repository.MemberRepository;
 import kpop.kpopGeneration.security.common.FormAuthenticationDetailSource;
+import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
 import kpop.kpopGeneration.security.entity.repository.ResourceRoleRepository;
 import kpop.kpopGeneration.security.factory.UrlResourcesMapFactoryBean;
 import kpop.kpopGeneration.security.handler.CustomAccessDeniedHandler;
@@ -8,6 +11,7 @@ import kpop.kpopGeneration.security.handler.CustomAuthenticationFailureHandler;
 import kpop.kpopGeneration.security.handler.CustomAuthenticationSuccessHandler;
 import kpop.kpopGeneration.security.handler.CustomLogoutSuccessHandler;
 import kpop.kpopGeneration.security.metadatasource.UrlFilterInvocationSecurityMetadatasource;
+import kpop.kpopGeneration.security.oauth2.CustomOauth2UserService;
 import kpop.kpopGeneration.security.provider.CustomAuthenticationProvider;
 import kpop.kpopGeneration.security.service.CustomUserDetailsService;
 import kpop.kpopGeneration.security.service.SecurityResourceService;
@@ -182,6 +186,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          */
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+
+
+        /**
+         * oauth2 사용 시 CustomUserService를 사용한다
+         */
+        http
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oauth2UserService())
+        ;
+
+
+    }
+
+    @Bean
+    public CustomOauth2UserService oauth2UserService(){
+        return new CustomOauth2UserService();
     }
 
     @Bean

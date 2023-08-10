@@ -1,6 +1,5 @@
 package kpop.kpopGeneration.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member extends JpaBaseTimeEntity {
+public class Member extends JpaBaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +24,6 @@ public class Member extends JpaBaseTimeEntity {
     String profileImage;
 
     String email;
-
 
     public Member(String username, String password, String nickname){
         this.username = username;
