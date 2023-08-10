@@ -21,6 +21,7 @@
 
 </head>
 <body>
+    <!-- 공통 헤더-->
     <header>
         <div class="inner">
             <div class="header-container">
@@ -53,6 +54,9 @@
         </div>
     </header>
     <hr>
+    <!-- 공통 헤더-->
+
+    <!--구체적 페이지-->
     <section>
         <div class="inner">
             <div class="writing-container">
@@ -75,17 +79,13 @@
                         <input type="text" class="title" name="title"/>
                     </div>
                 </div>
-                <div class="writing-main">
-                    <textarea name="text" class="text" rows="5" cols="33">
-                        It was a dark and stormy night...
-                    </textarea>
-                </div>
-                <button type="submit">
-                    제출
-                </button>
+                <form>
+                    <textarea id="summernote" name="editordata"></textarea>
+                </form>
             </div>
         </div>
     </section>
+    <!--구체적 페이지-->
     
 </body>
 </html>

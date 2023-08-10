@@ -270,9 +270,9 @@
             checking.classList.remove('noShow');
             document.querySelector('#nicknameValue').value = true;
         }
-        const failNickname  = function(){
+        const failNickname  = function(msg){
             const checking = document.querySelector('#nickname-checker');
-            checking.textContent = '사용할 수 없는 닉네임입니다';
+            checking.textContent = msg;
             checking.style.color = 'red';
             checking.classList.remove('noShow');
             document.querySelector('#nicknameValue').value = false;
