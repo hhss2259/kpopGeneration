@@ -96,6 +96,7 @@ hr{
 }
 .board-line-title{
     width: 60%;
+    height:100%;
     display: flex;
     justify-content: start;
     align-items: center
@@ -111,4 +112,34 @@ hr{
     display:flex;
     justify-content: center;
     align-items: center
+}
+
+
+.page-container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.piece{
+    width:40px;
+    height: 40px;
+    color: red;
+    line-height: 40px;
+    text-align: center;
+}
+
+.page-list{
+    display: flex;
+    flex: row;
+    width: auto;
+}
+
+.currentPage{
+    border-radius: 50% 50%;
+    background-color: antiquewhite;
 }

@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +24,8 @@ public class PostDetailDto {
     Long commentCnt;
     PageCustomDto<CommentViewDto> commentList;
 
+    LocalDateTime date;
+
     public PostDetailDto(Post post, PageCustomDto<CommentViewDto> commentList){
         this.id = post.getId();
         this.title = post.getTitle();
@@ -31,5 +36,6 @@ public class PostDetailDto {
         this.likes = post.getLikes();
         this.commentCnt = post.getCommentCnt();
         this.commentList = commentList;
+        this.date = post.getCreatedTime();
     }
 }

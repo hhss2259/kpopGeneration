@@ -31,7 +31,7 @@ public class Init {
         memberService.save(member2);
         memberService.save(member3);
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 102; i++) {
             postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), member1.getUsername());
         }
     }

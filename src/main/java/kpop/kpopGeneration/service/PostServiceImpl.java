@@ -36,10 +36,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Long savePost(PostSaveDto postDto, String username) {
         Optional<Member> optional = memberRepository.findByUsername(username);
-        if (optional.isEmpty()) {
-            throw new NotExistedMemberException();
-        }
-        Member member = optional.get();
+        Member member = optional.orElseThrow(() -> new NotExistedPostException());
 
         Post post = new Post(postDto.getTitle(), postDto.getBody(), member, postDto.getCategory());
         Post savedPost = postRepository.save(post);
@@ -66,6 +63,8 @@ public class PostServiceImpl implements PostService {
                 )
         );
         PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom_post(postTitleList);
+        int pageNumber = pageable.getPageNumber();
+        postViewDto.setCurrent((int)(pageNumber+1));
 
         return postViewDto;
     }

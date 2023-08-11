@@ -18,11 +18,11 @@ public class PageCustomDto<T> {
     Integer  numberOfElements;
     Long totalElements;
     Integer totalPages;
-
     Boolean hasNext;
     Boolean hasPrevious;
     Boolean isFirst;
     Boolean isLast;
+    Integer current;
 
     Pageable nextPageable;
     Pageable previousPageable;
