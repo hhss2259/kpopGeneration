@@ -65,7 +65,7 @@ public class PostServiceImpl implements PostService {
         PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom_post(postTitleList);
         int pageNumber = pageable.getPageNumber();
         postViewDto.setCurrent((int)(pageNumber+1));
-
+        postViewDto.setCategory(category);
         return postViewDto;
     }
 

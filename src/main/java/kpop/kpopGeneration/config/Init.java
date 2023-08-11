@@ -31,8 +31,19 @@ public class Init {
         memberService.save(member2);
         memberService.save(member3);
 
-        for (int i = 0; i < 102; i++) {
+        for (int i = 0; i < 103; i++) {
             postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), member1.getUsername());
+        }
+
+        for (int i = 0; i <30; i++) {
+            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.REVIEW), member1.getUsername());
+        }
+        for (int i = 0; i <12; i++) {
+            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.CERTIFICATION), member1.getUsername());
+        }
+
+        for (int i = 0; i <44; i++) {
+            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.NORMAL), member1.getUsername());
         }
     }
 

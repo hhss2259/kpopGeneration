@@ -41,7 +41,7 @@ hr{
 
 .board-header{
     padding-left: 20px;
-    height: 100px;
+    height: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,21 +50,35 @@ hr{
 }
 
 .board-header-title{
-    height: 60%;
+    height: 50px;
     font-size: 1.5rem;;
     line-height: 60px;
+
 }
 
 .board-header-category-container{
-    height: 40%;
+    height: 40px;
     display: flex;
+    align-items: center;
     justify-content: start;
 }
 .board-header-category{
-    line-height: 40px;
-    padding-right: 20px;
+    line-height: 0px;
+    width: 90px;
+    height: 30px;
+    border : 1px solid black;
+    border-radius: 20px 20px;
+    margin-right: 10px;
+    margin-bottom : 10px;
+
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 
+.currentCategory{
+    background-color: wheat;
+}
 
 /*
     게시글

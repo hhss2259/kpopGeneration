@@ -26,6 +26,6 @@ public class PageCustomDto<T> {
 
     Pageable nextPageable;
     Pageable previousPageable;
-
+    Category category;
 
 }
