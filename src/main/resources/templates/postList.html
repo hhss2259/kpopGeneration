@@ -130,6 +130,18 @@
                         </div>
                     </th:block>
                 </div>
+                <div class="post-info-container">
+                    <div class="post-search">
+                        검색하기
+                    </div>
+                    <th:block th:if="${memberDto != null}">
+                        <form th:action="@{/post}" th:method="get">
+                            <button type="submit" class="post-new">
+                                작성하기
+                            </div>
+                        </form>
+                   </th:block>
+                </div>
                 <div class="page-container" 
                 data-current="${pageDto.current}" data-totalElements="${pageDto.totalElements}"
                 data-totalPages="${pageDto.totalPages}" data-hasNext="${pageDto.hasNext}"
@@ -201,7 +213,6 @@
         //카테고리 표시
 
 
-        
         
         //맨 처음, 맨 마지막 보기
         let firstPage = document.querySelector('.page-first');

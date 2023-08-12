@@ -24,13 +24,12 @@ public class UrlFilterInvocationSecurityMetadatasource implements FilterInvocati
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
-
 //        requestMap.put(new AntPathRequestMatcher("/testMyPage"), Arrays.asList(new SecurityConfig("ROLE_USER")));
         if (requestMap != null) {
             for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : requestMap.entrySet()) {
                 RequestMatcher matcher = entry.getKey();
                 if (matcher.matches(request)) { //인가가 필요한 url이면 어떠한 role을 필요로 하는지 return 한다.
-                    return entry.getValue();
+                    return entry.getValue(); // List<ConfigAttribute>를 return 한다.
                 }
             }
         }
@@ -38,7 +37,7 @@ public class UrlFilterInvocationSecurityMetadatasource implements FilterInvocati
     }
 
     /**
-     * 갱신된 ResouceRole 리스트를 가져온다.
+     * 갱신된 ResourceRole 리스트를 가져온다.
      */
     public void reload() {
         requestMap.clear();

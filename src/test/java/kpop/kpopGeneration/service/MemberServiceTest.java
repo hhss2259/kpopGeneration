@@ -45,7 +45,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 가입 정상 작동확인")
-    void save(){
+    void save() {
         //given
         Member member1 = new Member("aaaa", "1111", "member1");
 
@@ -58,21 +58,21 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 가입 시 password 암호화 확인")
-    void savePassword(){
+    void savePassword() {
 
         //given
         String username = "aaaa";
         String password = "1111";
         String nickname = "member1";
-        Member member1 = new Member(username,password,nickname);
+        Member member1 = new Member(username, password, nickname);
 
         //when
         Long savedId = memberService.save(member1);
-        Member savedMember= memberRepository.findByUsername(username).get();
+        Member savedMember = memberRepository.findByUsername(username).get();
 
         //then
         assertEquals(username, savedMember.getUsername());
-        assertTrue(passwordEncoder.matches( password, savedMember.getPassword()));
+        assertTrue(passwordEncoder.matches(password, savedMember.getPassword()));
     }
 
 
@@ -83,7 +83,7 @@ class MemberServiceTest {
         String username = "aaaa";
         String password = "1111";
         String nickname = "member1";
-        Member member1 = new Member(username,password,nickname);
+        Member member1 = new Member(username, password, nickname);
 
         //when
         memberService.save(member1);
@@ -101,7 +101,7 @@ class MemberServiceTest {
         String username = "aaaa";
         String password = "1111";
         String nickname = "member1";
-        Member member1 = new Member(username,password,nickname);
+        Member member1 = new Member(username, password, nickname);
 
         //when
         memberService.save(member1);
@@ -112,5 +112,21 @@ class MemberServiceTest {
 
     }
 
+    @Test
+    @DisplayName("이메일 정보 추가")
+    void saveMemberWithEmail(){
+        //given
+        Member member1 = new Member("aaaa", "1111", "member1", "hhss2259@naver.com");
 
+        //when
+        memberService.save(member1);
+
+        //then
+        Optional<Member> byEmail = memberRepository.findByEmail("hhss2259@naver.com");
+        assertTrue(byEmail.isPresent());
+
+        Member member = memberRepository.findByUsername("aaaa").get();
+        assertNotNull(member.getEmail());
+
+    }
 }

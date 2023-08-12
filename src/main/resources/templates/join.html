@@ -258,7 +258,7 @@
             checking.style.color = 'green';
             document.querySelector('#emailValue').value = true;
             
-            document.querySelector('#email').disabled = true;
+            document.querySelector('#email').readOnly = true;
             document.querySelector('.email-send').classList.add('noTouch');
             document.querySelector('.email-authentication-number').disabled = true;
             document.querySelector('.email-authentication-checker-button').classList.add('noTouch');
@@ -297,7 +297,7 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                if(data.statusCode === 1){
+                if(data.statusCode === 20001){
                     successUsername();
                 }else{
                     failUsername("이미 사용 중인 아이디입니다");
@@ -372,13 +372,11 @@
             .then(response => response.json())
             .then(data => {
                 if(data.statusCode === 20001){
-                   
                     checking.textContent = '인증번호를 전송했습니다. 이메일을 확인해주세요';
                     checking.style.color = 'gray';
                     checking.classList.remove('noShow');
                     document.querySelector('.email-authentication-number').disabled = false;
                     document.querySelector('.email-authentication-checker-button').classList.remove('noTouch');
-                
                     document.querySelector('#email').disabled = false;
                     document.querySelector('.email-send').classList.remove('noTouch');
                 }else if(data.statusCode === 40001){
@@ -386,9 +384,6 @@
                 }else if(data.statusCode === 40002){
                     failEmail("이메일을 발송하지 못했습니다. 잠시 후 다시 시도해주세요");
                 }
-
-
-                console.log("제발." + data.data);
                 document.querySelector('.email-authentication-number').dataset.random = data.data;
             });
         }
@@ -407,8 +402,6 @@
 
         const authenticateEmail = function(){
             const inputData = document.querySelector('.email-authentication-number');
-            console.log('value '+inputData.value);
-            console.log('random '+inputData.dataset.random);
             if(inputData.value == inputData.dataset.random){
                 successEmail();
             }else{

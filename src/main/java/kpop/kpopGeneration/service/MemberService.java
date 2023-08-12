@@ -9,8 +9,10 @@ import kpop.kpopGeneration.security.entity.Role;
 import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
 import kpop.kpopGeneration.security.entity.repository.RoleRepository;
 import kpop.kpopGeneration.security.exception.NotExistedRoleException;
+import kpop.kpopGeneration.security.oauth2.Oauth2Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +53,7 @@ public class MemberService {
         String encodedPassword = passwordEncoder.encode(member.getPassword());
         
         // Member 저장
-        Member savedMember = memberRepository.save(new Member(member.getUsername(), encodedPassword, member.getNickName()));
+        Member savedMember = memberRepository.save(new Member(member.getUsername(), encodedPassword, member.getNickName(), member.getEmail()));
         
         // 기본 role은 "ROLE_USER" 입니다
         Role basicRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new NotExistedRoleException());
@@ -71,18 +73,23 @@ public class MemberService {
         //  MemberRole 테이블에서 해당 member의 기존 role을 모두 삭제
         memberRoleRepository.deleteAllByMember(member);
 
-
         // MemberRole 테이블에 해당 member의 새로운 role들을 추가
         List<Role> roles = roleRepository.findAllByName(names).get();
         roles.forEach(role -> {
             memberRoleRepository.save(new MemberRole(member, role));
         });
-
         return username;
     }
 
     @Transactional
     public void deleteAllMember(){
         memberRepository.deleteAll();
+    }
+
+    @Transactional
+    public void updateNickname(String username, String nickname){
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NotExistedMemberException());
+        member.updateNickname(nickname); // 변경감지 적용
+
     }
 }

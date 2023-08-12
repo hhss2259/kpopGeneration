@@ -1,7 +1,9 @@
 package kpop.kpopGeneration.controller;
 
 import kpop.kpopGeneration.dto.*;
+import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
+import kpop.kpopGeneration.security.oauth2.Oauth2Member;
 import kpop.kpopGeneration.service.PostService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,15 +34,24 @@ public class PostController {
     public String findPostListByCategory(@RequestParam(required = false) String category,
                                          @PageableDefault(size = 10, page = 0) Pageable pageable,
                                          Model model) {
+
+        // 카테고리와 페이지 정보를 이용하여 필요한 포스트 리스트들을 서버에서 조회해온다
         Category requestCategory = null;
         if(category == null){
             requestCategory = Category.ALL;
         }else{
             requestCategory = Category.valueOf(category);
         }
-
         PageCustomDto<PostTitleViewDto> postListByCategory = postService.findPostListByCategory(requestCategory, pageable);
         model.addAttribute("pageDto", postListByCategory);
+
+        
+        // 현재 접속한 사용자의 정보를 받아온 후, 현재 사용자가 로그인한 사용자이면 게시판 글씨기 기능을 제공한다
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if(principal instanceof Member || principal instanceof Oauth2Member){
+            model.addAttribute("memberDto", new MemberViewDto());
+        }
         return "postList";
     }
 

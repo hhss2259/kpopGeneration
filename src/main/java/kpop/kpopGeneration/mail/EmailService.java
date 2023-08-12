@@ -1,7 +1,9 @@
 package kpop.kpopGeneration.mail;
 
 import kpop.kpopGeneration.entity.Member;
+import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.repository.MemberRepository;
+import kpop.kpopGeneration.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
@@ -26,6 +28,7 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private final MemberRepository memberRepository;
+
 
     private Map createMessage(String to) throws Exception{
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -95,15 +98,9 @@ public class EmailService {
     }
 
     public void checkEmail(String email) {
-        //test
-        if(email.equals("hhss22592@naver.com")){
-            throw new DuplicateEmailException();
-        }
-
-
         Optional<Member> byEmail = memberRepository.findByEmail(email);
-        if(byEmail.isPresent()){
-            throw new DuplicateEmailException();
+        if(byEmail.isPresent()){ // 만약 이메일이 이미 존재하면
+            throw new DuplicateException(); // 예외 발생
         }
     }
 

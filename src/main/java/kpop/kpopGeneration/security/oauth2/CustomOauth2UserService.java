@@ -71,21 +71,21 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
         String password = passwordEncoder.encode(provider);
 
 
-        Member member = null;
-        List<GrantedAuthority> roles = new ArrayList<>();
-        Optional<Member> byUsername = memberRepository.findByUsername(username);
-        if(byUsername.isPresent()){ //이미 회원가입된 user입니다.
+        Member member = null;  // 가입 유저
+        List<GrantedAuthority> roles = new ArrayList<>(); // 가입 유저의 권한
+
+        Optional<Member> byUsername = memberRepository.findByUsername(username);//DB에 해당 유저가 이미 저장되어 있는지 확인
+        if(byUsername.isPresent()){ //이미 회원가입된 유저인 경우
             member = byUsername.get();
-            List<MemberRole> memberRoles = memberRoleRepository.findAllByMemberFetch(member).get();
+            List<MemberRole> memberRoles = memberRoleRepository.findAllByMemberFetch(member).get(); //유저가 가진 권한들을 가지고 온다
             memberRoles.forEach( memberRole -> {
                 roles.add(new SimpleGrantedAuthority(memberRole.getRole().getName()));
             });
-        }else{
-            Member newMember = new Member(username, password, null);
-            member = memberRepository.save(newMember);
+        }else{ //최초 접속, 아직 회원가입하지 않은 유저인 경우
+            Member newMember = new Member(username, password, null, email); // 닉네임을 제외한 멤버 객체 생성
+            member = memberRepository.save(newMember); //생성한 멤버 객체를 DB에 저장한다
             Role basicRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new NotExistedRoleException());
-            memberRoleRepository.save(new MemberRole(member, basicRole));
-
+            memberRoleRepository.save(new MemberRole(member, basicRole)); // 해당 유저의 권한을 기본 권한인 "ROLE_USER"로 설정
             roles.add(new SimpleGrantedAuthority(basicRole.getName()));
         }
 

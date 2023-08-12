@@ -29,13 +29,28 @@ public class Member extends JpaBaseTimeEntity{
         this.username = username;
         this.password = password;
         this.nickName = nickname;
+        this.email = null;
+        this.postCnt = 0L;
+        this.commentCnt = 0L;
+        this.profileImage = null;
+    }
+    public Member(String username, String password, String nickname, String email){
+        this.username = username;
+        this.password = password;
+        this.nickName = nickname;
+        this.email = email;
         this.postCnt = 0L;
         this.commentCnt = 0L;
         this.profileImage = null;
     }
 
+
     public void increasePostCnt() {
         this.postCnt++;
     }
     public void increaseCommentCnt(){ this.commentCnt++;}
+
+    public void updateNickname(String nickname) {
+        this.nickName = nickname;
+    }
 }

@@ -26,10 +26,13 @@ public class Init {
         Member member1 = new Member("xxxx", "1111", "앤써");
         Member member2 = new Member("yyyy", "1111", "앤써");
         Member member3 = new Member("zzzz", "1111", "앤써");
+        Member member4 = new Member("hhss2259", "11111111", "앤써");
 
         memberService.save(member1);
         memberService.save(member2);
         memberService.save(member3);
+        memberService.save(member4);
+
 
         for (int i = 0; i < 103; i++) {
             postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), member1.getUsername());
