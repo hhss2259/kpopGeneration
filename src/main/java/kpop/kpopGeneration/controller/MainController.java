@@ -79,14 +79,14 @@ public class MainController {
     }
 
 
-    @GetMapping("/news")
+    @GetMapping("/news/list")
     public String news(){
-        return "news";
+        return "newsList";
     }
 
-    @GetMapping("/topic")
+    @GetMapping("/topic/list")
     public String topic(){
-        return "topic";
+        return "topicList";
     }
 
 }

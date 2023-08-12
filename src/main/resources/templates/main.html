@@ -28,8 +28,6 @@
     }
 
     const join = [[${join}]];
-    console.log(join);
-    console.log("haahah");
     if(join === "success"){
         alert("회원가입에 성공했습니다.");
         location.href = "/";
@@ -54,12 +52,12 @@
                       KpopGeneration
                     </div>
                     <div class="main-menu">
-                        <a th:href="@{/news}">
+                        <a th:href="@{/news/list}">
                             <div class="news">
                                 뉴스
                             </div>
                         </a>
-                        <a th:href="@{/topic}">
+                        <a th:href="@{/topic/list}">
                            <div class="topic">
                                 토픽
                            </div>

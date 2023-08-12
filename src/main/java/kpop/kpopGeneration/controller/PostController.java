@@ -63,8 +63,6 @@ public class PostController {
         return "postDetail";
     }
 
-
-
     /**
      * 포스트 작성 페이지로 이동한다
      */
