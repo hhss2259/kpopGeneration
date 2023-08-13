@@ -61,11 +61,17 @@
                             테스트
                         </div>
                         <div class="detail-info">
-                            <div class="detail-info-image"></div>
-                            <div class="mini-info" th:text="*{nickname}">앤써</div>
-                            <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{date}">2023년 8월 11일</div></div>
-                            <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
-                            <div class="mini-container">좋아요 <div class="mini-info" th:text="*{likes}">2</div></div>
+                            <div class="detail-info-left">
+                                <div class="detail-info-image"></div>
+                                <div class="mini-info" th:text="*{nickname}">앤써</div>
+                                <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{date}">2023년 8월 11일</div></div>
+                                <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
+                                <div class="mini-container">좋아요 <div class="mini-info" th:text="*{likes}">2</div></div>
+                            </div>
+                            <div class="detail-info-right">
+                                <div class="post-delete">삭제하기</div>
+                                <div class="post-update">수정하기</div>
+                            </div>
                         </div>
                         <div class="detail-textdata" th:text="*{body}">
                             테스트<br>테스트<br>테스트<br>테스트
@@ -93,7 +99,7 @@
                     <div class="detail-comment-container">
                         <div class="comment-cnt-container">
                             <div class="comment-cnt-title">댓글</div>
-                            <div class="comment-cnt" th:text="*{commentCnt}">0</div>
+                            <div class="comment-cnt" th:text="${postDetail.commentCnt}">0</div>
                         </div>
                         <th:block th:each="comment :${postDetail.commentList.content}" >
                             <div class="comment">

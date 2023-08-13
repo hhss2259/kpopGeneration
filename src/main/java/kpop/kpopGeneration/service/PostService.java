@@ -26,11 +26,16 @@ public interface PostService {
      */
 
     /**
+     * 게시글 조회수 증가
+     */
+
+    /**
      * 게시글 수정
      */
+    Long updatePost(Long id,  PostSaveDto postSaveDto);
 
     /**
      * 게시글 삭제
      */
-
+    Long deletePost(Long id);
 }

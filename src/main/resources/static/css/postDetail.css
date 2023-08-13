@@ -85,9 +85,45 @@ hr{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: space-between;
 
     border-bottom: 1px solid black;
+}
+
+.detail-info-left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding-left:10px;
+}
+
+.detail-info-right{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-delete{
+    width: 80px;
+    height: 30px;
+    margin-right:15px;
+
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-update{
+    width: 80px;
+    height: 30px;
+    margin-right:20px;
+
+    background-color: blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .detail-info-image{
@@ -114,8 +150,11 @@ hr{
     height: auto;
     min-height: 220px;
     width: 100%;
-
 }
+
+
+
+
 
 .writer-posts-container{
     width: 100%;

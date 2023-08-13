@@ -2,6 +2,7 @@ package kpop.kpopGeneration.entity;
 
 
 import kpop.kpopGeneration.dto.Category;
+import kpop.kpopGeneration.dto.PostSaveDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,5 +58,20 @@ public class Post extends JpaBaseTimeEntity{
 
     public void increaseCommentCnt(){
         this.commentCnt++;
+    }
+
+    public void updatePost(PostSaveDto postSaveDto) {
+        this.title = postSaveDto.getTitle();
+        this.body = postSaveDto.getBody();
+        this.category = postSaveDto.getCategory();
+    }
+
+    public void deletePost() {
+        this.deletedTime = LocalDateTime.now();
+        this.deletedTrue = true;
+    }
+
+    public void increaseViews() {
+        this.views++;
     }
 }
