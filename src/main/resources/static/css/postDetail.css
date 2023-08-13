@@ -48,18 +48,21 @@ hr{
 }
 
 .detail{
+    margin-top: 50px;
     width: 95%;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: start;
 }
+.detail-box{
+    width:100%;
+}
 
 .detail-category{
     width: 100%;
     color: black;
     font-size: 1.6rem;
-    
     display: flex;
     align-items: center;
 }
@@ -70,6 +73,8 @@ hr{
     font-size: 3rem;
     display: flex;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .detail-info{
@@ -82,33 +87,203 @@ hr{
     align-items: center;
     justify-content: start;
 
-    border: 1px solid black;
+    border-bottom: 1px solid black;
 }
+
+.detail-info-image{
+    width: 40px;
+    height: 40px;
+    border-radius: 50% 50%;
+    background-color: black;
+
+    padding-left: 10px;
+}
+.mini-container{
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    border-left:1px solid black;
+    padding-left: 10px;
+}
+.mini-info{
+    padding-left:5px;
+}
+
 .detail-textdata{
+    margin-top: 20px;
     height: auto;
-    min-height: 300px;
+    min-height: 220px;
     width: 100%;
 
-    border: 1px solid black;
 }
+
+.writer-posts-container{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.writer-posts{
+    width: 500px;
+    height: 160px;
+    border: 1px solid black;
+
+    display:flex;
+    flex-direction: column;
+}
+.writer-posts-header{
+    height: 40px;
+    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+    padding-left:10px;
+}
+
+
 
 
 .detail-likes-container{
     width: 100%;
     height : 100px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.detail-likes{
-    width: 40px;
-    height: 40px;
-}
 
+.detail-likes-circle{
+    width: 80px;
+    height: 80px;
+    border-radius: 50% 50%;
+    border : 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+.detail-likes-title{
+    margin-top: 5px;
+}
 
 .detail-comment-container{
-    width: 100;
+    margin-top: 30px;
+    border-top : 1px solid black;
+    width: 100%;
+    min-height: 400px;
+}
+.comment-cnt-container{
+   height: 80px;
+   width: 80px;
+   display: flex;
+   align-items: center;
+   justify-content:  space-around;
+}
+.comment-cnt-title{
+    font-size: 1.5rem;
+}
+.comment-cnt{
+    font-size: 1.5rem;
+    color: red;
+}
+.comment{
+    min-height: 140px;
+    height: auto;
+    width: 100%;
+
+    border: 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-top{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    justify-content: space-between;
+}
+
+.comment-top-left{
+    display: flex;
+}
+.comment-writer-image{
+    height: 40px;
+    width: 40px;
+    border-radius: 50% 50%;
+    background-color: black;
+}
+.comment-writer-nickname{
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.comment-date{
+    padding-right: 10px;
+}
+
+.comment-textBody{
+    padding-left: 10px;
+    min-height: 50px;
     height: auto;
 
+    display: flex;
+    align-items: center;
 }
+.comment-bottom{
+    height: 40px;
+    
+    display: flex;
+    align-items :center;
+    justify-content: end;
+}
+.comment-new{
+    padding-right: 10px;
+}
+.comment-likes{
+    padding-right: 10px;;
+} 
+
+
+
+
+
+/*
+페이징 css
+*/
+.page-container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.piece{
+    width:40px;
+    height: 40px;
+    color: red;
+    line-height: 40px;
+    text-align: center;
+}
+
+.page-list{
+    display: flex;
+    flex: row;
+    width: auto;
+}
+
+.currentPage{
+    border-radius: 50% 50%;
+    background-color: antiquewhite;
+}
+/*
+페이징 css
+*/

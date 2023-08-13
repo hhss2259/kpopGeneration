@@ -54,6 +54,7 @@ public class Comment extends JpaBaseTimeEntity{
         this.member = member;
         this.deletedTime = null;
         this.deletedTrue = false;
+        this.likes = 0L;
     }
 
 }

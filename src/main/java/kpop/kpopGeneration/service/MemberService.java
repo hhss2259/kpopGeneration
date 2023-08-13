@@ -1,5 +1,6 @@
 package kpop.kpopGeneration.service;
 
+import kpop.kpopGeneration.dto.PageCustomDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
@@ -90,6 +91,7 @@ public class MemberService {
     public void updateNickname(String username, String nickname){
         Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NotExistedMemberException());
         member.updateNickname(nickname); // 변경감지 적용
-
     }
+
+
 }

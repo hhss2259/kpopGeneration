@@ -56,9 +56,10 @@ public class PostController {
     }
 
     @GetMapping("/post/detail")
-    public String postDetail(@RequestParam String id, Model model){
+    public String postDetail(@RequestParam String id, Model model,
+                             @PageableDefault(page=0, size = 20) Pageable commentPageable){
         long postId = Long.parseLong(id);
-        PostDetailDto postById = postService.findPostById(postId, PageRequest.of(0, 20));
+        PostDetailDto postById = postService.findPostById(postId, commentPageable);
         model.addAttribute("postDetail", postById);
         return "postDetail";
     }

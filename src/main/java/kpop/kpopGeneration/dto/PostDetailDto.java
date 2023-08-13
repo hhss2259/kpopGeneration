@@ -22,11 +22,14 @@ public class PostDetailDto {
     Long views;
     Long likes;
     Long commentCnt;
-    PageCustomDto<CommentViewDto> commentList;
-
     LocalDateTime date;
 
-    public PostDetailDto(Post post, PageCustomDto<CommentViewDto> commentList){
+    PageCustomDto<CommentViewDto> commentList;
+    PageCustomDto<RecentPostByMemberDto> recent;
+
+
+    public PostDetailDto(Post post, PageCustomDto<CommentViewDto> commentList, PageCustomDto<RecentPostByMemberDto> recent){
+        //포스트 정보
         this.id = post.getId();
         this.title = post.getTitle();
         this.body = post.getBody();
@@ -35,7 +38,13 @@ public class PostDetailDto {
         this.views = post.getViews();
         this.likes = post.getLikes();
         this.commentCnt = post.getCommentCnt();
-        this.commentList = commentList;
         this.date = post.getCreatedTime();
+
+        //포스트 댓글 정보
+        this.commentList = commentList;
+
+
+        //작성자의 최신 포스트 글 정보
+        this.recent = recent;
     }
 }

@@ -11,6 +11,7 @@ import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +63,7 @@ public class PostServiceImpl implements PostService {
                         post.getMember().getNickName(), post.getLastModifiedTime()
                 )
         );
-        PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom_post(postTitleList);
+        PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom(postTitleList);
         int pageNumber = pageable.getPageNumber();
         postViewDto.setCurrent((int)(pageNumber+1));
         postViewDto.setCategory(category);
@@ -82,9 +83,15 @@ public class PostServiceImpl implements PostService {
         //  포스트에 달린 댓글들 가져오기
         Page<CommentViewDto> commentListByPost = commentRepository.findCommentListByPost(id, commentPageable);
         PageCustomDto<CommentViewDto> commentView = getPageCustom(commentListByPost);
+        int commentPageNumber = commentPageable.getPageNumber();
+        commentView.setCurrent((int)(commentPageNumber+1));
+
+        // 작성자의 최신글 가져오기
+        Page<RecentPostByMemberDto> recent = postRepository.findRecentPostListByMember(post.getMember(), PageRequest.of(0, 5), id);
+        PageCustomDto<RecentPostByMemberDto> recentView = getPageCustom(recent);
 
         // 포스트 정보와 댓글의 정보를 결합하여 Dto로 리턴하기
-        PostDetailDto postDetailDto = new PostDetailDto(post, commentView);
+        PostDetailDto postDetailDto = new PostDetailDto(post, commentView, recentView);
         return postDetailDto;
     }
     /**
@@ -101,8 +108,9 @@ public class PostServiceImpl implements PostService {
 
 
 
-    private PageCustomDto<CommentViewDto> getPageCustom(Page<CommentViewDto> list){
-        PageCustomDto<CommentViewDto> dto = new PageCustomDto<>();
+
+    private <T> PageCustomDto<T> getPageCustom(Page<T> list){
+        PageCustomDto<T> dto = new PageCustomDto<>();
 
         dto.setContent(list.getContent());
         dto.setSize(list.getSize());
@@ -120,6 +128,23 @@ public class PostServiceImpl implements PostService {
 
     private PageCustomDto<PostTitleViewDto> getPageCustom_post(Page<PostTitleViewDto> list){
         PageCustomDto<PostTitleViewDto> dto = new PageCustomDto<>();
+
+        dto.setContent(list.getContent());
+        dto.setSize(list.getSize());
+        dto.setNumberOfElements(list.getNumberOfElements());
+        dto.setTotalElements(list.getTotalElements());
+        dto.setTotalPages(list.getTotalPages());
+        dto.setHasNext(list.hasNext());
+        dto.setHasPrevious(list.hasPrevious());
+        dto.setIsFirst(list.isFirst());
+        dto.setIsLast(list.isLast());
+        dto.setNextPageable(list.nextPageable());
+        dto.setPreviousPageable(list.previousPageable());
+        return dto;
+    }
+
+    private <T> PageCustomDto<T> getPageCustom_recentPostByMember(Page<T> list){
+        PageCustomDto<T> dto = new PageCustomDto<>();
 
         dto.setContent(list.getContent());
         dto.setSize(list.getSize());

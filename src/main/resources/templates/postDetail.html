@@ -51,29 +51,87 @@
     <section>
         <div class="inner">
             <div class="detail-container">
-                <div class="detail" th:object="${postDetail}" >
-                    <div class="detail-category" th:text="*{category}">
-                        음악    
-                    </div>
-                    <div class="detail-title" th:text="*{title}">
-                        테스트
-                    </div>
-                    <div class="detail-info">
-                        <div class="detail-info-nickname" th:text="*{nickname}">테스트</div>
-                        <div class="detail-info-date" th:text="*{date}">2023년 8월 11일</div>
-                        <div class="detail-info-views" th:text="*{views}">10</div>
-                        <div class="detail-info-likes" th:text="*{likes}">2</div>
-                    </div>
-                    <div class="detail-textdata" th:text="*{body}">
-                        테스트<br>테스트<br>테스트<br>테스트
-                    </div>
-                    <div class="detail-likes-container">
-                        <div class="detail-likes" th:text="*{likes}">2</div>
+                <div class="detail">
+                    <div class="detail-box">
+                    <th:block  th:object="${postDetail}">
+                        <div class="detail-category" th:text="*{category}">
+                            음악    
+                        </div>
+                        <div class="detail-title" th:text="*{title}">
+                            테스트
+                        </div>
+                        <div class="detail-info">
+                            <div class="detail-info-image"></div>
+                            <div class="mini-info" th:text="*{nickname}">앤써</div>
+                            <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{date}">2023년 8월 11일</div></div>
+                            <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
+                            <div class="mini-container">좋아요 <div class="mini-info" th:text="*{likes}">2</div></div>
+                        </div>
+                        <div class="detail-textdata" th:text="*{body}">
+                            테스트<br>테스트<br>테스트<br>테스트
+                        </div>
+                        <div class="writer-posts-container">
+                            <div class="writer-posts">
+                                <div class="writer-posts-header">
+                                    <span th:text="*{nickname}">앤써</span>님이 작성한 최신 글
+                                </div>
+                                <th:block th:each="recentPosts : ${postDetail.recent.content}" >
+                                <div class="writer-posts-detail" th:text="${recentPosts.title}">
+                                    오우오우
+                                </div>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="detail-likes-container">
+                            <div class="detail-likes-circle">
+                                <div class="detail-likes" th:text="*{likes}">2</div>
+                                <div class="detail-likes-title">좋아요</div>
+                            </div>
+                        </div>
+                    </th:block>
                     </div>
                     <div class="detail-comment-container">
-                        <th:block th:each=" comment :*{commentList}" >
-                            <!-- <div class="comment" th:text="${comment.textBody}"></div> -->
+                        <div class="comment-cnt-container">
+                            <div class="comment-cnt-title">댓글</div>
+                            <div class="comment-cnt" th:text="*{commentCnt}">0</div>
+                        </div>
+                        <th:block th:each="comment :${postDetail.commentList.content}" >
+                            <div class="comment">
+                                <div class="comment-top">
+                                    <div class="comment-top-left">
+                                        <div class="comment-writer-image">
+                                        
+                                        </div>
+                                        <div class="comment-writer-nickname" th:text="${comment.nickname}">
+                                            불바다
+                                        </div>
+                                    </div>
+                                    <div class="comment-date" th:text="${comment.lastModifiedTime}">
+                                        2023년 8월 13일
+                                    </div>
+                                </div>
+                                <div class="comment-textBody" th:text="${comment.textBody}">
+                                    good!!!
+                                </div>
+                                <div class="comment-bottom" >
+                                    <div class="comment-likes" th:text="${comment.likes}">
+                                        10
+                                    </div>
+                                    <div class="comment-new" >
+                                        댓글달기
+                                    </div>
+                                </div>
+                            </div>
                         </th:block>
+                        <div class="page-container" >
+                            <div class="piece page-pre">이전</div>
+                            <div class="piece page-first">1</div>
+                            <div class="piece page-first-dot">...</div>
+                            <div class="page-list"></div>
+                            <div class="piece page-last-dot">...</div>
+                            <div class="piece page-last">last</div>
+                            <div class="piece page-next">다음</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,4 +139,21 @@
     </section>
     
 </body>
+
+<script th:inline="javascript">
+           let postId = String([[${postDetail.id}]]); //카테고리
+   
+           let numberOfElements= Number([[${postDetail.commentList.numberOfElements}]]);
+           let totalElements =  Number([[${postDetail.commentList.totalElements}]]);
+           let totalPages =  Number([[${postDetail.commentList.totalPages}]]);
+           let hasNext = Boolean([[${postDetail.commentList.hasNext}]]);
+           let hasPrevious =  Boolean([[${postDetail.commentList.hasPrevious}]]);
+           let isFirst = Boolean([[${postDetail.commentList.isFirst}]]);
+           let isLast=  Boolean([[${postDetail.commentList.isLast}]]);
+           let current =  Number([[${postDetail.commentList.current}]]);
+           // 설정 정보
+</script>
+<!-- 공통 자바스크립트(bottom)-->
+<script th:inline="javascript" src="../static/js/postDetail.js" th:src="@{/js/postDetail.js}"></script>
+<!-- 공통 자바스크립트(bottom)-->
 </html>

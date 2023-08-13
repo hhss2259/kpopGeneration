@@ -1,7 +1,10 @@
 package kpop.kpopGeneration.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kpop.kpopGeneration.dto.Category;
+import kpop.kpopGeneration.dto.RecentPostByMemberDto;
+import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -90,6 +93,34 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .size();
 
         return new PageImpl<Post>(fetch,pageable, size);
+    }
+
+    @Override
+    public Page<RecentPostByMemberDto> findRecentPostListByMember(Member member, Pageable pageable, Long postId) {
+        List<RecentPostByMemberDto> fetch = queryFactory
+                .select(
+                    Projections.bean(
+                        RecentPostByMemberDto.class,
+                        post.title.as("title"),
+                        post.createdTime.as("createdTime")
+                        )
+                )
+                .from(post)
+                .where(
+                        post.member.eq(member),
+                        post.id.ne(postId)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(post.createdTime.desc())
+                .fetch();
+
+        int size = queryFactory
+                .selectFrom(post)
+                .where(post.member.eq(member))
+                .fetch().size();
+
+        return new PageImpl<RecentPostByMemberDto>(fetch, pageable, size);
     }
 
     @Override

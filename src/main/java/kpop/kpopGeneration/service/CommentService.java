@@ -17,6 +17,7 @@ public interface CommentService {
      */
     Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable);
 
+
     /**
      * 댓글 좋아요 기능 (좋아요 추가 삭제)
      */
