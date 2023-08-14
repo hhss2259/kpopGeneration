@@ -77,6 +77,8 @@ hr{
     margin-bottom: 10px;
 }
 
+
+
 .detail-info{
     width: 100%;
     height: 50px;
@@ -89,7 +91,6 @@ hr{
 
     border-bottom: 1px solid black;
 }
-
 .detail-info-left{
     display: flex;
     flex-direction: row;
@@ -97,11 +98,13 @@ hr{
 
     padding-left:10px;
 }
-
 .detail-info-right{
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+.no-show{
+    display: none;
 }
 
 .post-delete{
@@ -178,6 +181,10 @@ hr{
     align-items: center;
     padding-left:10px;
 }
+.writer-posts-details{
+    padding-left: 10px;
+    height: 20%;
+}
 
 
 
@@ -206,6 +213,14 @@ hr{
 .detail-likes-title{
     margin-top: 5px;
 }
+
+.liked{
+    background-color:red;
+}
+
+
+
+
 
 .detail-comment-container{
     margin-top: 30px;

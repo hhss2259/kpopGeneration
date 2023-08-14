@@ -10,7 +10,6 @@ lastPage.textContent = String(totalPages);
 lastPage.addEventListener('click', ()=>{
     location.href= "/post/detail?id="+postId+"&page="+(totalPages-1);
 });
-//맨 처음 보기, 맨 마지막 보기
 
 
 // '이전', '다음' 페이지 생성
@@ -32,7 +31,6 @@ if(isLast==true){
     location.href= "/post/detail?id="+postId+"&page="+current;
 });
 }
-// '이전', '다음' 페이지 생성
 
 
 // 페이지를 만드는 함수
@@ -87,7 +85,7 @@ const makePage = function(i, current){
         }
     }
 })(current);
-// 페이지를 만드는 함수
+
 
 //카테고리 + 페이지 별로 이동하는 함수
 const pageMove = function(event){
@@ -101,3 +99,46 @@ let numbers = document.querySelectorAll('.pageNumber');
 numbers.forEach(n=>{
     n.addEventListener('click', pageMove);
 } )
+
+
+
+// 좋아요 기능
+            fetch('/api/post/likes?post='+postId)
+           .then(response => response.json())
+           .then(data => {
+               document.querySelector(".detail-likes").textContent  = data.data.likes;
+               if(data.data.isLiked == true){
+                   let circle = document.querySelector(".detail-likes-circle");
+                   circle.classList.add('liked');
+               }
+           })
+
+
+           const clickLikesByAny = function(){
+                alert("좋아요 기능은 로그인 후 사용 가능합니다.");
+            }
+
+            const clickLikes = function(){
+               fetch("/api/post/likes/toggle?post="+postId)
+                .then(response => response.json())
+                .then(data => {
+                    const likes = data.data.likes;
+                    const isLiked = data.data.isLiked;
+                    document.querySelector(".detail-likes").textContent  = likes;
+                    let circle = document.querySelector(".detail-likes-circle");
+                    if(isLiked == true){
+                        circle.classList.add('liked');
+                    }else{
+                        circle.classList.remove('liked');
+                    }
+
+                })
+           }
+
+            let button = document.querySelector(".detail-likes-circle");
+            if(member == null){
+                button.addEventListener('click', clickLikesByAny);
+            }else{
+                button.addEventListener('click', clickLikes);
+            }
+            

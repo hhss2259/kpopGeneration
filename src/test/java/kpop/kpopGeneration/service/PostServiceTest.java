@@ -14,8 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -113,7 +111,7 @@ class PostServiceTest {
         //given
         Member member = new Member("aaaa", "1111", "member1", "hhss2259@naver.com");
         Long save = memberService.save(member);
-        PostSaveDto postSaveDto = new PostSaveDto("테스트 포스트", "테스트 포스트입니다.", Category.NORMAL);
+        PostSaveDto postSaveDto= new PostSaveDto("테스트 포스트", "테스트 포스트입니다.", Category.NORMAL);
         Long savePost = postService.savePost(postSaveDto, member.getUsername());
 
         String title = "업데이트 포스트";

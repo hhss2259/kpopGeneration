@@ -72,21 +72,21 @@
                             카테고리
                         </div>
                         <select class="category" name="category">
-                            <option value="music">음악</option>
-                            <option value="review">리뷰</option>
-                            <option value="certification">인증/후기</option>
-                            <option value="normal">일반</option>
+                            <option value="MUSIC">음악</option>
+                            <option value="REVIEW">리뷰</option>
+                            <option value="CERTIFICATION">인증/후기</option>
+                            <option value="NORMAL">일반</option>
                         </select>
                     </div>
                     <div class="post-header-title">
                         <div class="title-title">
                             제목
                         </div>
-                        <input type="text" class="title" name="title"/>
+                        <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}"/>
                     </div>
                 </div>
                 <div class="post-textdata">
-                    <textarea id="summernote" name="textdata"></textarea>
+                    <textarea id="summernote" name="body"></textarea>
                 </div>
                 <button type="submit" class="post-button">등록하기</button>
             </form>
@@ -96,7 +96,19 @@
     <!--구체적 페이지-->
     
 </body>
-<script>
+<script th:inline="javascript">
+    let originalOption = String([[${postSaveViewDto.category}]]);
+    console.log(originalOption);
+    let category = document.querySelector(".category");
+    let options = document.querySelectorAll("option");
+    options.forEach( o => {
+        if(o.value === originalOption){
+            console.log(o.value);
+
+            o.selected = true;
+        }
+    });
+
     $(document).ready(function() {
         $('#summernote').summernote({
         tabsize: 2,

@@ -19,4 +19,6 @@ public interface PostRepositoryCustom {
     Page<RecentPostByMemberDto> findRecentPostListByMember(Member member, Pageable pageable, Long postId);
 
     Optional<Post> findPostById(Long Id);
+
+    String findWriter(Long id);
 }

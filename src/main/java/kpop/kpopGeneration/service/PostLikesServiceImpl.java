@@ -32,6 +32,16 @@ public class PostLikesServiceImpl implements PostLikesService{
      * 게시글 좋아요 상태보기
      */
     @Override
+    public PostLikesViewDto getPostLikes(Long id) {
+        // DB에서 해당 포스트를 가지고 온다
+        Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
+
+        PostLikesViewDto postLikesViewDto =  new PostLikesViewDto(post.getLikes(), false);
+        return postLikesViewDto;
+    }
+
+
+    @Override
     public PostLikesViewDto getPostLikes(Long id, String username) {
         // DB에서 해당 포스트를 가지고 온다
         Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());

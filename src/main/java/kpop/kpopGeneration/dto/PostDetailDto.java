@@ -43,7 +43,6 @@ public class PostDetailDto {
         //포스트 댓글 정보
         this.commentList = commentList;
 
-
         //작성자의 최신 포스트 글 정보
         this.recent = recent;
     }

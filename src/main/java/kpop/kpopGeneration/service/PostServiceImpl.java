@@ -3,8 +3,6 @@ package kpop.kpopGeneration.service;
 import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
-import kpop.kpopGeneration.entity.PostLikes;
-import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.exception.NotExistedPostException;
 import kpop.kpopGeneration.repository.PostLikesRepository;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
 
@@ -77,6 +74,23 @@ public class PostServiceImpl implements PostService {
         postViewDto.setCurrent((int)(pageable.getPageNumber()+1));
         postViewDto.setCategory(category);
         return postViewDto;
+    }
+
+    /**
+     * 포스트 원작자 찾아오기
+     */
+    @Override
+    public String findWriter(Long id) {
+        return postRepository.findWriter(id);
+    }
+
+    /**
+     * 포스트 업데이트 정보 가져오기
+     */
+    @Override
+    public PostUpdateDto findPostUpdateDto(Long id) {
+        Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
+        return new PostUpdateDto(post.getMember().getUsername(), post.getTitle(), post.getBody(), post.getCategory());
     }
 
 

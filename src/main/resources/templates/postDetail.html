@@ -66,11 +66,13 @@
                                 <div class="mini-info" th:text="*{nickname}">앤써</div>
                                 <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{date}">2023년 8월 11일</div></div>
                                 <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
-                                <div class="mini-container">좋아요 <div class="mini-info" th:text="*{likes}">2</div></div>
+                                <div class="mini-container">좋아요 
+                                    <div class="mini-info" th:text="*{likes}">2</div>
+                                </div>
                             </div>
                             <div class="detail-info-right">
                                 <div class="post-delete">삭제하기</div>
-                                <div class="post-update">수정하기</div>
+                                <a th:href="@{/post(post=*{id})}" class="post-update">수정하기</a>
                             </div>
                         </div>
                         <div class="detail-textdata" th:text="*{body}">
@@ -82,14 +84,14 @@
                                     <span th:text="*{nickname}">앤써</span>님이 작성한 최신 글
                                 </div>
                                 <th:block th:each="recentPosts : ${postDetail.recent.content}" >
-                                <div class="writer-posts-detail" th:text="${recentPosts.title}">
+                                <a th:href="@{/post/detail(id=${recentPosts.id})}" class="writer-posts-detail" th:text="${recentPosts.title}">
                                     오우오우
-                                </div>
+                                </a>
                                 </th:block>
                             </div>
                         </div>
                         <div class="detail-likes-container">
-                            <div class="detail-likes-circle">
+                            <div id="likes" class="detail-likes-circle">
                                 <div class="detail-likes" th:text="*{likes}">2</div>
                                 <div class="detail-likes-title">좋아요</div>
                             </div>
@@ -158,6 +160,25 @@
            let isLast=  Boolean([[${postDetail.commentList.isLast}]]);
            let current =  Number([[${postDetail.commentList.current}]]);
            // 설정 정보
+           let member = [[${memberDto}]];
+            let authority = [[${authority}]];
+
+
+            
+            if(authority == null){
+                const update_button = document.querySelector(".post-update");
+                const delete_button = document.querySelector(".post-delete");
+                update_button.style.display = 'none';
+                delete_button.style.display = 'none';
+            }else{
+                const delete_button = document.querySelector(".post-delete");
+                delete_button.style.display = 'none';
+            }
+           
+
+            
+
+           
 </script>
 <!-- 공통 자바스크립트(bottom)-->
 <script th:inline="javascript" src="../static/js/postDetail.js" th:src="@{/js/postDetail.js}"></script>

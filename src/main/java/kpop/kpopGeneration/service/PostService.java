@@ -17,6 +17,17 @@ public interface PostService {
     PageCustomDto<PostTitleViewDto> findPostListByCategory(Category category, Pageable pageable);
 
     /**
+     * 포스트의 원작자 찾아오기
+     */
+    String findWriter(Long id);
+
+    /**
+     * 포스트 업데이트 정보가져오기
+     */
+    PostUpdateDto findPostUpdateDto(Long id);
+
+
+    /**
      * 게시글 자세히 보기 + 댓글 목록 출력하기
      */
     PostDetailDto findPostById(Long id,  Pageable commentPageable);

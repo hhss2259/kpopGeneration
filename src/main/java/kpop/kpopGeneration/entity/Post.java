@@ -3,14 +3,12 @@ package kpop.kpopGeneration.entity;
 
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.PostSaveDto;
-import lombok.Builder;
+import kpop.kpopGeneration.dto.PostSaveViewDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.metamodel.IdentifiableType;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter

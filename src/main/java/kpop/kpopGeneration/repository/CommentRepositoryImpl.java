@@ -39,6 +39,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                                 CommentViewDto.class,
                                 comment.id.as("commentId"),
                                 member.nickName.as("nickname"),
+                                member.username.as("username"),
                                 comment.textBody.as("textBody"),
                                 comment.likes.as("likes"),
                                 post.id.as("postId"),

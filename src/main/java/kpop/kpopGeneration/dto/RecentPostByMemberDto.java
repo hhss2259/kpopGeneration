@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RecentPostByMemberDto {
 
+    Long id;
     String title;
     LocalDateTime createdTime;
 

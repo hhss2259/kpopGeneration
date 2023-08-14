@@ -101,6 +101,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .select(
                     Projections.bean(
                         RecentPostByMemberDto.class,
+                        post.id.as("id"),
                         post.title.as("title"),
                         post.createdTime.as("createdTime")
                         )
@@ -135,5 +136,15 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 )
                 .fetchOne();
         return Optional.ofNullable(selectedPost);
+    }
+
+    @Override
+    public String findWriter(Long id) {
+        String username = queryFactory
+                .select(post.member.username)
+                .from(post)
+                .where(post.id.eq(id))
+                .fetchOne();
+        return username;
     }
 }
