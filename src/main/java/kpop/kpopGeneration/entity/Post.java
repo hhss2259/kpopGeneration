@@ -33,7 +33,7 @@ public class Post extends JpaBaseTimeEntity{
     Member member;
 
     LocalDateTime deletedTime;
-    boolean deletedTrue;
+    Boolean deletedTrue;
     Long views;
 
     Long likes;
@@ -73,5 +73,13 @@ public class Post extends JpaBaseTimeEntity{
 
     public void increaseViews() {
         this.views++;
+    }
+
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
     }
 }

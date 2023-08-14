@@ -3,8 +3,11 @@ package kpop.kpopGeneration.service;
 import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
+import kpop.kpopGeneration.entity.PostLikes;
+import kpop.kpopGeneration.exception.DuplicateException;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.exception.NotExistedPostException;
+import kpop.kpopGeneration.repository.PostLikesRepository;
 import kpop.kpopGeneration.repository.PostRepository;
 import kpop.kpopGeneration.repository.CommentRepository;
 import kpop.kpopGeneration.repository.MemberRepository;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Optional;
 
@@ -29,6 +33,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final PostLikesRepository postLikesRepository;
 
     /**
      * 게시글 저장
@@ -44,6 +49,7 @@ public class PostServiceImpl implements PostService {
         Post post = new Post(postDto.getTitle(), postDto.getBody(), member, postDto.getCategory());
         Post savedPost = postRepository.save(post);
 
+        // 멤버가 작성한 포스트 갯수를 증가시킨다
         member.increasePostCnt();
         return savedPost.getId();
     }
@@ -99,10 +105,17 @@ public class PostServiceImpl implements PostService {
         return postDetailDto;
     }
 
-    /**
-     * 게시글 좋아요 누르기
-     */
 
+    /**
+     * 게시글 조회수 늘리기
+     */
+    @Transactional
+    @Override
+    public void increaseViews(Long id) {
+        // DB에서 포스트를 찾아온다.
+        Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
+        post.increaseViews();
+    }
 
     /**
      * 게시글 수정
@@ -125,10 +138,21 @@ public class PostServiceImpl implements PostService {
      * 게시글 삭제
      */
     @Override
-    public Long deletePost(Long id) {
+    public Long deletePost(Long id, String username) {
         // DB에서 Post를 찾아온다
         Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
+
+        // DB에서 Member를 찾아온다
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NotExistedMemberException());
+
+        /**
+         * deletedTrue = true();
+         * deletedTime = LocalDateTime.now();
+         */
         post.deletePost();
+
+        // 멤버가 작성한 포스트 갯수를 감소시킨다.
+        member.decreasePostCnt();
         return post.getId();
     }
 
@@ -136,7 +160,7 @@ public class PostServiceImpl implements PostService {
 
     /**
      *  Page 자체에 방대한 정보가 담겨 있으므로 Page 객체 전체를 return 하기 보다
-     *  필요한 정보만을 추려서 PageCustomDto에 옮겨 담는다
+     *  필요한 정보만을 추려서 PageCustomDto에 옮겨 담은 후, PageCustomDto를 return 한다
      */
     private <T> PageCustomDto<T> getPageCustom(Page<T> list){
         PageCustomDto<T> dto = new PageCustomDto<>();

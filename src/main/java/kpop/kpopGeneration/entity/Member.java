@@ -53,4 +53,8 @@ public class Member extends JpaBaseTimeEntity{
     public void updateNickname(String nickname) {
         this.nickName = nickname;
     }
+
+    public void decreasePostCnt() {
+        this.postCnt--;
+    }
 }

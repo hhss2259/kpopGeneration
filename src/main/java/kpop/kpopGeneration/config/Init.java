@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 
-@Component
+//@Component
 @RequiredArgsConstructor
 public class Init {
 

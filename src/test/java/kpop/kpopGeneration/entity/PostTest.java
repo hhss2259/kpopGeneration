@@ -39,8 +39,8 @@ class PostTest {
         System.out.println("마지막 수정 시간 : "+save.getLastModifiedTime());
         assertNull(save.getDeletedTime());
         System.out.println("삭제 시간 : "+save.getDeletedTime());
-        assertFalse(save.isDeletedTrue());
-        System.out.println("삭제 여부 :" +save.isDeletedTrue());
+        assertFalse(save.getDeletedTrue());
+        System.out.println("삭제 여부 :" +save.getDeletedTrue());
 
     }
 }

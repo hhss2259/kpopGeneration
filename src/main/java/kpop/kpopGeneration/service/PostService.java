@@ -4,7 +4,7 @@ import kpop.kpopGeneration.dto.*;
 import org.springframework.data.domain.Pageable;
 
 /**
- * 게시판 CRUD 기능을 정의하고 있는 인터페이스입니다.
+ * 게시판 CRUD 기능을 정의하고 있는 인터페이스
  */
 public interface PostService {
     /**
@@ -21,13 +21,12 @@ public interface PostService {
      */
     PostDetailDto findPostById(Long id,  Pageable commentPageable);
 
-    /**
-     * 게시글 좋아요 누르기
-     */
 
     /**
      * 게시글 조회수 증가
      */
+    void increaseViews(Long id);
+
 
     /**
      * 게시글 수정
@@ -37,5 +36,5 @@ public interface PostService {
     /**
      * 게시글 삭제
      */
-    Long deletePost(Long id);
+    Long deletePost(Long id, String username);
 }
