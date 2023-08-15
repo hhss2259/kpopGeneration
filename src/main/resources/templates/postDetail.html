@@ -125,10 +125,11 @@
                                     <div class="comment-likes" th:text="${comment.likes}">
                                         10
                                     </div>
-                                    <div class="comment-new" >
+                                    <div class="comment-new" data-commentId="${comment.commentId}">
                                         댓글달기
                                     </div>
                                 </div>
+                                <div></div>
                             </div>
                         </th:block>
                         <div class="page-container" >
@@ -140,11 +141,36 @@
                             <div class="piece page-last">last</div>
                             <div class="piece page-next">다음</div>
                         </div>
+                        <div class="comment-write-container">
+                            <form class="comment-write" th:action="/comment" th:method="post">
+                                <textarea class="comment-write-textarea"></textarea>
+                                <button type="submit" class="comment-write-button">등록하기</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+         const commentNew = function(event){
+                console.log("helo");
+                const node =`<div class="comment-write-container">
+                            <form class="comment-write" th:action="/comment" th:method="post">
+                                <textarea class="comment-write-textarea"></textarea>
+                                <button type="submit" class="comment-write-button">등록하기</button>
+                            </form>
+                        </div>`;
+                const targetNode =  event.target;
+                const wow =  targetNode.parentNode.nextElementSibling;
+                wow.innerHTML = node;
+            }
+           let comment_new_button =  document.querySelectorAll('.comment-new');
+           comment_new_button.forEach( node =>{
+            console.log("dmmdd");
+            node.addEventListener("click", commentNew);
+           })
+    </script>
     
 </body>
 
@@ -163,8 +189,6 @@
            let member = [[${memberDto}]];
             let authority = [[${authority}]];
 
-
-            
             if(authority == null){
                 const update_button = document.querySelector(".post-update");
                 const delete_button = document.querySelector(".post-delete");
@@ -176,7 +200,7 @@
             }
            
 
-            
+           
 
            
 </script>
