@@ -113,9 +113,9 @@ public class PostServiceImpl implements PostService {
         Page<RecentPostByMemberDto> recent = postRepository.findRecentPostListByMember(post.getMember(), PageRequest.of(0, 5), id);
         PageCustomDto<RecentPostByMemberDto> recentView = getPageCustom(recent); // Page를 PageCustomDto로 변환한다
 
+
         // 포스트 정보와 댓글의 정보를 결합하여 Dto로 리턴하기
         PostDetailDto postDetailDto = new PostDetailDto(post, commentView, recentView);
-
         return postDetailDto;
     }
 

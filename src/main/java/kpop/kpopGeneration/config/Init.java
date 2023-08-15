@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.config;
 
 import kpop.kpopGeneration.dto.Category;
+import kpop.kpopGeneration.dto.CommentSaveDto;
 import kpop.kpopGeneration.dto.PostSaveDto;
 import kpop.kpopGeneration.dto.PostSaveViewDto;
 import kpop.kpopGeneration.entity.Member;
@@ -58,8 +59,8 @@ public class Init {
         }
 
 
-//        Long[] longs = new Long[147];
-//        Long aLong = commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member1.getUsername());
+        Long[] longs = new Long[147];
+        Long aLong = commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member1.getUsername());
 //
 //         longs[0] = aLong;
 //        for (int i = 1; i < 147; i++) {

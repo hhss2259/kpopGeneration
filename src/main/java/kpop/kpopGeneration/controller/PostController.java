@@ -57,7 +57,9 @@ public class PostController {
     public String postDetail(@RequestParam String id, Model model,
                              @PageableDefault(page=0, size = 20) Pageable commentPageable){
         long postId = Long.parseLong(id);
+        postService.increaseViews(postId);
         PostDetailDto postById = postService.findPostById(postId, commentPageable);
+
         model.addAttribute("postDetail", postById);
 
         if(checkLogin() == true){
