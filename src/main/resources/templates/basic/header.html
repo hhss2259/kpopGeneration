@@ -1,0 +1,52 @@
+<!--공통 헤더-->
+<header th:fragment="header">
+    <div class="inner">
+        <div class="header-container">
+            <div class="header-left">
+                <div class="titile">
+                  KpopGeneration
+                </div>
+                <div class="main-menu">
+                    <a th:href="@{/news/list}">
+                        <div class="news">
+                            뉴스
+                        </div>
+                    </a>
+                    <a th:href="@{/topic/list}">
+                       <div class="topic">
+                            토픽
+                       </div>
+                    </a>
+                    <a th:href="@{/post/list}">
+                       <div class="community">
+                            커뮤니티
+                       </div>
+                    </a>
+                </div>
+            </div>
+            <div class="side-menu">
+                <div class="developer-button">
+                    관리자
+                </div>
+                <div class="searching-button">
+                    검색
+                </div>
+                <div>
+                    <span th:if="${member.logined == false}" class="login-button"> 로그인</span>
+                    <span th:if="${member.logined == true}" class="member-menu-button" onclick="showMemberMenu()"> 로그아웃</span>
+                    <div class="member-menu">
+                        <div class="member-info">
+                            <div>작성한 글</div>
+                            <div>작성한 댓글</div>
+                        </div> 
+                        <form th:action="@{/logout}" th:method="post">
+                            <button th:type="submit" class="logout-button">로그아웃</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<hr>
+<!--공통 헤더-->

@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.security;
 
 import kpop.kpopGeneration.entity.QMember;
+import kpop.kpopGeneration.interceptor.ModelInterceptor;
 import kpop.kpopGeneration.repository.MemberRepository;
 import kpop.kpopGeneration.security.common.FormAuthenticationDetailSource;
 import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;

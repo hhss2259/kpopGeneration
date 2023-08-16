@@ -22,6 +22,9 @@ public class AppConfig {
     private final ResourceRepository resourceRepository;
     private final ResourceRoleRepository resourceRoleRepository;
 
+    /**
+     * 회원가입 시 기본 role을 입력합니다
+     */
     @PostConstruct
     public void saveBasicRole() {
         Role role_user = roleRepository.save(new Role("ROLE_USER"));

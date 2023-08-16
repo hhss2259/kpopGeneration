@@ -19,6 +19,7 @@ public class PostDetailDto {
     String body;
     Category category;
     String nickname;
+    Long memberId;
     Long views;
     Long likes;
     Long commentCnt;
@@ -34,7 +35,8 @@ public class PostDetailDto {
         this.title = post.getTitle();
         this.body = post.getBody();
         this.category = post.getCategory();
-        this.nickname = post.getMember().getNickName();;
+        this.nickname = post.getMember().getNickName();
+        this.memberId = post.getMember().getId();
         this.views = post.getViews();
         this.likes = post.getLikes();
         this.commentCnt = post.getCommentCnt();

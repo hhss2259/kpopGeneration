@@ -10,9 +10,11 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Security;
@@ -25,7 +27,11 @@ public class JoinController {
     private final MemberService memberService;
 
     @GetMapping("/join")
-    public String join(){return "join";}
+    public String join(@RequestParam(required = false) String errorMessage, Model model){
+        if (errorMessage != null){
+            model.addAttribute("errorMessage", errorMessage);
+        }
+        return "join";}
 
     /**
      * 일반회원 가입 시 사용된다.
@@ -33,16 +39,13 @@ public class JoinController {
      */
     @PostMapping("/join")
     public String complete(@ModelAttribute JoinForm form, RedirectAttributes redirectAttributes){
-        boolean b = form.checkForm();
-        if(b == false){
+        boolean correct = form.checkForm();
+        if(correct == false){
             return "redirect:/post/list";
         }
 
         Member newMember = form.makeMember();
         Long save = memberService.save(newMember);
-
-        System.out.println("form.getEmail() = " + form.getEmail());
-        System.out.println("newMember = " + newMember.getEmail());
 
         redirectAttributes.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         return "redirect:/";
@@ -60,7 +63,6 @@ public class JoinController {
         Oauth2Member principal = (Oauth2Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.getMember().getUsername();
 
-        System.out.println("form.getNickname() = " + form.getNickname());
         memberService.updateNickname( principal.getMember().getUsername(), form.getNickname());
         principal.getMember().updateNickname(form.getNickname());
 

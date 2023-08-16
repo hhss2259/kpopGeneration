@@ -30,7 +30,12 @@ public class PostController {
     @GetMapping("/post/list")
     public String findPostListByCategory(@RequestParam(required = false) String category,
                                          @PageableDefault(size = 10, page = 0) Pageable pageable,
+                                         @RequestParam(required = false) String errorMessage,
                                          Model model) {
+        // 에러 발생 시 에러 정보를 보여준다.
+        if (errorMessage != null){
+            model.addAttribute("errorMessage", errorMessage);
+        }
 
         // 카테고리와 페이지 정보를 이용하여 필요한 포스트 리스트들을 서버에서 조회해온다
         Category requestCategory = null;
@@ -40,13 +45,8 @@ public class PostController {
             requestCategory = Category.valueOf(category);
         }
         PageCustomDto<PostTitleViewDto> postListByCategory = postService.findPostListByCategory(requestCategory, pageable);
-        model.addAttribute("pageDto", postListByCategory);
+        model.addAttribute("postList", postListByCategory);
 
-        
-        // 현재 접속한 사용자의 정보를 받아온 후, 현재 사용자가 로그인한 사용자이면 게시판 글쓰기 기능을 제공한다
-        if(checkLogin() == true){
-            model.addAttribute("memberDto", new MemberViewDto());
-        }
         return "postList";
     }
 
@@ -55,21 +55,17 @@ public class PostController {
      */
     @GetMapping("/post/detail")
     public String postDetail(@RequestParam String id, Model model,
+                             @RequestParam(required = false) String errorMessage,
                              @PageableDefault(page=0, size = 20) Pageable commentPageable){
-        long postId = Long.parseLong(id);
+        if (errorMessage != null){
+            model.addAttribute("errorMessage", errorMessage);
+        }
+
+        Long postId = Long.parseLong(id);
         postService.increaseViews(postId);
         PostDetailDto postById = postService.findPostById(postId, commentPageable);
 
         model.addAttribute("postDetail", postById);
-
-        if(checkLogin() == true){
-            model.addAttribute("memberDto", new MemberViewDto());
-        }
-
-        String username = postService.findWriter(postId);
-        if(checkAuthority(username)){
-           model.addAttribute("authority", new MemberViewDto());
-       }
         return "postDetail";
     }
 
@@ -81,7 +77,7 @@ public class PostController {
                              Model model) {
 
         // 로그인하지 않은 사람은 접근할 수 없다
-        if(checkLogin()== false){
+        if(checkLogin()== false || post == null){
             return "redirect:/";
         }
 
@@ -134,7 +130,6 @@ public class PostController {
         if(checkLogin() == false){
             return false;
         }
-
         Member member = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof Member){
@@ -146,7 +141,6 @@ public class PostController {
         if(member.getUsername().equals(username)){
             result = true;
         }
-        System.out.println("result = " + result);
         return result;
     }
 }

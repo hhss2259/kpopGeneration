@@ -1,53 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!--favicon 설정-->
-
-    <!--css reset-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
-    <!--fontawesome-->
-    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
-    <!--Spoca Hans Sans Neo-->
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-    
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}"  href="../static/css/basic/basic.css"/>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/postList.css}" href="../static/css/postList.css"/>
-</head>
+<div th:replace="~{basic/head ::head (@{/css/postList.css})}"></div>
 <body>
-    <header>
-        <div class="inner">
-            <div class="header-container">
-                <div class="header-left">
-                    <div class="titile">
-                      KpopGeneration
-                    </div>
-                    <div class="main-menu">
-                        <a th:href="@{/news}">
-                            <div class="news">
-                                뉴스
-                            </div>
-                        </a>
-                        <a th:href="@{/topic}">
-                           <div class="topic">
-                                토픽
-                           </div>
-                        </a>
-                        <a th:href="@{/board}">
-                           <div class="community">
-                                커뮤니티
-                           </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="side-menu">
-                    side-menu
-                </div>
-            </div>
-        </div>
-    </header>
-    <hr>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
             <div class="board-container">
@@ -108,7 +64,7 @@
                             2023.07.27
                         </div>
                     </div>
-                    <th:block  th:each=" content : ${pageDto.content}">
+                    <th:block  th:each=" content : ${postList.content}">
                         <div class="board-line" >
                             <th:block th:object="${content}">
                                 <div class="board-line-number" th:text="*{postId}"  >
@@ -134,7 +90,7 @@
                     <div class="post-search">
                         검색하기
                     </div>
-                    <th:block th:if="${memberDto != null}">
+                    <th:block th:if="${member.logined == true}">
                         <form th:action="@{/post}" th:method="get">
                             <button type="submit" class="post-new">
                                 작성하기
@@ -156,20 +112,22 @@
     </section>
 <script th:inline="javascript">
  // 페이지 정보
-        let category = String([[${pageDto.category}]]); //카테고리
+        let category = String([[${postList.category}]]); //카테고리
 
-        let numberOfElements= Number([[${pageDto.numberOfElements}]]);
-        let totalElements =  Number([[${pageDto.totalElements}]]);
-        let totalPages =  Number([[${pageDto.totalPages}]]);
-        let hasNext = Boolean([[${pageDto.hasNext}]]);
-        let hasPrevious =  Boolean([[${pageDto.hasPrevious}]]);
-        let isFirst = Boolean([[${pageDto.isFirst}]]);
-        let isLast=  Boolean([[${pageDto.isLast}]]);
-        let current =  Number([[${pageDto.current}]]);
+        let numberOfElements= Number([[${postList.numberOfElements}]]);
+        let totalElements =  Number([[${postList.totalElements}]]);
+        let totalPages =  Number([[${postList.totalPages}]]);
+        let hasNext = Boolean([[${postList.hasNext}]]);
+        let hasPrevious =  Boolean([[${postList.hasPrevious}]]);
+        let isFirst = Boolean([[${postList.isFirst}]]);
+        let isLast=  Boolean([[${postList.isLast}]]);
+        let current =  Number([[${postList.current}]]);
         // 설정 정보
 </script>
 </body>
 <!-- 공통 자바스크립트(bottom)-->
 <script th:inline="javascript" src="../static/js/postList.js" th:src="@{/js/postList.js}"></script>
 <!-- 공통 자바스크립트(bottom)-->
+<script th:inline="javascript" src="../static/js/basic/loginModal.js" th:src="@{/js/basic/loginModal.js}"></script>
+
 </html>

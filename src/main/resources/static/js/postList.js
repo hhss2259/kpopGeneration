@@ -1,81 +1,84 @@
 // 각 포스트별로 상세보기 할 수 있는 접속 링크를 생성한다
-const titles = document.querySelectorAll('.board-line-title');
-const postDetail = function(event){
+function postDetail(event){
     const postId = event.target.dataset.value;
     const url = '/post/detail?id='+postId;
     location.href= url;
-
 }
-titles.forEach( title =>{
-    title.addEventListener("click", postDetail);
-})
-// 각 포스트별로 상세보기 할 수 있는 접속 링크를 생성한다
 
+(function(){
+    const titles = document.querySelectorAll('.board-line-title');
+    titles.forEach( title =>{
+        title.addEventListener("click", postDetail);
+    })
+})();
 
 
 
 //카테고리 + 페이징을 한다
-const categoryMove = function(event){
+function categoryMove(event){
     let target =  event.target;
     let nextCategory = target.dataset.enum; 
-    let url = "/post/list?category="+nextCategory;     
-    location.href = url;  
+    location.href = "/post/list?category="+nextCategory;  
 };
 
-//카테고리 표시
-let categoryList = document.querySelectorAll(".board-header-category");
-categoryList.forEach( c=>{
-    console.log("추가 완료");
-    c.addEventListener('click', categoryMove);
-});
-categoryList.forEach(c =>{
-    if(c.dataset.enum === category){
-        c.classList.add("currentCategory");
-    }
-   
-})
-//카테고리 표시
+
+//현재 카테고리 표시
+(function(){
+    let categoryList = document.querySelectorAll(".board-header-category");
+    categoryList.forEach( c=>{
+        c.addEventListener('click', categoryMove);
+    });
+    categoryList.forEach(c =>{
+        if(c.dataset.enum === category){
+            c.classList.add("currentCategory");
+        }
+    
+    })
+})();
 
 
 
 //맨 처음, 맨 마지막 보기
-let firstPage = document.querySelector('.page-first');
-firstPage.textContent = '1';
-firstPage.addEventListener('click', () =>{
-    location.href="/post/list?category="+category+"&page="+0;
-})
-let lastPage = document.querySelector('.page-last');
-lastPage.textContent = String(totalPages);
-lastPage.addEventListener('click', () =>{
-    location.href="/post/list?category="+category+"&page="+(totalPages-1);
-})
-//맨 처음 보기, 맨 마지막 보기
+(function(){
+    let firstPage = document.querySelector('.page-first');
+    firstPage.textContent = '1';
+    firstPage.addEventListener('click', () =>{
+        location.href="/post/list?category="+category+"&page="+0;
+    })
+    let lastPage = document.querySelector('.page-last');
+    lastPage.textContent = String(totalPages);
+    lastPage.addEventListener('click', () =>{
+        location.href="/post/list?category="+category+"&page="+(totalPages-1);
+    })
+})();
+
 
 
 // '이전', '다음' 페이지 생성
-if(isFirst==true){
-    let pre = document.querySelector(".page-pre");
-    pre.style.display = 'none';
-}else{
-    let pre = document.querySelector(".page-pre");
-    pre.addEventListener('click',()=>{
-        location.href="/post/list?category="+category+"&page="+(current-2);
-    });
-}
-if(isLast==true){
-    let next = document.querySelector(".page-next");
-    next.style.display = 'none';
-}else{
-    let next = document.querySelector(".page-next");
-    next.addEventListener('click',()=>{
-        location.href="/post/list?category="+category+"&page="+(current);
-    });
-}
-// '이전', '다음' 페이지 생성
+(function(){
+    if(isFirst==true){
+        let pre = document.querySelector(".page-pre");
+        pre.style.display = 'none';
+    }else{
+        let pre = document.querySelector(".page-pre");
+        pre.addEventListener('click',()=>{
+            location.href="/post/list?category="+category+"&page="+(current-2);
+        });
+    }
+    if(isLast==true){
+        let next = document.querySelector(".page-next");
+        next.style.display = 'none';
+    }else{
+        let next = document.querySelector(".page-next");
+        next.addEventListener('click',()=>{
+            location.href="/post/list?category="+category+"&page="+(current);
+        });
+    }
+})();
 
 
 // 페이지를 만드는 함수
-const makePage = function(i, current){
+function makePage(i, current){
     let list = document.querySelector('.page-list');
     let piece = document.createElement('div');
     piece.textContent= String(i);
@@ -86,7 +89,6 @@ const makePage = function(i, current){
         piece.classList.add('currentPage');   
     }
     list.appendChild(piece);
-    
 };
 
 (function(current){
@@ -128,16 +130,18 @@ const makePage = function(i, current){
 // 페이지를 만드는 함수
 
 //카테고리 + 페이지 별로 이동하는 함수
-const pageMove = function(event){
+function pageMove(event){
     let piece = event.target ;
     let index = piece.dataset.index - 1;
     let url = "/post/list?category="+category+"&page="+index
     location.href = url;
-}
+};
 
-let numbers = document.querySelectorAll('.pageNumber');
-numbers.forEach(n=>{
-    n.addEventListener('click', pageMove);
-} )
+(function(){
+    let numbers = document.querySelectorAll('.pageNumber');
+    numbers.forEach(n=>{
+        n.addEventListener('click', pageMove);
+    } )
+})();
 //카테고리 + 페이지 별로 이동하는 함수
 //페이징을 한다

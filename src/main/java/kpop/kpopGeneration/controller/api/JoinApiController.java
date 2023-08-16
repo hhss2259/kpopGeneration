@@ -14,10 +14,15 @@ public class JoinApiController {
 
     private final MemberService memberService;
 
+    /**
+     * 동일한 username이 존재하면 발생하는 DuplicateException을 처리
+     * @return DefaultResponse
+     */
     @ExceptionHandler(DuplicateException.class)
     public DefaultResponse<Integer> duplicateUsername(){
         return DefaultResponse.res(40001, "중복되었습니다");
     }
+
 
     @PostMapping("/api/username")
     public DefaultResponse<String> checkUsername(@RequestBody UsernameDto dto){

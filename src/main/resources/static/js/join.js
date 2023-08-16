@@ -6,42 +6,42 @@
         checking.style.color = 'green'; 
         checking.classList.remove('noShow');
         document.querySelector('#usernameValue').value = true;
-    }
+    };
     failUsername = function(msg){
         const checking = document.querySelector('#username-checker');
         checking.textContent = msg;
         checking.style.color = 'red';
         checking.classList.remove('noShow');
         document.querySelector('#usernameValue').value = false;
-    }
+    };
     successPassword = function(){
         const checking = document.querySelector('#password-checker');
         checking.textContent = '사용 가능한 비밀번호입니다';
         checking.style.color = 'green';
         checking.classList.remove('noShow');
         document.querySelector('#passwordValue').value = true;
-    }
+    };
     const failPassword = function(){
         const checking = document.querySelector('#password-checker');
         checking.textContent = '사용이 불가능 비밀번호입니다.';
         checking.style.color = 'red';
         checking.classList.remove('noShow');
         document.querySelector('#passwordValue').value = false;
-    }
+    };
     successPasswordSecond = function(){
         const checking = document.querySelector('#passwordSecond-checker');
         checking.textContent = '비밀번호가 일치합니다';
         checking.style.color = 'green';
         checking.classList.remove('noShow');
         document.querySelector('#passwordSecondValue').value = true;
-    }
+    };
     failPasswordSecond = function(){
         const checking = document.querySelector('#passwordSecond-checker');
         checking.textContent = '비밀번호가 일치하지 않습니다.';
         checking.style.color = 'red';
         checking.classList.remove('noShow');
         document.querySelector('#passwordSecondValue').value = false;
-    }
+    };
     const failEmail = function(msg){
         document.querySelector('#email').disabled = false;
         document.querySelector('.email-send').classList.remove('noTouch');
@@ -51,7 +51,7 @@
         checking.style.color = 'red';
         checking.classList.remove('noShow');
         document.querySelector('#emailValue').value = false;
-    }
+    };
     const successEmail = function(){
         const checking = document.querySelector('#email-checker');
         checking.textContent = '인증번호가 확인되었습니다';
@@ -62,21 +62,21 @@
         document.querySelector('.email-send').classList.add('noTouch');
         document.querySelector('.email-authentication-number').disabled = true;
         document.querySelector('.email-authentication-checker-button').classList.add('noTouch');
-    }
+    };
     const successNickname = function(){
         const checking = document.querySelector('#nickname-checker');
         checking.textContent = '사용 가능한 닉네임입니다';
         checking.style.color = 'green';
         checking.classList.remove('noShow');
         document.querySelector('#nicknameValue').value = true;
-    }
+    };
     const failNickname  = function(msg){
         const checking = document.querySelector('#nickname-checker');
         checking.textContent = msg;
         checking.style.color = 'red';
         checking.classList.remove('noShow');
         document.querySelector('#nicknameValue').value = false;
-    }
+    };
 // 메세지 설정     
    
 
@@ -103,7 +103,7 @@
                 failUsername("이미 사용 중인 아이디입니다");
             }
         });
-    }
+    };
 
     const checkUsername = function(){
         const username = document.querySelector('#username').value;
@@ -114,7 +114,7 @@
         }else{
             failUsername('사용이 불가능한 아이디입니다');
         }
-    }
+    };
 
     const checkPassword = function(){
         const password = document.querySelector('#password').value;
@@ -137,7 +137,7 @@
            successPasswordSecond();
         }
         
-    }
+    };
 
     const checkPasswordSecond = function(){
         const password = document.querySelector('#password').value;
@@ -148,7 +148,7 @@
         }else{
             failPasswordSecond();
         }
-    }
+    };
 
 
     //서버에 이메일 api로 접근
@@ -186,7 +186,7 @@
             }
             document.querySelector('.email-authentication-number').dataset.random = data.data;
         });
-    }
+    };
 
 
 
@@ -198,7 +198,7 @@
         }else{
             emailApi(email);    
         }
-    }
+    };
 
     const authenticateEmail = function(){
         const inputData = document.querySelector('.email-authentication-number');
@@ -207,7 +207,7 @@
         }else{
            failEmail("잘못된 인증번호입니다");
         }
-    }
+    };
 
 
     
@@ -232,7 +232,7 @@
                 failNickname("이미 사용 중인 닉네임입니다");
             }
         })
-    }
+    };
 
     const checkNickname = function(){
         const nickname = document.querySelector('#nickname').value;
@@ -243,12 +243,13 @@
             console.log("읭");
            failNickname("사용할 수 없는 닉네임입니다"); 
         }
-    }
+    };
   //이벤트 함수
 
 
 
 //이벤트 등록
+(function(){
     const username = document.querySelector('#username');
     const password = document.querySelector('#password');
     const passwordSecond = document.querySelector('#passwordSecond');
@@ -262,6 +263,7 @@
     const emailAuthentication = document.querySelector('#email-authentication');
     email.addEventListener('click', checkEmail);
     emailAuthentication.addEventListener('click', authenticateEmail);
+})();
 //이벤트 등록
 
 
@@ -310,11 +312,13 @@
             document.querySelector('.join-content').submit();
         }
        
-    }
+    };
 //최종 이벤트 함수
 
 
 //최종 이벤트 함수 등록
+(function(){
     const submit = document.querySelector('.submit-button');
     submit.addEventListener('click', checkAll);
+})();
 //최종 이벤트 함수 등록

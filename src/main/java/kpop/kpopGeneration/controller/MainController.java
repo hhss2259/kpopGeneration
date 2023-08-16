@@ -29,19 +29,14 @@ import java.util.Collection;
 public class MainController {
 
     /**
-     * 메인 페이지로 라우팅
+     * 메인 페이지
      */
     @GetMapping("/")
-    public String main(@RequestParam(required = false) String errorMessage,
-                       @RequestParam(required = false) String join,
+    public String main(@RequestParam(required = false) String join,
+                       @RequestParam(required = false) String errorMessage,
                        Model model,
                        RedirectAttributes redirectAttributes) {
-        /**
-         *  errorMessage가 존재하는 경우 = 로그인 시 에러가 발생했을 때
-         *  1. 해당 아이디가 존재하지 않을때
-         *  2. 비밀번호가 일치하지 않을 때
-         *  3. form 안에 존재하는 secret_key의 정보가 일치하지 않을 떄
-         */
+
         if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
         }
@@ -50,10 +45,8 @@ public class MainController {
          * 회원가입에 성공하면 성공 메세지를 보여주기 위해 사용
         */
         if(join != null && join.equals(LoginInfo.JOIN_SUCCESS)){
-            System.out.println("join = " + join);
             model.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         }
-
         /**
          *  SecurityContextHolder에서 현재 로그인한 사용자의 정보를 가지고 온다
          *  <세 가지 경우의 수>
@@ -63,21 +56,31 @@ public class MainController {
          *      최초 로그인이 아니면 추가 정보를 받을 필요가 없으므로 일반 회원가입 유저와 동등하게 행동함
          */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof Member){
-            Member loginMember = (Member) authentication.getPrincipal();
-            model.addAttribute("memberDto", new MemberViewDto());
-        }
+
         if (authentication.getPrincipal() instanceof Oauth2Member){
             Oauth2Member oauth2Member = (Oauth2Member) authentication.getPrincipal();
             Member loginMember = oauth2Member.getMember();
             if (loginMember.getNickName() == null ){
                 return "oauthJoin";
             }
-            model.addAttribute("memberDto", new MemberViewDto());
         }
         return "main";
     }
 
+    @GetMapping("/errorRedirect")
+    public String error(@RequestParam(required = false) String errorMessage,
+                        @RequestParam String referer,
+                        RedirectAttributes redirectAttributes){
+        /**
+         *  errorMessage가 존재하는 경우 = 로그인 시 에러가 발생했을 때
+         *  1. 해당 아이디가 존재하지 않을때
+         *  2. 비밀번호가 일치하지 않을 때
+         *  3. form 안에 존재하는 secret_key의 정보가 일치하지 않을 떄
+         */
+
+        redirectAttributes.addAttribute("errorMessage", errorMessage);
+        return "redirect:"+referer;
+    }
 
     @GetMapping("/news/list")
     public String news(){
