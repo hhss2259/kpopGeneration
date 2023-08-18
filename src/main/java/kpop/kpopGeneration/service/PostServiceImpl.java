@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.*;
+import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
@@ -12,11 +13,15 @@ import kpop.kpopGeneration.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -105,9 +110,11 @@ public class PostServiceImpl implements PostService {
         Post post = postById.orElseThrow(()->new NotExistedPostException());
 
         //  포스트에 달린 댓글들 가져오기
-        Page<CommentViewDto> commentListByPost = commentRepository.findCommentListByPost(id, commentPageable);
-        PageCustomDto<CommentViewDto> commentView = getPageCustom(commentListByPost); // Page를 PageCustomDto로 변환한다
+        Page<Comment> pureCommentListByPost = commentRepository.findPureCommentListByPost(id, commentPageable);
+        Page<PureCommentViewDto> commentList = getCommentViewDtoPage(pureCommentListByPost);
+        PageCustomDto<PureCommentViewDto> commentView = getPageCustom(commentList); // Page를 PageCustomDto로 변환한다
         commentView.setCurrent((int)(commentPageable.getPageNumber()+1)); // PageCustomDto에 필요한 정보를 담는다
+
 
         // 작성자의 최신글 가져오기
         Page<RecentPostByMemberDto> recent = postRepository.findRecentPostListByMember(post.getMember(), PageRequest.of(0, 5), id);
@@ -191,6 +198,37 @@ public class PostServiceImpl implements PostService {
         dto.setNextPageable(list.nextPageable());
         dto.setPreviousPageable(list.previousPageable());
         return dto;
+    }
+
+    private Page<PureCommentViewDto> getCommentViewDtoPage(Page<Comment> pureCommentListByPost){
+        List<Comment> content = pureCommentListByPost.getContent();
+        List<PureCommentViewDto> pureCommentViewDtoList = new ArrayList<>();
+        content.forEach((comment) ->{
+            Long commentId = comment.getId();
+            String nickname = comment.getMember().getNickName();
+            Long memberId = comment.getMember().getId();
+            String textBody = comment.getTextBody();
+            Long likes = comment.getLikes();
+            Long postId = comment.getParentPost().getId();
+            Long parentCommentId = null;
+            if(comment.getParentComment() != null){
+                parentCommentId = comment.getParentComment().getId();
+            }
+            Boolean isCommentForComment = comment.getIsCommentForComment();
+            LocalDateTime lastModifiedTime = comment.getLastModifiedTime();
+            Integer depth = comment.getDepth();
+            String parentNickname = null;
+
+            if(comment.getParentComment() != null){
+                parentNickname = comment.getParentComment().getMember().getNickName();
+            }
+
+            PureCommentViewDto pureCommentViewDto =
+                    new PureCommentViewDto(commentId, nickname, memberId, textBody, likes, postId,parentCommentId,isCommentForComment, lastModifiedTime, depth, parentNickname);
+            pureCommentViewDtoList.add(pureCommentViewDto);
+        });
+
+       return new PageImpl<PureCommentViewDto>(pureCommentViewDtoList, pureCommentListByPost.getPageable(), pureCommentListByPost.getTotalElements());
     }
 
 }

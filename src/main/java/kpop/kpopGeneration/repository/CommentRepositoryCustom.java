@@ -11,5 +11,7 @@ import java.util.List;
 public interface CommentRepositoryCustom  {
     Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable);
 
+    Page<Comment> findPureCommentListByPost(Long postId, Pageable pageable);
+
     Boolean getIsCommentForComment(Long commentId);
 }

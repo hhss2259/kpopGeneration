@@ -34,11 +34,13 @@ public class MainController {
     @GetMapping("/")
     public String main(@RequestParam(required = false) String join,
                        @RequestParam(required = false) String errorMessage,
+                       @RequestParam(required = false) String referer,
                        Model model,
                        RedirectAttributes redirectAttributes) {
 
         if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("referer", referer);
         }
 
         /**
@@ -79,6 +81,7 @@ public class MainController {
          */
 
         redirectAttributes.addAttribute("errorMessage", errorMessage);
+        redirectAttributes.addAttribute("referer", referer );
         return "redirect:"+referer;
     }
 

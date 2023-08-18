@@ -161,3 +161,60 @@ function clickLikes(){
 })();
             
             
+
+
+// 빈 댓글인지 확인
+function checkComment(event){
+    event.preventDefault();
+    let textBody =  event.target.parentElement.firstElementChild;
+    if(textBody.value.length == 0){
+        alert("댓글을 입력해주세요");
+    }else{
+        textBody.parentNode.submit();
+    }                
+};
+
+// 댓글 입력란 토글
+function toggleComment(event){
+    if(member == null){
+        alert("로그인이 필요합니다");
+        return;
+    }
+
+    let target = event.target.parentElement.parentElement.lastElementChild;
+    target.classList.toggle("no-show");
+    target.classList.toggle("comment-write-container");
+};
+
+//댓들달기 유효성 검사
+(function(){
+    document.querySelectorAll('.comment-new').forEach((c)=>{
+    c.addEventListener('click', toggleComment);
+    })
+    document.querySelectorAll(".comment-write-button").forEach((button)=>{
+            button.addEventListener('click', checkComment);
+    })
+    document.querySelectorAll(".comment-write-textarea").forEach((textarea)=>{
+        textarea.addEventListener('click', (event)=>{
+            if(member.logined == false){
+                alert("로그인이 필요합니다.")
+            }else{
+                event.target.readOnly = false;
+            }
+        })
+    })
+})();
+
+
+//포스트 글쓴이가 쓴 댓글 표시
+(function(){
+    let ids = document.querySelectorAll('.comment-writer-id');
+    ids.forEach( id =>{
+        console.log(id.value);
+        console.log(postDetail.memberId)
+        if(id.value == postDetail.memberId){
+            id.nextElementSibling.classList.remove('no-show');
+            id.nextElementSibling.classList.add('post-self-comment');
+        }
+    })
+})();

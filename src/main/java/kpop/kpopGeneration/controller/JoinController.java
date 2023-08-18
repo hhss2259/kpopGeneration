@@ -27,9 +27,12 @@ public class JoinController {
     private final MemberService memberService;
 
     @GetMapping("/join")
-    public String join(@RequestParam(required = false) String errorMessage, Model model){
+    public String join(@RequestParam(required = false) String errorMessage,
+                       @RequestParam(required = false) String referer,
+                       Model model){
         if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("referer", referer);
         }
         return "join";}
 

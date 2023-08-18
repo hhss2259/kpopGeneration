@@ -31,10 +31,12 @@ public class PostController {
     public String findPostListByCategory(@RequestParam(required = false) String category,
                                          @PageableDefault(size = 10, page = 0) Pageable pageable,
                                          @RequestParam(required = false) String errorMessage,
+                                         @RequestParam(required = false) String referer,
                                          Model model) {
         // 에러 발생 시 에러 정보를 보여준다.
         if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("referer", referer);
         }
 
         // 카테고리와 페이지 정보를 이용하여 필요한 포스트 리스트들을 서버에서 조회해온다
@@ -56,9 +58,11 @@ public class PostController {
     @GetMapping("/post/detail")
     public String postDetail(@RequestParam String id, Model model,
                              @RequestParam(required = false) String errorMessage,
+                             @RequestParam(required = false) String referer,
                              @PageableDefault(page=0, size = 20) Pageable commentPageable){
         if (errorMessage != null){
             model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("referer", referer);
         }
 
         Long postId = Long.parseLong(id);
@@ -77,14 +81,7 @@ public class PostController {
                              Model model) {
 
         // 로그인하지 않은 사람은 접근할 수 없다
-        if(checkLogin()== false || post == null){
-            return "redirect:/";
-        }
-
-        // 해당 글의 원작자가 아닌 사람은 접근할 수 없다
-        Long id = Long.parseLong(post);
-        PostUpdateDto postUpdateDto = postService.findPostUpdateDto(id);
-        if(checkAuthority(postUpdateDto.getUsername()) == false){ //잘못된 접근
+        if(checkLogin()== false){
             return "redirect:/";
         }
 
@@ -92,6 +89,13 @@ public class PostController {
         if(post == null ){
             model.addAttribute("postSaveViewDto", new PostSaveViewDto());
             return "post";
+        }
+
+        // (post가 null이 아닌 경우) 해당 글의 원작자가 아닌 사람은 접근할 수 없다
+        Long id = Long.parseLong(post);
+        PostUpdateDto postUpdateDto = postService.findPostUpdateDto(id);
+        if(checkAuthority(postUpdateDto.getUsername()) == false){ //잘못된 접근
+            return "redirect:/";
         }
 
         // 포스트 수정 작성임으로, 기존 포스트 정보를 보여주어야 한다.
@@ -105,13 +109,8 @@ public class PostController {
      */
     @PostMapping("/post")
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
-        System.out.println("form.getCategory() = " + postSaveViewDto.getCategory());
-        System.out.println("form.getTitle() = " + postSaveViewDto.getTitle());
-        System.out.println("form.getTextdata() = " + postSaveViewDto.getBody());
-
-//        PostSaveDto postSaveDto = new PostSaveDto(form.getTitle(), form.getTextdata(), Category.valueOf(form.getCategory()));
-//        postService.savePost(postSaveDto, "xxxx");
-
+        PostSaveDto postSaveDto = new PostSaveDto(postSaveViewDto.getTitle(), postSaveViewDto.getBody(), Category.valueOf(postSaveViewDto.getCategory()));
+        postService.savePost(postSaveDto, getUsername());
         return "redirect:/post/list";
     }
 
@@ -142,5 +141,17 @@ public class PostController {
             result = true;
         }
         return result;
+    }
+
+    String getUsername(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member member = null;
+        if (principal instanceof Member) {
+            member = (Member) principal;
+        } else if (principal instanceof Oauth2Member) {
+            Oauth2Member oauth2Member = (Oauth2Member) principal;
+            member = oauth2Member.getMember();
+        }
+        return member.getUsername();
     }
 }

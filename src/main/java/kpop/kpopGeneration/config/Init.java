@@ -27,10 +27,10 @@ public class Init {
     @PostConstruct
     public void init() {
 
-        Member member1 = new Member("xxxx", "1111", "앤써");
-        Member member2 = new Member("yyyy", "1111", "앤써");
-        Member member3 = new Member("zzzz", "1111", "앤써");
-        Member member4 = new Member("hhss2259", "11111111", "앤써");
+        Member member1 = new Member("xxxx", "1111", "앤써1");
+        Member member2 = new Member("yyyy", "1111", "앤써2");
+        Member member3 = new Member("zzzz", "1111", "앤써3");
+        Member member4 = new Member("hhss2259", "11111111", "앤써4");
 
         memberService.save(member1);
         memberService.save(member2);
@@ -38,38 +38,16 @@ public class Init {
         memberService.save(member4);
 
 
-//        for (int i = 0; i < 103; i++) {
-//            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.MUSIC), member1.getUsername());
-//        }
-//
-
 
         Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
-        for (int i = 0; i < 7; i++) {
-            postService.savePost(new PostSaveDto("테스트 포스트"+i, "포스트 테스트하기 "+i, Category.NORMAL), member1.getUsername());
-        }
-
-
-        Long[] longs = new Long[147];
-        Long aLong = commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member1.getUsername());
-        commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member2.getUsername());
-        commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member3.getUsername());
-        commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + 0, null, true), member1.getUsername());
-//        for (int i = 0; i <30; i++) {
-//            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.REVIEW), member1.getUsername());
-//        }
-//        for (int i = 0; i <12; i++) {
-//            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.CERTIFICATION), member1.getUsername());
-//        }
-//
-//        for (int i = 0; i <44; i++) {
-//            postService.savePost(new PostSaveDto("테스트 포스트" + i, "포스트 테스트하기 " + i, Category.NORMAL), member1.getUsername());
-//        }
-//         longs[0] = aLong;
-//        for (int i = 1; i < 147; i++) {
-//            Long aLong1 = commentService.saveComment(new CommentSaveDto(savePost, "테스트 댓글입니다" + i, longs[i - 1], true), member1.getUsername());
-//            longs[i] = aLong1;
-//        }
+        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
+        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
+        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
+        Long aa2 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa3, true), member4.getUsername());
+        Long aa4 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member3.getUsername());
+        Long aa5 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+        Long aa6 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa5, true), member4.getUsername());
+        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
 
 
     }

@@ -25,11 +25,11 @@ public class PostDetailDto {
     Long commentCnt;
     LocalDateTime date;
 
-    PageCustomDto<CommentViewDto> commentList;
+    PageCustomDto<PureCommentViewDto> commentList;
     PageCustomDto<RecentPostByMemberDto> recent;
 
 
-    public PostDetailDto(Post post, PageCustomDto<CommentViewDto> commentList, PageCustomDto<RecentPostByMemberDto> recent){
+    public PostDetailDto(Post post, PageCustomDto<PureCommentViewDto> commentList, PageCustomDto<RecentPostByMemberDto> recent){
         //포스트 정보
         this.id = post.getId();
         this.title = post.getTitle();

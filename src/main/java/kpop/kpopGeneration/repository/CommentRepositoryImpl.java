@@ -78,6 +78,42 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
 
     @Override
+    public Page<Comment> findPureCommentListByPost(Long postId, Pageable pageable) {
+        QComment parentComment = new QComment("parentComment");
+        QMember parentMember = new QMember("parentMember");
+        List<Comment> fetch = queryFactory
+                .select(comment)
+                .from(comment)
+                .join(comment.parentPost, post).fetchJoin()
+                .join(comment.member, member).fetchJoin()
+                .leftJoin(comment.parentComment, parentComment).fetchJoin()
+//                .leftJoin(parentComment.member, parentMember).fetchJoin()
+                .where(
+                        comment.parentPost.id.eq(postId),
+                        comment.deletedTrue.eq(false)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(comment.orderNumber.asc(), comment.createdTime.asc())
+                .fetch();
+//        List<Comment> fetch = queryFactory
+//                .selectFrom(comment)
+//                .where(comment.parentPost.id.eq(postId))
+//                .fetch();
+
+        int size = queryFactory
+                .selectFrom(comment)
+                .where(
+                        comment.parentPost.id.eq(postId),
+                        comment.deletedTrue.eq(false)
+                )
+                .fetch().size();
+
+        return new PageImpl<>(fetch, pageable, size);
+    }
+
+
+    @Override
     public Boolean getIsCommentForComment(Long commentId) {
         Boolean aBoolean = queryFactory
                 .select(comment.isCommentForComment)

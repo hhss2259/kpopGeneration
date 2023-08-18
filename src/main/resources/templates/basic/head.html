@@ -18,8 +18,10 @@
         const member = [[${member}]];
         const errorMessage = [[${errorMessage}]];
         if(errorMessage != null){
+            const redirectUrl = [[${referer}]];
             console.log(errorMessage);
             window.alert(errorMessage);
+            location.href= redirectUrl;
         }
 
         const join = [[${join}]];
