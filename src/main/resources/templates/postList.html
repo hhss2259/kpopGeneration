@@ -4,6 +4,7 @@
 <body>
     <div th:replace="~{basic/header :: header}"></div>
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
     <section>
         <div class="inner">
             <div class="board-container">
@@ -79,7 +80,7 @@
                                 <div class="board-line-writer" th:text="*{nickname}">
                                     지우
                                 </div>
-                                <div class="board-line-date" th:text="*{date}">
+                                <div class="board-line-date" th:text="*{#temporals.format(date, 'yyyy-MM-dd')}">
                                     2023.07.27
                                 </div>
                             </th:block>
@@ -111,9 +112,7 @@
         </div>
     </section>
 <script th:inline="javascript">
- // 페이지 정보
-        let category = String([[${postList.category}]]); //카테고리
-
+        let category = String([[${postList.category}]]); 
         let numberOfElements= Number([[${postList.numberOfElements}]]);
         let totalElements =  Number([[${postList.totalElements}]]);
         let totalPages =  Number([[${postList.totalPages}]]);
@@ -123,6 +122,10 @@
         let isLast=  Boolean([[${postList.isLast}]]);
         let current =  Number([[${postList.current}]]);
         // 설정 정보
+
+        let searching_button = document.querySelector(".post-search");
+
+
 </script>
 </body>
 <!-- 공통 자바스크립트(bottom)-->

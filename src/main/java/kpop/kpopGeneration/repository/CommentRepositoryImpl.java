@@ -26,11 +26,9 @@ import static kpop.kpopGeneration.entity.QPost.*;
 
 public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-
     public CommentRepositoryImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
-
     @Override
     public Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable) {
         QComment parentComment = new QComment("parentComment");
@@ -77,7 +75,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
         return new PageImpl<>(fetch, pageable, size);
     }
-
     @Override
     public Page<Comment> findPureCommentListByPost(Long postId, Pageable pageable) {
         QComment parentComment = new QComment("parentComment");
@@ -96,8 +93,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .orderBy(comment.orderNumber.asc(), comment.createdTime.asc())
                 .fetch();
-
-
         int size = queryFactory
                 .selectFrom(comment)
                 .where(
@@ -107,8 +102,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
         return new PageImpl<>(fetch, pageable, size);
     }
-
-
     @Override
     public Boolean getIsCommentForComment(Long commentId) {
         Boolean aBoolean = queryFactory
@@ -118,7 +111,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .fetchOne();
         return aBoolean;
     }
-
     @Override
     public Optional<Comment> findCommentById(Long commentId) {
         Comment selected = queryFactory
@@ -126,7 +118,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .join(comment.parentPost, post).fetchJoin()
                 .where(comment.id.eq(commentId), comment.deletedTrue.eq(false))
                 .fetchOne();
-
         return Optional.ofNullable(selected);
     }
 }

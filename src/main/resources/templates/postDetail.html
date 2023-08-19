@@ -20,7 +20,7 @@
                             <div class="detail-info-left">
                                 <div class="detail-info-image"></div>
                                 <div class="mini-info" th:text="*{nickname}">앤써</div>
-                                <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{date}">2023년 8월 11일</div></div>
+                                <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{#temporals.format(date, 'yyyy-MM-dd')}">2023년 8월 11일</div></div>
                                 <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
                                 <div class="mini-container">좋아요 
                                     <div class="mini-info" th:text="*{likes}">2</div>
@@ -74,7 +74,7 @@
                                             <input class="comment-writer-id" type="hidden" th:value="${comment.memberId}"/>
                                             <div class="no-show" >글쓴이</div>
                                         </div>
-                                        <div class="comment-date" th:text="${comment.lastModifiedTime}">
+                                        <div class="comment-date" th:text="${#temporals.format(comment.lastModifiedTime, 'yyyy-MM-dd')}">
                                             2023년 8월 13일
                                         </div>
                                     </div>
@@ -140,7 +140,6 @@
                 </div>
             </div>
         </div>
-        
     </section>
 </body>
 

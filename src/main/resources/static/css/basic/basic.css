@@ -121,8 +121,7 @@ hr{
 /*
 modal
 */
-
-.modal {
+.login-modal {
     position: absolute;
     top: 0;
     left: 0;
@@ -159,6 +158,8 @@ modal
 }
 
 .modal-content-container{
+    width: 100%;
+    height: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -167,12 +168,12 @@ modal
 }
 
 .modal-form-container{
+    width: 100%;
+    height: 100%;
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-
 }
 
 .modal-form-input{
@@ -208,3 +209,41 @@ modal
 /*
 modal
 */
+
+
+/*searching modal*/
+.searching-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    width: 100%;
+    height: 100%;
+  
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+.searchingOption{
+    width: 350px;
+    height:50px;
+    margin-bottom: 20px;
+}
+.searching-keyword{
+    width: 350px;
+    height:50px;
+    margin-bottom: 20px;
+}
+.searching-submit{
+    width: 350px;
+    height: 50px;
+    text-align: center;
+    background-color: azure;
+    line-height: 40px;
+    margin-bottom: 70px;
+    border:  0px;
+}
+
+.searching-info{
+    color: skyblue;
+}
