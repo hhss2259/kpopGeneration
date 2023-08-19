@@ -125,13 +125,10 @@ function pageMove(event){
         }
     })
 })();
-            
-
-// 비로그인자는 로그인 기능을 사용할 수 없다
+// 비로그인자는 좋아요 기능을 사용할 수 없다
 function clickLikesByAny(){
     alert("좋아요 기능은 로그인 후 사용 가능합니다.");
 }
-
 // 좋아요 버튼 클릭 시
 function clickLikes(){
     fetch("/api/post/likes/toggle?post="+postId)
@@ -149,7 +146,6 @@ function clickLikes(){
 
     })
 }
-
 // 좋아요 버튼에 이벤트 함수 등록
 (function(){
     let button = document.querySelector(".detail-likes-circle");
@@ -173,23 +169,43 @@ function checkComment(event){
         textBody.parentNode.submit();
     }                
 };
-
-// 댓글 입력란 토글
-function toggleComment(event){
-    if(member == null){
+// 댓글 입력란 토글 - 새댓글 달기
+function toggleComment_new(event){
+    if(member.logined == false){
         alert("로그인이 필요합니다");
         return;
     }
+    let form_container = event.target.parentElement.parentElement.lastElementChild;
+    form_container.classList.toggle("no-show");
+    form_container.classList.toggle("comment-write-container");
 
-    let target = event.target.parentElement.parentElement.lastElementChild;
-    target.classList.toggle("no-show");
-    target.classList.toggle("comment-write-container");
+    if(form_container.classList.contains("comment-write-container")){
+        form_container.previousElementSibling.classList.remove("comment-write-container");
+        form_container.previousElementSibling.classList.add("no-show");
+    }
 };
+// 댓글 입력란 토글 - 내댓글 수정하기
+function toggleComment_update(event){
+    if(member.logined == false){
+        alert("로그인이 필요합니다");
+        return;
+    }
+    let form_container = event.target.parentElement.parentElement.lastElementChild.previousElementSibling;
+    form_container.classList.toggle("no-show");
+    form_container.classList.toggle("comment-write-container");
 
+    if(form_container.classList.contains("comment-write-container")){
+        form_container.nextElementSibling.classList.remove("comment-write-container");
+        form_container.nextElementSibling.classList.add("no-show");
+    }
+};
 //댓들달기 유효성 검사
 (function(){
     document.querySelectorAll('.comment-new').forEach((c)=>{
-    c.addEventListener('click', toggleComment);
+    c.addEventListener('click', toggleComment_new);
+    })
+    document.querySelectorAll('.comment-update-button').forEach((c)=>{
+        c.addEventListener('click', toggleComment_update);
     })
     document.querySelectorAll(".comment-write-button").forEach((button)=>{
             button.addEventListener('click', checkComment);
@@ -204,6 +220,8 @@ function toggleComment(event){
         })
     })
 })();
+
+
 
 
 //포스트 글쓴이가 쓴 댓글 표시

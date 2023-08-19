@@ -87,12 +87,22 @@
                                         <div class="comment-likes" th:text="${comment.likes}">
                                             10
                                         </div>
-                                        <div class="no-show">삭제</div>
-                                        <div class="no-show">수정</div>
+                                        <div class="no-show comment-delete-button">삭제</div>
+                                        <div class="no-show comment-update-button">수정</div>
                                         <div class="comment-new">
                                             댓글달기
                                         </div>
                                         <input type="hidden" class="comment-login-check" th:value="${comment.memberId}"/>
+                                    </div>
+                                    <div class="no-show">
+                                        <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
+                                        <form class="comment-write" th:action="@{/comment/update}" method="post">
+                                            <textarea class="comment-write-textarea" name="textBody" th:text="${comment.textBody}"  readonly></textarea>
+                                            <input type="hidden" name="postId" th:value="${postDetail.id}"/>
+                                            <input type="hidden" name="parentCommentId" th:value="${comment.commentId}"/>
+                                            <input type="hidden" name="isCommentForComment" th:value="true"/>
+                                            <button type="submit" class="comment-write-button">등록하기</button>
+                                        </form>
                                     </div>
                                     <div class="no-show">
                                         <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
