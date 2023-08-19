@@ -2,6 +2,7 @@ package kpop.kpopGeneration.controller;
 
 import com.sun.istack.NotNull;
 import kpop.kpopGeneration.dto.CommentSaveDto;
+import kpop.kpopGeneration.dto.CommentUpdateViewDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.security.oauth2.Oauth2Member;
 import kpop.kpopGeneration.service.CommentService;
@@ -43,20 +44,21 @@ public class CommentController {
     /**
      * 댓글 수정하기
      */
-//    @PostMapping("/comment/update")
-//    String updateComment(@ModelAttribute CommentUpdateViewDto dto) {
-//
-//    }
+    @PostMapping("/comment/update")
+    String updateComment(@ModelAttribute CommentUpdateViewDto commentUpdateViewDto) {
+        commentService.updateComment(commentUpdateViewDto);
+        return "redirect:/post/detail?id=" + commentUpdateViewDto.getPostId();
+    }
 
     /**
      * 댓글 삭제하기
      */
-
-    /**
-     * 댓글 좋아요 누르기
-     */
-
-
+    @GetMapping("/comment/delete")
+    String deleteComment(@RequestParam String comment) {
+        Long id = Long.parseLong(comment);
+        Long aLong = commentService.deleteComment(id, getUsername());
+        return "redirect:/post/detail?id="+aLong;
+    }
 
     @Data
     static class CommentSaveViewDto{
@@ -65,6 +67,8 @@ public class CommentController {
         Long parentCommentId;
         Boolean isCommentForComment;
     }
+
+
 
     String getUsername(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -77,4 +81,6 @@ public class CommentController {
         }
         return member.getUsername();
     }
+
+
 }

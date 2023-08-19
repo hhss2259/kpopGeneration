@@ -30,14 +30,7 @@ public class PostController {
     @GetMapping("/post/list")
     public String findPostListByCategory(@RequestParam(required = false) String category,
                                          @PageableDefault(size = 10, page = 0) Pageable pageable,
-                                         @RequestParam(required = false) String errorMessage,
-                                         @RequestParam(required = false) String referer,
                                          Model model) {
-        // 에러 발생 시 에러 정보를 보여준다.
-        if (errorMessage != null){
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("referer", referer);
-        }
 
         // 카테고리와 페이지 정보를 이용하여 필요한 포스트 리스트들을 서버에서 조회해온다
         Category requestCategory = null;
@@ -57,18 +50,10 @@ public class PostController {
      */
     @GetMapping("/post/detail")
     public String postDetail(@RequestParam String id, Model model,
-                             @RequestParam(required = false) String errorMessage,
-                             @RequestParam(required = false) String referer,
                              @PageableDefault(page=0, size = 20) Pageable commentPageable){
-        if (errorMessage != null){
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("referer", referer);
-        }
-
         Long postId = Long.parseLong(id);
-        postService.increaseViews(postId);
+        postService.increaseViews( Long.parseLong(id));
         PostDetailDto postById = postService.findPostById(postId, commentPageable);
-
         model.addAttribute("postDetail", postById);
         return "postDetail";
     }
@@ -106,11 +91,23 @@ public class PostController {
 
     /**
      * 작성한 포스트를 저장한다
+     * 또한 이미 작성된 포스트일 경우 포스트를 수정한다.
      */
     @PostMapping("/post")
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
         PostSaveDto postSaveDto = new PostSaveDto(postSaveViewDto.getTitle(), postSaveViewDto.getBody(), Category.valueOf(postSaveViewDto.getCategory()));
         postService.savePost(postSaveDto, getUsername());
+        return "redirect:/post/list";
+    }
+
+
+    /**
+     * 포스트 삭제하기
+     */
+    @GetMapping("/post/delete")
+    public String deletePost(@RequestParam String post){
+        long id = Long.parseLong(post);
+        Long aLong = postService.deletePost(id, getUsername());
         return "redirect:/post/list";
     }
 

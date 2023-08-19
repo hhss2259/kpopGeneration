@@ -109,7 +109,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .where(
                         post.member.eq(member),
-                        post.id.ne(postId)
+                        post.id.ne(postId),
+                        post.deletedTrue.eq(false)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

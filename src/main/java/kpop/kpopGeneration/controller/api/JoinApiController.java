@@ -15,8 +15,7 @@ public class JoinApiController {
     private final MemberService memberService;
 
     /**
-     * 동일한 username이 존재하면 발생하는 DuplicateException을 처리
-     * @return DefaultResponse
+     * DuplicateException 발생 시 40001번 statusCode를 전송한다
      */
     @ExceptionHandler(DuplicateException.class)
     public DefaultResponse<Integer> duplicateUsername(){
@@ -24,6 +23,9 @@ public class JoinApiController {
     }
 
 
+    /**
+     * 회원가입 시 중복된 username이 존재하는 지 확인한다.
+     */
     @PostMapping("/api/username")
     public DefaultResponse<String> checkUsername(@RequestBody UsernameDto dto){
         memberService.checkDuplicateUsername(dto.getUsername());
@@ -33,7 +35,9 @@ public class JoinApiController {
     static class UsernameDto{
         String username;
     }
-
+    /**
+     * 회원가입 시 중복된 nickname이 존재하는 지 확인한다.
+     */
     @PostMapping("/api/nickname")
     public DefaultResponse<String> checkNickname(@RequestBody NicknameDto dto){
         memberService.checkDuplicateNickname(dto.getNickname());

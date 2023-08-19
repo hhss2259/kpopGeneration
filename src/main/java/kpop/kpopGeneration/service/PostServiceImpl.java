@@ -110,16 +110,14 @@ public class PostServiceImpl implements PostService {
         Post post = postById.orElseThrow(()->new NotExistedPostException());
 
         //  포스트에 달린 댓글들 가져오기
-        Page<Comment> pureCommentListByPost = commentRepository.findPureCommentListByPost(id, commentPageable);
-        Page<PureCommentViewDto> commentList = getCommentViewDtoPage(pureCommentListByPost);
+        Page<Comment> pureList = commentRepository.findPureCommentListByPost(id, commentPageable);
+        Page<PureCommentViewDto> commentList = getCommentViewDtoPage(pureList);
         PageCustomDto<PureCommentViewDto> commentView = getPageCustom(commentList); // Page를 PageCustomDto로 변환한다
         commentView.setCurrent((int)(commentPageable.getPageNumber()+1)); // PageCustomDto에 필요한 정보를 담는다
-
 
         // 작성자의 최신글 가져오기
         Page<RecentPostByMemberDto> recent = postRepository.findRecentPostListByMember(post.getMember(), PageRequest.of(0, 5), id);
         PageCustomDto<RecentPostByMemberDto> recentView = getPageCustom(recent); // Page를 PageCustomDto로 변환한다
-
 
         // 포스트 정보와 댓글의 정보를 결합하여 Dto로 리턴하기
         PostDetailDto postDetailDto = new PostDetailDto(post, commentView, recentView);
@@ -159,6 +157,7 @@ public class PostServiceImpl implements PostService {
      * 게시글 삭제
      */
     @Override
+    @Transactional
     public Long deletePost(Long id, String username) {
         // DB에서 Post를 찾아온다
         Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
@@ -223,8 +222,13 @@ public class PostServiceImpl implements PostService {
                 parentNickname = comment.getParentComment().getMember().getNickName();
             }
 
+            Boolean deletedTrue = false;
+            if(comment.getDeletedTrue()  == true ){
+                deletedTrue = true;
+            }
+
             PureCommentViewDto pureCommentViewDto =
-                    new PureCommentViewDto(commentId, nickname, memberId, textBody, likes, postId,parentCommentId,isCommentForComment, lastModifiedTime, depth, parentNickname);
+                    new PureCommentViewDto(commentId, nickname, memberId, textBody, likes, postId,parentCommentId,isCommentForComment, lastModifiedTime, depth, parentNickname, deletedTrue);
             pureCommentViewDtoList.add(pureCommentViewDto);
         });
 

@@ -199,6 +199,19 @@ function toggleComment_update(event){
         form_container.nextElementSibling.classList.add("no-show");
     }
 };
+//내가 작성한 댓글 삭제하기
+function toggleComment_delete(event){
+    if(member.logined == false){
+        alert("로그인이 필요합니다");
+        return;
+    }
+    let result = confirm("정말 삭제하시겠습니까?");
+    if(result){
+        location.href = "/comment/delete?comment="+event.target.firstElementChild.value;
+    }
+};
+
+
 //댓들달기 유효성 검사
 (function(){
     document.querySelectorAll('.comment-new').forEach((c)=>{
@@ -206,6 +219,9 @@ function toggleComment_update(event){
     })
     document.querySelectorAll('.comment-update-button').forEach((c)=>{
         c.addEventListener('click', toggleComment_update);
+    })
+    document.querySelectorAll('.comment-delete-button').forEach((c)=>{
+        c.addEventListener('click', toggleComment_delete);
     })
     document.querySelectorAll(".comment-write-button").forEach((button)=>{
             button.addEventListener('click', checkComment);
@@ -220,8 +236,6 @@ function toggleComment_update(event){
         })
     })
 })();
-
-
 
 
 //포스트 글쓴이가 쓴 댓글 표시

@@ -28,10 +28,10 @@
                             </div>
                             <div class="detail-info-right">
                                 <div class="no-show" id="post-delete">삭제하기</div>
-                                <a th:href="@{/post(post=*{id})}" id="post-update" class="no-show">수정하기</a>
+                                <div th:href="@{/post(post=*{id})}" id="post-update" class="no-show">수정하기</div>
                             </div>
                         </div>
-                        <div class="detail-textdata" th:text="*{body}">
+                        <div class="detail-textdata" th:utext="*{body}">
                             테스트<br>테스트<br>테스트<br>테스트
                         </div>
                         <div class="writer-posts-container">
@@ -62,6 +62,7 @@
                         <th:block th:each="comment :${postDetail.commentList.content}" >
                                 <div class="comment">
                                     <input type="hidden" th:value="${comment.depth}" class="comment-depth"/>
+                                    <input type="hidden" th:value="${comment.deletedTrue}" class="comment-deleted"/>
                                     <div class="comment-top">
                                         <div class="comment-top-left">
                                             <div class="comment-writer-image">
@@ -81,13 +82,17 @@
                                         <span th:if="${comment.parentNickname != null}" class="comment-parent-nickname" th:text="${comment.parentNickname}">
                                                 TO!
                                         </span>
-                                        <span class="comment-textBody"  th:text="${comment.textBody}"></span>
+                                        <span class="comment-textBody" th:text="${comment.textBody}"></span>
                                     </div>
                                     <div class="comment-bottom" >
-                                        <div class="comment-likes" th:text="${comment.likes}">
-                                            10
+                                        <div class="comment-likes" >
+                                            <input type="hidden" th:value="${comment.commentId}"/>
+                                            <div class="comment-likes-cnt" th:text="${comment.likes}"></div>
                                         </div>
-                                        <div class="no-show comment-delete-button">삭제</div>
+                                        <div class="no-show comment-delete-button">
+                                            <input type="hidden" class="comment-delete-id" th:value="${comment.commentId}"/>
+                                            삭제
+                                        </div>
                                         <div class="no-show comment-update-button">수정</div>
                                         <div class="comment-new">
                                             댓글달기
@@ -98,10 +103,9 @@
                                         <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
                                         <form class="comment-write" th:action="@{/comment/update}" method="post">
                                             <textarea class="comment-write-textarea" name="textBody" th:text="${comment.textBody}"  readonly></textarea>
+                                            <input type="hidden" name="commentId" th:value="${comment.commentId}"/>
                                             <input type="hidden" name="postId" th:value="${postDetail.id}"/>
-                                            <input type="hidden" name="parentCommentId" th:value="${comment.commentId}"/>
-                                            <input type="hidden" name="isCommentForComment" th:value="true"/>
-                                            <button type="submit" class="comment-write-button">등록하기</button>
+                                            <button type="submit" class="comment-write-button">수정하기</button>
                                         </form>
                                     </div>
                                     <div class="no-show">
@@ -157,20 +161,83 @@
 
     
             (function(){
+                let commentLikesList = document.querySelectorAll(".comment-likes");
+                //현재 로그인한 상태라면
+                if(member.logined== true){
+                    commentLikesList.forEach(commentLikes =>{
+                        let commentId = commentLikes.firstElementChild.value;
+                        
+                        //내가 기존에 좋아요를 누른 댓글인지 아닌지 확인한다
+                        fetch("/api/comment/likes?comment="+commentId)
+                        .then(response => response.json())
+                        .then(data =>{
+                            if(data.data.isLiked == true){
+                                commentLikes.lastElementChild.classList.add("liked");
+                            }
+                        });
+                        // 또한 좋아요 버튼을 누를 시 좋아요 기능이 활성화될 수 있도록
+                        // 이벤트함수를 등록한다.
+                        commentLikes.addEventListener("click", ()=>{
+                            fetch("/api/comment/likes/toggle?comment="+commentId)
+                            .then( response => response.json())
+                            .then(data => {
+                                console.log(data.data.likes);
+                                console.log(data.data.isLiked);
+                                commentLikes.lastElementChild.textContent = data.data.likes;
+                                if(data.data.isLiked == true){
+                                    commentLikes.lastElementChild.classList.add("liked");
+                                }else{
+                                    commentLikes.lastElementChild.classList.remove("liked");
+                                }
+                            })
+                        })   
+                    })
+                }else{
+                    commentLikesList.forEach(commentLikes =>{
+                        commentLikes.addEventListener("click", ()=>{
+                            alert("로그인이 필요합니다");
+                        })
+                    })
+                }
+            })();
+
+
+            (function(){
                 let loginMemberId = member.id;
                 let postMemberId = postDetail.memberId;
             
                 if((member.logined == true)&& (loginMemberId == postMemberId)){
-                    const delete_button = document.querySelector("#post-update");
+                    const update_button = document.querySelector("#post-update");
+                    const delete_button = document.querySelector("#post-delete");
+                    update_button.classList.remove('no-show');
+                    update_button.classList.add('post-update');    
                     delete_button.classList.remove('no-show');
-                     delete_button.classList.add('post-update');    
+                    delete_button.classList.add('post-delete');    
+
+                    delete_button.addEventListener("click", ()=>{
+                       let result =  confirm("정말 삭제하시겠습니까?");
+                       if(result == true){
+                        location.href="/post/delete?post="+postDetail.id;
+                       }
+                    });
+                    update_button.addEventListener("click",()=>{
+                        location.href="/post?post"+postDetail.id;
+                    })
                 }
             })();
 
-            (function(){
-                let loginMemberId = member.id;
-                let commentWriterIds = document.querySelectorAll(".comment-login-check");
 
+
+
+
+
+            /*
+            * 내가 단 댓글들을 확인할 수 있다
+            * 로그인한 member의 id와 comment를 작성한 member의 id가 같다면 댓글을 수정하거나 삭제할 수 있다 
+            */
+            (function(){
+                let loginMemberId = member.id; 
+                let commentWriterIds = document.querySelectorAll(".comment-login-check");
                 commentWriterIds.forEach( id =>{
                     if(loginMemberId == id.value){
                         id.previousElementSibling.previousElementSibling.classList.remove("no-show");
@@ -181,28 +248,40 @@
                         id.parentElement.parentElement.classList.add("my-comment");
                     }
                 })
-
             })();
            
-            (function(){
-                               
-            })();
+    
 
-           
             (function(){
-             let list = document.querySelectorAll(".comment-depth");
-                list.forEach( depth =>{
-                    let comment = depth.parentElement;
+                let list= document.querySelectorAll(".comment-deleted");
+                list.forEach( deleted =>{
+                    let depth = deleted.previousElementSibling;
+                    let depthClass = null;
                     if(depth.value == 1){
-                        comment.classList.add("comment-depth-one");
+                        depthClass= "comment-depth-one";
                     }else if(depth.value == 2){
-                        comment.classList.add("comment-depth-two");
+                        depthClass= "comment-depth-two";
                     }else if(depth.value == 3){
-                        comment.classList.add("comment-depth-three");
+                        depthClass= "comment-depth-three";
                     }else if(depth.value == 4){
-                        comment.classList.add("comment-depth-four");
+                        depthClass= "comment-depth-four";
                     }else if(depth.value >5 || depth.value==5){
-                        comment.classList.add("comment-depth-five");
+                        depthClass= "comment-depth-five";
+                    }
+
+                    if(deleted.value == 'true'){
+                        deleted.parentElement.classList
+                        let newNode = document.createElement('div');
+                        newNode.textContent="삭제된 댓글입니다"
+                        newNode.classList.add("deletedComment");
+                        if(depthClass != null){
+                            newNode.classList.add(depthClass);
+                        }
+                        deleted.parentElement.replaceChildren(newNode);
+                    }else{
+                        if(depthClass != null){
+                            deleted.parentElement.classList.add(depthClass);
+                        }
                     }
                 })
             })();

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostLikesViewDto {
+public class LikesViewDto {
     Long likes;
     Boolean isLiked;
 }

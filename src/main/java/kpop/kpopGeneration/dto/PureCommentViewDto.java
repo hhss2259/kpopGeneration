@@ -24,4 +24,5 @@ public class PureCommentViewDto {
     LocalDateTime lastModifiedTime;
     Integer depth;
     String parentNickname;
+    Boolean deletedTrue;
 }

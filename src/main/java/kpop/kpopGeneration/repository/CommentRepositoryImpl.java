@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static kpop.kpopGeneration.entity.QComment.*;
 import static kpop.kpopGeneration.entity.QMember.*;
@@ -89,23 +90,18 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .leftJoin(comment.parentComment, parentComment).fetchJoin()
 //                .leftJoin(parentComment.member, parentMember).fetchJoin()
                 .where(
-                        comment.parentPost.id.eq(postId),
-                        comment.deletedTrue.eq(false)
+                        comment.parentPost.id.eq(postId)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(comment.orderNumber.asc(), comment.createdTime.asc())
                 .fetch();
-//        List<Comment> fetch = queryFactory
-//                .selectFrom(comment)
-//                .where(comment.parentPost.id.eq(postId))
-//                .fetch();
+
 
         int size = queryFactory
                 .selectFrom(comment)
                 .where(
-                        comment.parentPost.id.eq(postId),
-                        comment.deletedTrue.eq(false)
+                        comment.parentPost.id.eq(postId)
                 )
                 .fetch().size();
 
@@ -121,5 +117,16 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .where(comment.id.eq(commentId))
                 .fetchOne();
         return aBoolean;
+    }
+
+    @Override
+    public Optional<Comment> findCommentById(Long commentId) {
+        Comment selected = queryFactory
+                .selectFrom(comment)
+                .join(comment.parentPost, post).fetchJoin()
+                .where(comment.id.eq(commentId), comment.deletedTrue.eq(false))
+                .fetchOne();
+
+        return Optional.ofNullable(selected);
     }
 }

@@ -1,9 +1,6 @@
 package kpop.kpopGeneration.service;
 
-import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.dto.CommentViewDto;
-import kpop.kpopGeneration.dto.PageCustomDto;
-import kpop.kpopGeneration.dto.PostDetailDto;
+import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
@@ -72,7 +69,7 @@ public class PostsServiceDetailsTest {
                 "post의 commentCnt는 증가해서는 안됩니다.");
 
         //댓글 리스트 검증하기
-        PageCustomDto<CommentViewDto> commentList = postById.getCommentList();
+        PageCustomDto<PureCommentViewDto> commentList = postById.getCommentList();
         assertEquals(10, commentList.getSize());
         assertEquals(10, commentList.getNumberOfElements());
 

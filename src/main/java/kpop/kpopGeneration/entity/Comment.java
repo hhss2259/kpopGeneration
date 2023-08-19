@@ -60,4 +60,20 @@ public class Comment extends JpaBaseTimeEntity{
         this.likes = 0L;
     }
 
+    public void updateTextBody(String textBody) {
+        this.textBody = textBody;
+    }
+
+    public void deleteComment() {
+        this.deletedTrue = true;
+        this.deletedTime = LocalDateTime.now();
+    }
+
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
+    }
 }

@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.CommentSaveDto;
+import kpop.kpopGeneration.dto.CommentUpdateViewDto;
 import kpop.kpopGeneration.dto.CommentViewDto;
 import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
@@ -72,5 +73,40 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable) {
         Page<CommentViewDto> commentListByPost = commentRepository.findCommentListByPost(postId, pageable);
         return null;
+    }
+
+    /**
+     * 댓글 삭제하기
+     */
+    @Override
+    @Transactional
+    public Long deleteComment(Long id, String username) {
+        // DB에서 Post를 찾아온다
+        Comment comment = commentRepository.findCommentById(id).orElseThrow(() -> new NotExistedCommentException());
+
+        // DB에서 Member를 찾아온다
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new NotExistedMemberException());
+
+        /**
+         * deletedTrue = true();
+         * deletedTime = LocalDateTime.now();
+         */
+        comment.deleteComment();
+
+        // 멤버가 작성한 포스트 갯수를 감소시킨다.
+        member.decreaseCommentCnt();
+        return comment.getParentPost().getId();
+    }
+
+    /**
+     * 댓글 수정하기
+     */
+    @Override
+    @Transactional
+    public Long updateComment(CommentUpdateViewDto commentUpdateViewDto) {
+        Comment comment = commentRepository.findById((commentUpdateViewDto.getCommentId())).orElseThrow(() -> new NotExistedCommentException());
+        comment.updateTextBody(commentUpdateViewDto.getTextBody());
+
+        return comment.getId();
     }
 }

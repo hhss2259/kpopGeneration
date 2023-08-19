@@ -27,13 +27,8 @@ public class JoinController {
     private final MemberService memberService;
 
     @GetMapping("/join")
-    public String join(@RequestParam(required = false) String errorMessage,
-                       @RequestParam(required = false) String referer,
-                       Model model){
-        if (errorMessage != null){
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("referer", referer);
-        }
+    public String join(Model model){
+
         return "join";}
 
     /**
@@ -80,8 +75,6 @@ public class JoinController {
         private String passwordSecond;
         private String email;
         private String nickname;
-
-
         boolean checkForm(){
             if (this.agree == false || this.username == null || this.password == null || this.email == null || this.nickname == null) {
                 return false;

@@ -1,9 +1,8 @@
 package kpop.kpopGeneration.service;
 
 import kpop.kpopGeneration.dto.Category;
-import kpop.kpopGeneration.dto.PostLikesViewDto;
+import kpop.kpopGeneration.dto.LikesViewDto;
 import kpop.kpopGeneration.dto.PostSaveDto;
-import kpop.kpopGeneration.dto.PostSaveViewDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
 import kpop.kpopGeneration.exception.DuplicateException;
@@ -53,11 +52,11 @@ class PostLikesServiceTest {
         postLikesService.increaseLikes(savePostId, "aaaa"+4);
 
         //then
-        PostLikesViewDto likes = postLikesService.getPostLikes(savePostId, "aaaa" + 0);
+        LikesViewDto likes = postLikesService.getPostLikes(savePostId, "aaaa" + 0);
         assertEquals(5, likes.getLikes());
         assertEquals(true, likes.getIsLiked());
 
-        PostLikesViewDto notLike = postLikesService.getPostLikes(savePostId, "aaaa" + 5);
+        LikesViewDto notLike = postLikesService.getPostLikes(savePostId, "aaaa" + 5);
         assertEquals(5, notLike.getLikes());
         assertEquals(false, notLike.getIsLiked());
 
@@ -76,14 +75,14 @@ class PostLikesServiceTest {
 
         //when
         postLikesService.increaseLikes(savePostId, "aaaa");
-        PostLikesViewDto likes = postLikesService.getPostLikes(savePostId, "aaaa");
+        LikesViewDto likes = postLikesService.getPostLikes(savePostId, "aaaa");
 
         //then
         assertEquals(1, likes.getLikes());
         assertEquals(true, likes.getIsLiked());
         assertThrows(DuplicateException.class, ()->postLikesService.increaseLikes(savePostId, "aaaa"));
 
-        PostLikesViewDto notLike = postLikesService.getPostLikes(savePostId, "bbbb");
+        LikesViewDto notLike = postLikesService.getPostLikes(savePostId, "bbbb");
         assertEquals(1, notLike.getLikes());
         assertEquals(false, notLike.getIsLiked());
  }
@@ -102,9 +101,9 @@ class PostLikesServiceTest {
         //then
         assertThrows(NotExistedPostLikes.class, ()->postLikesService.decreaseLikes(savePostId, "bbbb"));
 
-        PostLikesViewDto postLikesViewDto = postLikesService.decreaseLikes(savePostId, "aaaa");
-        assertEquals(0, postLikesViewDto.getLikes());
-        assertEquals(false, postLikesViewDto.getIsLiked());
+        LikesViewDto likesViewDto = postLikesService.decreaseLikes(savePostId, "aaaa");
+        assertEquals(0, likesViewDto.getLikes());
+        assertEquals(false, likesViewDto.getIsLiked());
 
         Post post = postRepository.findPostById(savePostId).get();
         assertEquals(0, post.getLikes());

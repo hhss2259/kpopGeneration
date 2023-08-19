@@ -3,15 +3,21 @@
         const login_button = document.querySelector('.login-button');
         const body = document.querySelector('body');
 
-        login_button.addEventListener('click', ()=>{
-            open()
-        })
-
+        if(login_button !=null){
+            login_button.addEventListener('click', ()=>{
+                open()
+            })
+        }
+        
+        
         const modal_close = document.querySelector(".modal-close");
-        modal_close.addEventListener('click',()=>{
-            close()
-        })    
-
+        
+        if(modal_close != null){
+            modal_close.addEventListener('click',()=>{
+                close()
+            })    
+        }
+        
         window.addEventListener('click', (e) => {
             e.target === modal ?  close() : false
         })

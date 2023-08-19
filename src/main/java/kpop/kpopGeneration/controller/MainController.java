@@ -33,16 +33,7 @@ public class MainController {
      */
     @GetMapping("/")
     public String main(@RequestParam(required = false) String join,
-                       @RequestParam(required = false) String errorMessage,
-                       @RequestParam(required = false) String referer,
-                       Model model,
-                       RedirectAttributes redirectAttributes) {
-
-        if (errorMessage != null){
-            model.addAttribute("errorMessage", errorMessage);
-            model.addAttribute("referer", referer);
-        }
-
+                       Model model) {
         /**
          * 회원가입에 성공하면 성공 메세지를 보여주기 위해 사용
         */
@@ -58,7 +49,6 @@ public class MainController {
          *      최초 로그인이 아니면 추가 정보를 받을 필요가 없으므로 일반 회원가입 유저와 동등하게 행동함
          */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication.getPrincipal() instanceof Oauth2Member){
             Oauth2Member oauth2Member = (Oauth2Member) authentication.getPrincipal();
             Member loginMember = oauth2Member.getMember();
@@ -69,20 +59,19 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/errorRedirect")
+    @GetMapping("/errorPage")
     public String error(@RequestParam(required = false) String errorMessage,
-                        @RequestParam String referer,
-                        RedirectAttributes redirectAttributes){
+                        @RequestParam(required = false) String referer,
+                        Model model){
         /**
          *  errorMessage가 존재하는 경우 = 로그인 시 에러가 발생했을 때
          *  1. 해당 아이디가 존재하지 않을때
          *  2. 비밀번호가 일치하지 않을 때
          *  3. form 안에 존재하는 secret_key의 정보가 일치하지 않을 떄
          */
-
-        redirectAttributes.addAttribute("errorMessage", errorMessage);
-        redirectAttributes.addAttribute("referer", referer );
-        return "redirect:"+referer;
+        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("referer", referer );
+        return "error";
     }
 
     @GetMapping("/news/list")

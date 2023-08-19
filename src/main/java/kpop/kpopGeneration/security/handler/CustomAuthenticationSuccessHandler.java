@@ -27,9 +27,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             redirectStrategy.sendRedirect(request, response, redirectUrl);
             return;
         }else{
-            System.out.println("request.getHeader 이리로 가시오) = " + request.getHeader("Referer"));
             redirectStrategy.sendRedirect(request, response, request.getHeader("Referer"));
-            return;
         }
     }
 
