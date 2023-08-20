@@ -3,6 +3,7 @@
 <div th:replace="~{basic/head ::head (@{/css/postDetail.css})}"></div>
 <body>
     <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
@@ -40,8 +41,10 @@
                                     <span th:text="*{nickname}">앤써</span>님이 작성한 최신 글
                                 </div>
                                 <th:block th:each="recentPosts : ${postDetail.recent.content}" >
-                                <a th:href="@{/post/detail(id=${recentPosts.id})}" class="writer-posts-detail" th:text="${recentPosts.title}">
-                                    오우오우
+                                <a th:href="@{/post/detail(id=${recentPosts.id})}" >
+                                    <div class="writer-posts-details" th:text="${recentPosts.title}">
+                                        최신 글 목록
+                                    </div>
                                 </a>
                                 </th:block>
                             </div>
@@ -290,6 +293,6 @@
 <!-- 공통 자바스크립트(bottom)-->
 <script th:inline="javascript" src="../static/js/postDetail.js" th:src="@{/js/postDetail.js}"></script>
 <!-- 공통 자바스크립트(bottom)-->
-<script th:inline="javascript" src="../static/js/basic/loginModal.js" th:src="@{/js/basic/loginModal.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 
 </html>

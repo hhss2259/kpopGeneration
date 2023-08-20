@@ -3,6 +3,7 @@
 <div th:replace="~{basic/head ::head (@{/css/join.css})}"></div>
 <body>
     <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
@@ -109,37 +110,11 @@
             </div>
         </div>
     </section>
-    <!-- 공통 모달-->    
-    <div class="modal ">
-        <div class="modal-body">
-            <div class="modal-content-container">
-                <div class="modal-close">
-                    X
-                </div>
-                <div class="modal-title">
-                    로그인
-                </div>
-                <form th:action="@{/loginProc}" th:method="post"  class="modal-form-container" >
-                    <input th:type="hidden" type="hidden" name="secret_key" value="secret"/>
-                    <input th:type="text" class="modal-form-input" name="username" placeholder="아이디"/>
-                    <input th:type="password" class="modal-form-input" name="password" placeholder="비밀번호"/>
-                    <div class="modal-form-info">
-                        <label><input type="checkbox" th:type="checkbox" class="modal-form-checkBox" name="rememberMe" placeholder="로그인 상태 유지"/>로그인 상태 유지</label>
-                        <a th:href="@{/findAuthentication}" >ID / Password 찾기</a>
-                    </div>
-                    <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
-                    <div class="modal-form-join">
-                        <a  th:href="@{/joinMember}">회원가입</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- 공통 모달-->
+    
 </body>
 <!-- 회원가입 자바스크립트-->
 <script th:inline="javascript" src="../static/js/join.js" th:src="@{/js/join.js}"></script>
 <!-- 회원가입 자바스크립트-->
-<script th:inline="javascript" src="../static/js/basic/loginModal.js" th:src="@{/js/basic/loginModal.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 
 </html>

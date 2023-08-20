@@ -75,14 +75,36 @@
     justify-content: start;
     align-items: center
 }
+.line-title{
+    max-width: 80%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.line-additionalInfo-commentCnt{
+    width: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: blue;
+}
+.line-additionalInfo-likes{
+    width: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+}
+
 .board-line-writer{
-    width: 10%;
+    width: 8%;
     display:flex;
     justify-content: center;
     align-items: center
 }
 .board-line-date{
-    width: 10%;
+    width: 12%;
     display:flex;
     justify-content: center;
     align-items: center

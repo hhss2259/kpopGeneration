@@ -71,9 +71,12 @@ a:hover{
 .main-menu{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 250px;
 }
+
+.community{
+    margin-left: 30px;
+}
+
 
 .side-menu{
     display: flex;
@@ -122,7 +125,7 @@ hr{
 modal
 */
 .login-modal {
-    position: absolute;
+    position:fixed;
     top: 0;
     left: 0;
   
@@ -213,7 +216,7 @@ modal
 
 /*searching modal*/
 .searching-modal {
-    position: absolute;
+    position:fixed;
     top: 0;
     left: 0;
   

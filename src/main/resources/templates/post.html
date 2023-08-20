@@ -6,6 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <body>
     <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
 
     <!--구체적 페이지-->
@@ -62,6 +63,6 @@
       });
     });
 </script>
-<script th:inline="javascript" src="../static/js/basic/loginModal.js" th:src="@{/js/basic/loginModal.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 
 </html>

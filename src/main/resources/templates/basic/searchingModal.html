@@ -7,7 +7,7 @@
             <div class="modal-title">
                 검색하기
             </div>
-            <form th:action="@{/searching}" th:method="post"  class="modal-form-container" >
+            <form th:action="@{/searching}" th:method="get"  class="modal-form-container" >
                 <select class="searchingOption" name="option">
                     <option value="content">제목+내용</option>
                     <option value="nickname">작성자 닉네임</option>

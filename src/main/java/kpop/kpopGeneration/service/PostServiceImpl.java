@@ -71,7 +71,8 @@ public class PostServiceImpl implements PostService {
         Page<PostTitleViewDto> postTitleList = postList.map(
                 post -> new PostTitleViewDto(
                         post.getId(), post.getCategory(), post.getTitle(),
-                        post.getMember().getNickName(), post.getLastModifiedTime()
+                        post.getMember().getNickName(), post.getLastModifiedTime(),
+                        post.getLikes(), post.getCommentCnt()
                 )
         );
         // Page를 PageCustomDTO로 변환한 후 필요한 정보들을 추가적으로 담는다

@@ -41,7 +41,6 @@ public class PostController {
         }
         PageCustomDto<PostTitleViewDto> postListByCategory = postService.findPostListByCategory(requestCategory, pageable);
         model.addAttribute("postList", postListByCategory);
-
         return "postList";
     }
 

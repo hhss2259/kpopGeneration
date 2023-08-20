@@ -14,5 +14,6 @@ public class PostTitleViewDto{
     String title;
     String nickname;
     LocalDateTime date;
-
+    Long likes;
+    Long commentCnt;
 }

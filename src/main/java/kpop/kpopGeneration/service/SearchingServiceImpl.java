@@ -20,10 +20,18 @@ import javax.xml.bind.annotation.XmlAttachmentRef;
 @Slf4j
 public class SearchingServiceImpl implements SearchingService {
     private final SearchingRepositoryImpl searchRepository;
-
+    /**
+     * 검색을 실행한다
+     * @param category 카테고리 정보 : ALL, MUSIC ,REVIEW, CERTIFICATION, NORMAL
+     * @param option 검색 대상 설정 : content(제목 + 내용) or nickname(작성자 닉네임)
+     * @param keyword 검색 키워드 : null이어서는 안된다
+     * @param pageable 검색 페이지
+     * @return
+     */
     public PageCustomDto<PostTitleViewDto> search(Category category, String option, String keyword, Pageable pageable) {
         Page<Post> postList = null;
-
+        
+        //검색 대상 설정
         if (option.equals("content")) {
             postList = searchRepository.searchByContent(category, keyword, pageable);
         }
@@ -35,10 +43,12 @@ public class SearchingServiceImpl implements SearchingService {
         Page<PostTitleViewDto> postTitleList = postList.map(
                 post -> new PostTitleViewDto(
                         post.getId(), post.getCategory(), post.getTitle(),
-                        post.getMember().getNickName(), post.getLastModifiedTime()
+                        post.getMember().getNickName(), post.getLastModifiedTime(),
+                        post.getLikes(), post.getCommentCnt()
                 )
         );
-        // Page를 PageCustomDTO로 변환한 후 필요한 정보들을 추가적으로 담는다
+
+        // Page를 PageCustomDTO로 변환
         PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom(postTitleList);
         postViewDto.setCurrent((int)(pageable.getPageNumber()+1));
         postViewDto.setCategory(category);
@@ -61,5 +71,4 @@ public class SearchingServiceImpl implements SearchingService {
         dto.setPreviousPageable(list.previousPageable());
         return dto;
     }
-
 }

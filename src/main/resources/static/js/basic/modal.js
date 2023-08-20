@@ -34,11 +34,17 @@
 
     (function(){
         const modal = document.querySelector(".searching-modal");
-        const searching_button = document.querySelector('.post-search');
+        const searching_button1 = document.querySelector('.post-search');
         const body = document.querySelector('body');
 
-        if(searching_button !=null){
-            searching_button.addEventListener('click', ()=>{
+        const searching_button2 = document.querySelector('.searching-button');
+        if(searching_button1 !=null){
+            searching_button1.addEventListener('click', ()=>{
+                open();
+            })
+        }
+        if(searching_button2 !=null){
+            searching_button2.addEventListener('click', ()=>{
                 open();
             })
         }

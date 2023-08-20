@@ -10,6 +10,7 @@ import kpop.kpopGeneration.service.PostService;
 import kpop.kpopGeneration.service.CommentService;
 import kpop.kpopGeneration.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -39,15 +40,27 @@ public class Init {
 
 
 
-        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
-        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
-        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
-        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
-        Long aa2 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa3, true), member4.getUsername());
-        Long aa4 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member3.getUsername());
-        Long aa5 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
-        Long aa6 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa5, true), member4.getUsername());
-        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+//        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
+//        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
+//        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
+//        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
+//        Long aa2 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa3, true), member4.getUsername());
+//        Long aa4 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member3.getUsername());
+//        Long aa5 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+//        Long aa6 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa5, true), member4.getUsername());
+//        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+//
+
+        for (int i = 0; i < 17; i++) {
+            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.ALL),member1.getUsername());
+        }
+
+        for (int i = 0; i < 27; i++) {
+            postService.savePost(new PostSaveDto("포스트","키워드" + i,  Category.MUSIC),member1.getUsername());
+        }
+        for (int i = 0; i < 9; i++) {
+            postService.savePost(new PostSaveDto("이건 아님","이건 아님" + i,  Category.REVIEW),member1.getUsername());
+        }
 
 
     }
