@@ -48,8 +48,7 @@ public class PostController {
      * 포스트 자세히 보기 기능 : 포스트 정보 + 댓글 정보 + 작성자의 최근글 정보
      */
     @GetMapping("/post/detail")
-    public String postDetail(@RequestParam String id, Model model,
-                             @PageableDefault(page=0, size = 20) Pageable commentPageable){
+    public String postDetail(@RequestParam String id, Model model, @PageableDefault(page=0, size = 20) Pageable commentPageable){
         Long postId = Long.parseLong(id);
         postService.increaseViews( Long.parseLong(id));
         PostDetailDto postById = postService.findPostById(postId, commentPageable);
@@ -61,9 +60,7 @@ public class PostController {
      * 포스트 작성 페이지로 이동한다
      */
     @GetMapping("/post")
-    public String writePost( @RequestParam(required = false) String post,
-                             Model model) {
-
+    public String writePost( @RequestParam(required = false) String post, Model model) {
         // 로그인하지 않은 사람은 접근할 수 없다
         if(checkLogin()== false){
             return "redirect:/";
@@ -95,6 +92,7 @@ public class PostController {
     @PostMapping("/post")
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
         PostSaveDto postSaveDto = new PostSaveDto(postSaveViewDto.getTitle(), postSaveViewDto.getBody(), Category.valueOf(postSaveViewDto.getCategory()));
+        System.out.println("postSaveDto = " + postSaveDto.getBody());
         postService.savePost(postSaveDto, getUsername());
         return "redirect:/post/list";
     }
@@ -119,7 +117,6 @@ public class PostController {
         }
         return result;
     }
-
     boolean checkAuthority(String username){
         boolean result = false;
         if(checkLogin() == false){
@@ -138,7 +135,6 @@ public class PostController {
         }
         return result;
     }
-
     String getUsername(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Member member = null;

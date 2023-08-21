@@ -53,6 +53,9 @@ dependencies {
 	// Oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+	// s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     //querydsl 추가2
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

@@ -60,7 +60,43 @@
         $('#summernote').summernote({
         tabsize: 2,
         height: 500,
+        lang: "ko-KR",
+        // callbacks: {
+        //   onImageUpload : function(files, editor, welEditable){
+
+        //         // 파일 업로드(다중업로드를 위해 반복문 사용)
+        //         for (var i = files.length - 1; i >= 0; i--) {
+        //             console.log(this)
+        //             console.log("뭐꼬");
+        //             uploadSummernoteImageFile(files[i],
+        //         this);
+        //             }
+        //         }
+        //     } 
       });
+
+      function uploadSummernoteImageFile(file, el) {
+        var data = new FormData();	
+        data.append("file",file);
+            $.ajax({
+              url: '/../summer_image.do',
+              type: "POST",
+              enctype: 'multipart/form-data',
+              data: data,
+              cache: false,
+              contentType : false,
+              processData : false,
+              success : function(data) {
+                        var json = JSON.parse(data);
+                        $(el).summernote('editor.insertImage',json["url"]);
+                            jsonArray.push(json["url"]);
+                    },
+                    error : function(e) {
+                        console.log(e);
+                    }
+                });
+            }
+
     });
 </script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>

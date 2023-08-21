@@ -51,7 +51,7 @@ public class FileStore {
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFilename(originalFilename);
-        multipartFile.transferTo(new File(getPullPath(storeFileName)));
+        multipartFile.transferTo(new File(getPullPath(storeFileName))); // 실제로 파일을 저장하는 코드
         return new UploadFile(originalFilename, storeFileName);
     }
 

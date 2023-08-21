@@ -9,11 +9,11 @@ public class UploadFile {
      * 따라서 서버에서 파일을 저장할 때, 파일명이 겹치지 않도록 별도의 파일명을 사용해야한다
      */
 
-    private String uploadFileName;
+    private String originalFilename;
     private String storeFileName;
 
-    public UploadFile(String uploadFileName, String storeFileName) {
-        this.uploadFileName = uploadFileName;
+    public UploadFile(String originalFilename, String storeFileName) {
+        this.originalFilename = originalFilename;
         this.storeFileName = storeFileName;
     }
 
