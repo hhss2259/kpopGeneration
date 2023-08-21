@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:replace="~{basic/head ::head (@{/css/post.css})}"></div>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <body>
@@ -56,45 +56,44 @@
         }
     });
 
+    let jsonArray = [];
     $(document).ready(function() {
         $('#summernote').summernote({
         tabsize: 2,
         height: 500,
         lang: "ko-KR",
-        // callbacks: {
-        //   onImageUpload : function(files, editor, welEditable){
+        callbacks: {
+          onImageUpload : function(files, editor, welEditable){
 
-        //         // 파일 업로드(다중업로드를 위해 반복문 사용)
-        //         for (var i = files.length - 1; i >= 0; i--) {
-        //             console.log(this)
-        //             console.log("뭐꼬");
-        //             uploadSummernoteImageFile(files[i],
-        //         this);
-        //             }
-        //         }
-        //     } 
+                // 파일 업로드(다중업로드를 위해 반복문 사용)
+                for (var i = files.length - 1; i >= 0; i--) {
+                    console.log(this)
+                    uploadSummernoteImageFile(files[i], this);
+                    }
+                }
+            } 
       });
 
-      function uploadSummernoteImageFile(file, el) {
+      function uploadSummernoteImageFile(file, summernote) {
         var data = new FormData();	
         data.append("file",file);
-            $.ajax({
-              url: '/../summer_image.do',
-              type: "POST",
-              enctype: 'multipart/form-data',
-              data: data,
-              cache: false,
-              contentType : false,
-              processData : false,
-              success : function(data) {
-                        var json = JSON.parse(data);
-                        $(el).summernote('editor.insertImage',json["url"]);
-                            jsonArray.push(json["url"]);
-                    },
-                    error : function(e) {
-                        console.log(e);
-                    }
-                });
+        $.ajax({
+            url: '/upload',
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: data,
+            cache: false,
+            contentType : false,
+            processData : false,
+            success : function(json) {
+                    $(summernote).summernote('editor.insertImage', json.data);
+                    jsonArray.push(json.data);
+                    console.log(json.data);
+                },
+                error : function(e) {
+                    console.log(e);
+                }
+            });
             }
 
     });

@@ -25,42 +25,23 @@ public class S3FileStore {
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    public UploadFile upload(MultipartFile file, Long id) throws IOException {
+    public S3UploadFile upload(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String storeFilename = createStoreFilename(originalFilename);
-        UploadFile uploadFile = new UploadFile(originalFilename, storeFilename);
-
-        String s3FileName= id+"/"+storeFilename;
 
 
         //실제 s3에 파일을 저장하는 과정
         ObjectMetadata metadata= new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
-        amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),metadata);
+        amazonS3Client.putObject(bucket, storeFilename, file.getInputStream(), metadata);
 
-        return uploadFile;
+        String s3Url = amazonS3Client.getUrl(bucket, storeFilename).toString();
+        S3UploadFile s3UploadFile = new S3UploadFile(originalFilename, storeFilename, s3Url);
+
+        return s3UploadFile;
     }
 
-
-
-
-//
-//    public UploadFile uploadTempFile(MultipartFile file, Long id) throws IOException {
-//        String originalFilename = file.getOriginalFilename();
-//        String storeFilename = createStoreFilename(originalFilename);
-//        UploadFile uploadFile = new UploadFile(originalFilename, storeFilename);
-//
-//        String s3FileName= "temp/"+storeFilename;
-//
-//        //실제 s3에 파일을 저장하는 과정
-//        ObjectMetadata metadata= new ObjectMetadata();
-//        metadata.setContentType(file.getContentType());
-//        metadata.setContentLength(file.getSize());
-//        amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),metadata);
-//
-//        return uploadFile;
-//    }
 
 
     /**
