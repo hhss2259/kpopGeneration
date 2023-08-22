@@ -247,7 +247,7 @@ function toggleComment_delete(event){
         delete_button.addEventListener("click", ()=>{
            let result =  confirm("정말 삭제하시겠습니까?");
            if(result == true){
-            location.href="/news/delete?post="+postDetail.id;
+            location.href="/news/delete?news="+postDetail.id;
            }
         });
         update_button.addEventListener("click", ()=>{

@@ -11,4 +11,8 @@ public interface UploadService {
     String uploadTempFile(MultipartFile file)  throws IOException;
 
     void deleteTempFile(String src) throws IOException;
+
+    String uploadLocal(MultipartFile file)  throws IOException;
+
+    void deleteLocal(String src) throws IOException;
 }

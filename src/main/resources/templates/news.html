@@ -11,17 +11,14 @@
     <section>
         <div class="inner">
             <div class="post-container">
-            <form class="post" th:action="@{/post}" th:method="post">
+            <form class="post" th:action="@{/news}" th:method="post">
                 <div class="post-header">
                     <div class="post-header-category">
                         <div class="category-title">
                             카테고리
                         </div>
                         <select class="category" name="category">
-                            <option value="MUSIC">음악</option>
-                            <option value="REVIEW">리뷰</option>
-                            <option value="CERTIFICATION">인증/후기</option>
-                            <option value="NORMAL">일반</option>
+                            <option value="NEWS">뉴스</option>
                         </select>
                     </div>
                     <div class="post-header-title">
@@ -30,6 +27,7 @@
                         </div>
                         <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}" minlength="1" maxlength="20"/>
                         <input type="hidden"  name="id" th:value="${postSaveViewDto.id}"/>
+                        <input type="hidden" name="images" id="images" />
                     </div>
                 </div>
                 <div class="post-textdata">
@@ -43,22 +41,19 @@
 </body>
 <script th:inline="javascript">
     let postSaveViewDto = [[${postSaveViewDto}]];
-    
-    // 포스트 수정 시 기존 타이틀과 기존 카테고리 정보를 가지고 온다
-    (function(){
-        let originalOption = postSaveViewDto.category;
-        let category = document.querySelector(".category");
-        let options = document.querySelectorAll("option");
-        options.forEach( o => {
-            if(o.value === originalOption){
-                o.selected = true;
-            }
-        });
-    });
 
     let jsonArray = [];
-    $(document).ready(function() {
+    // if(postSaveViewDto.body != null){
+    //     fetch("/api/savedImages")
+    //     .then(response => response.json())
+    //     .then(daata =>{
+    //         console.log(data.data);
+    //     })
+    // }
 
+
+
+    $(document).ready(function() {
         // summernote 초기화
         $('#summernote').summernote({
         tabsize: 2,
@@ -82,7 +77,7 @@
             }
         });
         //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
-         if(postSaveViewDto.body != null){
+        if(postSaveViewDto.body != null){
             $('#summernote').summernote('pasteHTML', postSaveViewDto.body);
         }
 
@@ -99,12 +94,13 @@
                 processData : false,
                 success : function(json) {
                         $(summernote).summernote('editor.insertImage', json.data);
-                        jsonArray.push(json.data);
                         console.log(json.data);
+                        console.log('몇번찍히는지 보자구');
+                        jsonArray.push(json.data);
                         console.log(jsonArray);
+
                     },
                     error : function(e) {
-                        console.log(e);
                     }
             });
         };
@@ -117,11 +113,10 @@
                 contentType: 'application/json',
                 cache: false,
                 success: function(json) {
-                    console.log(json);
+                    console.log('몇번찍히는지 보자구22');
                     console.log(json.data);
-                    jsonArray = jsonArray.filter( (src)=>{ src !== json.data});
+                    jsonArray = jsonArray.filter( (src)=> src !== json.data);
                     console.log(jsonArray);
-                    console.log(jsonArray.length);
                 }
             });
         };
@@ -134,11 +129,11 @@
             if(document.querySelector(".title").value.length == 0 || document.querySelector(".title").value.length >20){
                 alert("제목은 0 ~ 20자까지 가능합니다");
             }else{
+                document.querySelector("#images").value = jsonArray;
                 button.parentElement.submit();
             }
         })
     })();
 </script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
-
 </html>

@@ -25,6 +25,15 @@
                     </div>
                 </th:block>
             </div>
+            <div class="news-info-container">
+                <th:block th:if="${member.logined == true}">
+                    <form th:action="@{/news}" th:method="get">
+                        <button type="submit" class="news-new">
+                            작성하기
+                        </div>
+                    </form>
+               </th:block>
+            </div>
             <div class="page-container" >
                 <div class="piece page-pre">이전</div>
                 <div class="piece page-first">1</div>

@@ -51,7 +51,7 @@ public class Init {
 //        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
 //
 
-        for (int i = 0; i < 111; i++) {
+        for (int i = 0; i < 3; i++) {
             postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member1.getUsername());
         }
 

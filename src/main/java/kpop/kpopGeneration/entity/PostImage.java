@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-public class NewsThumbnail {
+public class PostImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -18,4 +18,16 @@ public class NewsThumbnail {
     Post post;
 
     String src;
+    Boolean thumbnail;
+
+
+    public PostImage(Post post, String src){
+        this.post = post;
+        this.src = src;
+        this.thumbnail = false;
+    }
+
+    public void changeThumbnail(Boolean thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 }

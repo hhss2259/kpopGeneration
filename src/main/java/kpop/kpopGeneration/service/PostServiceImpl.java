@@ -4,12 +4,10 @@ import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
+import kpop.kpopGeneration.entity.PostImage;
 import kpop.kpopGeneration.exception.NotExistedMemberException;
 import kpop.kpopGeneration.exception.NotExistedPostException;
-import kpop.kpopGeneration.repository.PostLikesRepository;
-import kpop.kpopGeneration.repository.PostRepository;
-import kpop.kpopGeneration.repository.CommentRepository;
-import kpop.kpopGeneration.repository.MemberRepository;
+import kpop.kpopGeneration.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,7 +33,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
-    private final PostLikesRepository postLikesRepository;
+    private final PostImageRepository postImageRepository;
 
     /**
      * 게시글 저장
@@ -48,8 +46,20 @@ public class PostServiceImpl implements PostService {
         Member member = optional.orElseThrow(() -> new NotExistedPostException());
 
         // 포스트를 저장한다
-        Post post = new Post(postDto.getTitle(), postDto.getBody(), member, postDto.getCategory());
-        Post savedPost = postRepository.save(post);
+        Post savedPost = postRepository.save(new Post(postDto.getTitle(), postDto.getBody(), member, postDto.getCategory()));
+
+        // 포스트의 이미지들을 저장한다.
+        List<String> images = postDto.getImages();
+        if (images != null) {
+            for (int i = 0; i < images.size(); i++) {
+                PostImage postImage = new PostImage(savedPost, images.get(i));
+                if(i == 0){
+                    postImage.changeThumbnail(true);
+                }
+                postImageRepository.save(postImage);
+            }
+        }
+
 
         // 멤버가 작성한 포스트 갯수를 증가시킨다
         member.increasePostCnt();
@@ -178,6 +188,34 @@ public class PostServiceImpl implements PostService {
         member.decreasePostCnt();
         return post.getId();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

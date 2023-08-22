@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -28,12 +30,18 @@ public class NewsController {
      */
     @PostMapping("/news")
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
-        PostSaveDto postSaveDto = new PostSaveDto(postSaveViewDto.getTitle(), postSaveViewDto.getBody(), Category.valueOf(postSaveViewDto.getCategory()));
+        PostSaveDto postSaveDto =
+                new PostSaveDto(
+                        postSaveViewDto.getTitle(),
+                        postSaveViewDto.getBody(),
+                        Category.valueOf(postSaveViewDto.getCategory()),
+                        postSaveViewDto.getImages());
+
         // 포스트 수정
         if(postSaveViewDto.getId() != null){
             postService.updatePost(postSaveViewDto.getId(), postSaveDto);
         }else{ //포스트 새로 작성
-            postService.savePost(postSaveDto, SpringSecurityMethod.getUsername());
+            Long saved = postService.savePost(postSaveDto, SpringSecurityMethod.getUsername());
         }
         return "redirect:/news/list";
     }
@@ -67,23 +75,23 @@ public class NewsController {
      * 포스트 작성 페이지로 이동한다
      */
     @GetMapping("/news")
-    public String writePost( @RequestParam(required = false) String post, Model model) {
+    public String writePost( @RequestParam(required = false) String news, Model model) {
         // 로그인하지 않은 사람은 접근할 수 없다
         if(SpringSecurityMethod.checkLogin()== false){
-            return "redirect:/";
+            return "redirect:/error";
         }
 
         // 포스트 최초 작성으로, 빈 작성화면을 보여주면 된다
-        if(post == null ){
+        if(news == null ){
             model.addAttribute("postSaveViewDto", new PostSaveViewDto());
             return "news";
         }
 
         // (post가 null이 아닌 경우) 해당 글의 원작자가 아닌 사람은 접근할 수 없다
-        Long id = Long.parseLong(post);
+        Long id = Long.parseLong(news);
         PostUpdateDto postUpdateDto = postService.findPostUpdateDto(id);
         if(SpringSecurityMethod.checkAuthority(postUpdateDto.getUsername()) == false){ //잘못된 접근
-            return "redirect:/";
+            return "redirect:/error";
         }
 
         // 포스트 수정 작성임으로, 기존 포스트 정보를 보여주어야 한다.
@@ -96,8 +104,8 @@ public class NewsController {
      * 포스트 삭제하기
      */
     @GetMapping("/news/delete")
-    public String deletePost(@RequestParam String post){
-        long id = Long.parseLong(post);
+    public String deletePost(@RequestParam String news){
+        long id = Long.parseLong(news);
         Long aLong = postService.deletePost(id, SpringSecurityMethod.getUsername());
         return "redirect:/news/list";
     }
