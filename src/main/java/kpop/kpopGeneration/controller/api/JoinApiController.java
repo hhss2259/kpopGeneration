@@ -24,7 +24,7 @@ public class JoinApiController {
 
 
     /**
-     * 회원가입 시 중복된 username이 존재하는 지 확인한다.
+     * 회원가입 시 중복된 username이 존재하는지 확인한다.
      */
     @PostMapping("/api/username")
     public DefaultResponse<String> checkUsername(@RequestBody UsernameDto dto){
@@ -36,7 +36,7 @@ public class JoinApiController {
         String username;
     }
     /**
-     * 회원가입 시 중복된 nickname이 존재하는 지 확인한다.
+     * 회원가입 시 중복된 nickname이 존재하는지 확인한다.
      */
     @PostMapping("/api/nickname")
     public DefaultResponse<String> checkNickname(@RequestBody NicknameDto dto){

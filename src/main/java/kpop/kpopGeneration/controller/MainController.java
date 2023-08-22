@@ -27,7 +27,6 @@ import java.util.Collection;
 @Slf4j
 @RequiredArgsConstructor
 public class MainController {
-
     /**
      * 메인 페이지
      */
@@ -35,18 +34,13 @@ public class MainController {
     public String main(@RequestParam(required = false) String join,
                        Model model) {
         /**
-         * 회원가입에 성공하면 성공 메세지를 보여주기 위해 사용
+         * 회원가입에 성공하면 성공 메세지를 보여주기 위해 사용 (회원가입 시 항상 메인페이지로 이동)
         */
         if(join != null && join.equals(LoginInfo.JOIN_SUCCESS)){
             model.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         }
         /**
          *  SecurityContextHolder에서 현재 로그인한 사용자의 정보를 가지고 온다
-         *  <세 가지 경우의 수>
-         *  1. 로그인하지 않았을 경우 => 모델에 아무런 정보를 저장하지 않음으로써 현재 로그인한 상태라가 아니라는 것을 표현
-         *  2. 일반 회원가입한 사용자인 경우 => 추가 정보를 받을 필요가 없다
-         *  3. SNS 회원가입 사용자인 경우 => 최초 로그인 시 추가 정보(닉네임)을 입력받기 위해  'aouthJoin' 페이지로 이동,
-         *      최초 로그인이 아니면 추가 정보를 받을 필요가 없으므로 일반 회원가입 유저와 동등하게 행동함
          */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof Oauth2Member){
@@ -63,12 +57,6 @@ public class MainController {
     public String error(@RequestParam(required = false) String errorMessage,
                         @RequestParam(required = false) String referer,
                         Model model){
-        /**
-         *  errorMessage가 존재하는 경우 = 로그인 시 에러가 발생했을 때
-         *  1. 해당 아이디가 존재하지 않을때
-         *  2. 비밀번호가 일치하지 않을 때
-         *  3. form 안에 존재하는 secret_key의 정보가 일치하지 않을 떄
-         */
         model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("referer", referer );
         return "error";
@@ -78,10 +66,4 @@ public class MainController {
     public String news(){
         return "newsList";
     }
-
-    @GetMapping("/topic/list")
-    public String topic(){
-        return "topicList";
-    }
-
 }

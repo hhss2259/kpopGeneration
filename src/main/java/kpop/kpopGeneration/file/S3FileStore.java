@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.file;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,13 @@ public class S3FileStore {
 
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private  String bucket;
+    final String tempFolder = "temp/";
+
     public S3UploadFile upload(MultipartFile file) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        String storeFilename = createStoreFilename(originalFilename);
+
+        String originalFilename = file.getOriginalFilename(); //파일의 원래 이름
+        String storeFilename = createStoreFilename(originalFilename); // 파일의 저장 이름
 
 
         //실제 s3에 파일을 저장하는 과정
@@ -41,6 +45,38 @@ public class S3FileStore {
 
         return s3UploadFile;
     }
+
+    public S3UploadFile uploadTempFile(MultipartFile file) throws IOException {
+
+        String originalFilename = file.getOriginalFilename(); //파일의 원래 이름
+        String storeFilename = tempFolder+createStoreFilename(originalFilename); // 파일의 저장 이름
+
+        //실제 s3에 파일을 저장하는 과정
+        ObjectMetadata metadata= new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
+        amazonS3Client.putObject(bucket, storeFilename, file.getInputStream(), metadata);
+
+        String s3Url = amazonS3Client.getUrl(bucket, storeFilename).toString();
+        S3UploadFile s3UploadFile = new S3UploadFile(originalFilename, storeFilename, s3Url);
+
+        return s3UploadFile;
+    }
+
+    public void deleteTempFile(String src) throws IOException {
+
+        System.out.println("src = " + src);
+        int index = src.lastIndexOf("temp/");
+        System.out.println("index = " + index);
+        String key = src.substring(index);
+        System.out.println("key = " + key);
+
+        DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(this.bucket, key);
+        amazonS3Client.deleteObject(deleteObjectRequest);
+
+    }
+
+
 
 
 

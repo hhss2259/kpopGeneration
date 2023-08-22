@@ -34,7 +34,7 @@ public class SearchingRepositoryImpl {
                 .select(post)
                 .from(post)
                 .join(post.member, member).fetchJoin()
-                .where(checkContent(content), checkCategory(category))
+                .where(checkContent(content), checkCategory(category), post.deletedTrue.eq(false))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(post.id.desc())
@@ -43,7 +43,7 @@ public class SearchingRepositoryImpl {
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(checkContent(content), checkCategory(category));
+                .where(checkContent(content), checkCategory(category), post.deletedTrue.eq(false));
 
         return PageableExecutionUtils.getPage(list, pageable, countQuery::fetchOne);
     }
@@ -78,7 +78,7 @@ public class SearchingRepositoryImpl {
                 .select(post)
                 .from(post)
                 .join(post.member, member).fetchJoin()
-                .where(checkNickname(content), checkCategory(category))
+                .where(checkNickname(content), checkCategory(category), post.deletedTrue.eq(false))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(post.id.desc())
@@ -87,7 +87,7 @@ public class SearchingRepositoryImpl {
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
-                .where(checkNickname(content), checkCategory(category));
+                .where(checkNickname(content), checkCategory(category), post.deletedTrue.eq(false));
 
         return PageableExecutionUtils.getPage(list, pageable, countQuery::fetchOne);
     }

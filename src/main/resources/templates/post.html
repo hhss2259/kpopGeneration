@@ -8,8 +8,6 @@
     <div th:replace="~{basic/header :: header}"></div>
     <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
-
-    <!--구체적 페이지-->
     <section>
         <div class="inner">
             <div class="post-container">
@@ -30,73 +28,114 @@
                         <div class="title-title">
                             제목
                         </div>
-                        <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}"/>
+                        <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}" minlength="1" maxlength="20"/>
+                        <input type="hidden"  name="id" th:value="${postSaveViewDto.id}"/>
                     </div>
                 </div>
                 <div class="post-textdata">
                     <textarea id="summernote" name="body"></textarea>
                 </div>
-                <button type="submit" class="post-button">등록하기</button>
+                <button type="button" class="post-button">등록하기</button>
             </form>
             </div>
         </div>
     </section>
-    <!--구체적 페이지-->
-    
 </body>
 <script th:inline="javascript">
-    let originalOption = String([[${postSaveViewDto.category}]]);
-    let category = document.querySelector(".category");
-    let options = document.querySelectorAll("option");
-    options.forEach( o => {
-        if(o.value === originalOption){
-            console.log(o.value);
-
-            o.selected = true;
-        }
+    let postSaveViewDto = [[${postSaveViewDto}]];
+    
+    // 포스트 수정 시 기존 타이틀과 기존 카테고리 정보를 가지고 온다
+    (function(){
+        let originalOption = postSaveViewDto.category;
+        let category = document.querySelector(".category");
+        let options = document.querySelectorAll("option");
+        options.forEach( o => {
+            if(o.value === originalOption){
+                o.selected = true;
+            }
+        });
     });
 
     let jsonArray = [];
     $(document).ready(function() {
+
+        // summernote 초기화
         $('#summernote').summernote({
         tabsize: 2,
         height: 500,
         lang: "ko-KR",
+        minHeight: 1,             // set minimum height of editor
+        maxHeight: 5000, 
         callbacks: {
-          onImageUpload : function(files, editor, welEditable){
-
-                // 파일 업로드(다중업로드를 위해 반복문 사용)
+            //사진 업로드 시 작동하는 콜백 함수
+            onImageUpload : function(files, editor, welEditable){
                 for (var i = files.length - 1; i >= 0; i--) {
-                    console.log(this)
                     uploadSummernoteImageFile(files[i], this);
                     }
-                }
-            } 
-      });
-
-      function uploadSummernoteImageFile(file, summernote) {
-        var data = new FormData();	
-        data.append("file",file);
-        $.ajax({
-            url: '/upload',
-            type: "POST",
-            enctype: 'multipart/form-data',
-            data: data,
-            cache: false,
-            contentType : false,
-            processData : false,
-            success : function(json) {
-                    $(summernote).summernote('editor.insertImage', json.data);
-                    jsonArray.push(json.data);
-                    console.log(json.data);
                 },
-                error : function(e) {
-                    console.log(e);
+            //사진 제거 시 작동하는 콜백 함수
+            onMediaDelete : function(target) {
+                alert(target[0].src); 
+                deleteFile(target[0].src);
+                }      
+            
+            }
+        });
+        //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
+        $('#summernote').summernote('pasteHTML', postSaveViewDto.body);
+
+        function uploadSummernoteImageFile(file, summernote) {
+            var data = new FormData();	
+            data.append("file",file);
+            $.ajax({
+                url: '/api/temp/upload',
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data: data,
+                cache: false,
+                contentType : false,
+                processData : false,
+                success : function(json) {
+                        $(summernote).summernote('editor.insertImage', json.data);
+                        jsonArray.push(json.data);
+                        console.log(json.data);
+                        console.log(jsonArray);
+                    },
+                    error : function(e) {
+                        console.log(e);
+                    }
+            });
+        };
+
+        function deleteFile(src) {
+            $.ajax({
+                data: JSON.stringify({src : src}),
+                type: "POST",
+                url: "/api/temp/delete", // replace with your url
+                contentType: 'application/json',
+                cache: false,
+                success: function(json) {
+                    console.log(json);
+                    console.log(json.data);
+                    jsonArray = jsonArray.filter( (src)=>{ src !== json.data});
+                    console.log(jsonArray);
+                    console.log(jsonArray.length);
                 }
             });
-            }
-
+        };
     });
+
+
+    (function(){
+        let button = document.querySelector(".post-button");
+        button.addEventListener("click" , ()=>{
+            if(document.querySelector(".title").value.length == 0 || document.querySelector(".title").value.length >20){
+                alert("제목은 0 ~ 20자까지 가능합니다");
+            }else{
+                button.parentElement.submit();
+            }
+        })
+    })();
 </script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 

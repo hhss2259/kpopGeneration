@@ -23,7 +23,11 @@ public class AppConfig {
     private final ResourceRoleRepository resourceRoleRepository;
 
     /**
-     * 회원가입 시 기본 role을 입력합니다
+     * 회원가입 시 기본 role을 저장한다
+     * 세 가지 Role이 존재
+     * 1. ROLE_USER
+     * 2. ROLE_MANAGER
+     * 3. ROLE_ADMIN
      */
     @PostConstruct
     public void saveBasicRole() {

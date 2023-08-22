@@ -96,7 +96,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostUpdateDto findPostUpdateDto(Long id) {
         Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
-        return new PostUpdateDto(post.getMember().getUsername(), post.getTitle(), post.getBody(), post.getCategory());
+        return new PostUpdateDto(post.getId(), post.getMember().getUsername(), post.getTitle(), post.getBody(), post.getCategory());
     }
 
 
@@ -141,6 +141,7 @@ public class PostServiceImpl implements PostService {
      * 게시글 수정
      */
     @Override
+    @Transactional
     public Long updatePost(Long id,  PostSaveDto postSaveDto) {
         // DB에서 Post를 찾아온다
         Post post = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());

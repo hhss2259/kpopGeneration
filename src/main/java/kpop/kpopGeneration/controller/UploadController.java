@@ -9,6 +9,7 @@ import kpop.kpopGeneration.dto.DefaultResponse;
 import kpop.kpopGeneration.file.S3FileStore;
 import kpop.kpopGeneration.file.UploadFile;
 import kpop.kpopGeneration.service.UploadService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +17,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,11 +35,29 @@ public class UploadController {
     private String bucket;
 
 
-    @PostMapping("/upload")
-    public DefaultResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        String url = uploadService.upload(file);
+    @PostMapping("/api/temp/upload")
+    public DefaultResponse uploadTempFile(@RequestParam("file") MultipartFile file) throws IOException {
+        String url = uploadService.uploadTempFile(file);
         return DefaultResponse.res(20001, "업로드 성공", url);
     }
+
+    @PostMapping("/api/temp/delete")
+    public DefaultResponse deleteTempFile(@RequestBody DeleteDto dto) throws IOException {
+        uploadService.deleteTempFile(dto.getSrc());
+        return DefaultResponse.res(20001, "삭제 성공", dto.getSrc());
+    }
+
+    @Data
+    static class DeleteDto {
+        String src;
+    }
+
+    @PostMapping("/api/upload")
+    public DefaultResponse upload(@RequestBody List<String> src) throws IOException {
+        src.forEach(s -> System.out.println(s));
+        return DefaultResponse.res(20001, "삭제 성공","good");
+    }
+
 
 
 }

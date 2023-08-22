@@ -24,7 +24,10 @@ public class SearchingController {
 
     private final SearchingService searchingService;
     @GetMapping("/searching")
-    public String search(@RequestParam(required = false) Category category,  @RequestParam String option, @RequestParam String keyword, @PageableDefault Pageable pageable, Model model){
+    public String search(@RequestParam(required = false) Category category,
+                         @RequestParam String option,
+                         @RequestParam String keyword,
+                         @PageableDefault Pageable pageable, Model model){
         PageCustomDto<PostTitleViewDto> result = null;
         if(category == null){
             result = searchingService.search(Category.ALL, option, keyword, pageable);

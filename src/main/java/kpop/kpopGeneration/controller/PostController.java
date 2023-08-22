@@ -1,5 +1,6 @@
 package kpop.kpopGeneration.controller;
 
+import kpop.kpopGeneration.config.SpringSecurityMethod;
 import kpop.kpopGeneration.dto.*;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.security.oauth2.Oauth2Member;
@@ -25,13 +26,11 @@ public class PostController {
 
     /**
      * 포스트들의 리스트들을 조회해와서 제공한다
-     * 커뮤니티 게시판의 페이징을 담당한다
      */
     @GetMapping("/post/list")
     public String findPostListByCategory(@RequestParam(required = false) String category,
                                          @PageableDefault(size = 10, page = 0) Pageable pageable,
                                          Model model) {
-
         // 카테고리와 페이지 정보를 이용하여 필요한 포스트 리스트들을 서버에서 조회해온다
         Category requestCategory = null;
         if(category == null){
@@ -50,7 +49,7 @@ public class PostController {
     @GetMapping("/post/detail")
     public String postDetail(@RequestParam String id, Model model, @PageableDefault(page=0, size = 20) Pageable commentPageable){
         Long postId = Long.parseLong(id);
-        postService.increaseViews( Long.parseLong(id));
+        postService.increaseViews(postId);
         PostDetailDto postById = postService.findPostById(postId, commentPageable);
         model.addAttribute("postDetail", postById);
         return "postDetail";
@@ -62,7 +61,7 @@ public class PostController {
     @GetMapping("/post")
     public String writePost( @RequestParam(required = false) String post, Model model) {
         // 로그인하지 않은 사람은 접근할 수 없다
-        if(checkLogin()== false){
+        if(SpringSecurityMethod.checkLogin()== false){
             return "redirect:/";
         }
 
@@ -75,12 +74,12 @@ public class PostController {
         // (post가 null이 아닌 경우) 해당 글의 원작자가 아닌 사람은 접근할 수 없다
         Long id = Long.parseLong(post);
         PostUpdateDto postUpdateDto = postService.findPostUpdateDto(id);
-        if(checkAuthority(postUpdateDto.getUsername()) == false){ //잘못된 접근
+        if(SpringSecurityMethod.checkAuthority(postUpdateDto.getUsername()) == false){ //잘못된 접근
             return "redirect:/";
         }
 
         // 포스트 수정 작성임으로, 기존 포스트 정보를 보여주어야 한다.
-        PostSaveViewDto postSaveViewDto = new PostSaveViewDto(postUpdateDto.getTitle(), postUpdateDto.getBody(), postUpdateDto.getCategory());
+        PostSaveViewDto postSaveViewDto = new PostSaveViewDto(postUpdateDto.getId(), postUpdateDto.getTitle(), postUpdateDto.getBody(), postUpdateDto.getCategory());
         model.addAttribute("postSaveViewDto", postSaveViewDto);
         return "post";
     }
@@ -92,8 +91,12 @@ public class PostController {
     @PostMapping("/post")
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
         PostSaveDto postSaveDto = new PostSaveDto(postSaveViewDto.getTitle(), postSaveViewDto.getBody(), Category.valueOf(postSaveViewDto.getCategory()));
-        System.out.println("postSaveDto = " + postSaveDto.getBody());
-        postService.savePost(postSaveDto, getUsername());
+        // 포스트 수정
+        if(postSaveViewDto.getId() != null){
+            postService.updatePost(postSaveViewDto.getId(), postSaveDto);
+        }else{ //포스트 새로 작성
+            postService.savePost(postSaveDto, SpringSecurityMethod.getUsername());
+        }
         return "redirect:/post/list";
     }
 
@@ -104,46 +107,10 @@ public class PostController {
     @GetMapping("/post/delete")
     public String deletePost(@RequestParam String post){
         long id = Long.parseLong(post);
-        Long aLong = postService.deletePost(id, getUsername());
+        Long aLong = postService.deletePost(id, SpringSecurityMethod.getUsername());
         return "redirect:/post/list";
     }
 
 
-    boolean checkLogin(){
-        boolean result = false;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof Member || principal instanceof Oauth2Member){
-            result = true;
-        }
-        return result;
-    }
-    boolean checkAuthority(String username){
-        boolean result = false;
-        if(checkLogin() == false){
-            return false;
-        }
-        Member member = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof Member){
-           member = (Member) principal;
-        }else if(principal instanceof Oauth2Member){
-            member = ((Oauth2Member) principal).getMember();
-        }
 
-        if(member.getUsername().equals(username)){
-            result = true;
-        }
-        return result;
-    }
-    String getUsername(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member member = null;
-        if (principal instanceof Member) {
-            member = (Member) principal;
-        } else if (principal instanceof Oauth2Member) {
-            Oauth2Member oauth2Member = (Oauth2Member) principal;
-            member = oauth2Member.getMember();
-        }
-        return member.getUsername();
-    }
 }

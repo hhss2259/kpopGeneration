@@ -17,19 +17,18 @@
     <script th:inline="javascript" >
         const member = [[${member}]];
         const errorMessage = [[${errorMessage}]];
+        const join = [[${join}]];
+
         if(errorMessage != null){
             const redirectUrl = [[${referer}]];
             console.log(errorMessage);
             window.alert(errorMessage);
             location.href= redirectUrl;
         }
-
-        const join = [[${join}]];
         if(join === "success"){
             alert("회원가입에 성공했습니다.");
             location.href = "/";
         }
-        
         const showMemberMenu = function(){
             if(document.querySelector('.member-menu').style.display === 'block'){
                 document.querySelector('.member-menu').style.display = 'none';

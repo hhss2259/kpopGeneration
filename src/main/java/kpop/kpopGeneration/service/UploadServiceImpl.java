@@ -27,5 +27,16 @@ public class UploadServiceImpl implements UploadService{
         return uploaded.getS3Url();
     }
 
+    @Override
+    public String uploadTempFile(MultipartFile file) throws IOException {
+        S3UploadFile uploaded = s3FileStore.uploadTempFile(file);
+        return uploaded.getS3Url();
+    }
+
+    @Override
+    public void deleteTempFile(String src) throws IOException {
+        s3FileStore.deleteTempFile(src);
+    }
+
 
 }

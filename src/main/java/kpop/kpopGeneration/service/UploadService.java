@@ -8,4 +8,7 @@ import java.io.IOException;
 public interface UploadService {
     String upload(MultipartFile file)  throws IOException;
 
+    String uploadTempFile(MultipartFile file)  throws IOException;
+
+    void deleteTempFile(String src) throws IOException;
 }

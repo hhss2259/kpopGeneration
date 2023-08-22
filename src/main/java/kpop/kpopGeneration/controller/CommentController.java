@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.controller;
 
 import com.sun.istack.NotNull;
+import kpop.kpopGeneration.config.SpringSecurityMethod;
 import kpop.kpopGeneration.dto.CommentSaveDto;
 import kpop.kpopGeneration.dto.CommentUpdateViewDto;
 import kpop.kpopGeneration.entity.Member;
@@ -37,7 +38,7 @@ public class CommentController {
         if (commentSaveViewDto.getIsCommentForComment() == null) {
             commentSaveDto.setIsCommentForComment(false);
         }
-        Long aLong = commentService.saveComment(commentSaveDto, getUsername());
+        Long aLong = commentService.saveComment(commentSaveDto, SpringSecurityMethod.getUsername());
         return "redirect:/post/detail?id=" + commentSaveViewDto.getPostId();
     }
 
@@ -56,7 +57,7 @@ public class CommentController {
     @GetMapping("/comment/delete")
     String deleteComment(@RequestParam String comment) {
         Long id = Long.parseLong(comment);
-        Long aLong = commentService.deleteComment(id, getUsername());
+        Long aLong = commentService.deleteComment(id, SpringSecurityMethod.getUsername());
         return "redirect:/post/detail?id="+aLong;
     }
 
@@ -66,20 +67,6 @@ public class CommentController {
         String textBody;
         Long parentCommentId;
         Boolean isCommentForComment;
-    }
-
-
-
-    String getUsername(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Member member = null;
-        if (principal instanceof Member) {
-            member = (Member) principal;
-        } else if (principal instanceof Oauth2Member) {
-            Oauth2Member oauth2Member = (Oauth2Member) principal;
-            member = oauth2Member.getMember();
-        }
-        return member.getUsername();
     }
 
 

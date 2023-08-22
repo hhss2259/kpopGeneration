@@ -15,6 +15,9 @@ import java.util.Map;
 @Component
 public class ModelInterceptor implements HandlerInterceptor {
 
+    /**
+     * 현재 접근한 사용자의 정보들을 템플릿 엔진에게 일괄되게 전달하는 역할을 한다
+     */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 
@@ -23,6 +26,8 @@ public class ModelInterceptor implements HandlerInterceptor {
 
                 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 MemberViewDto memberViewDto = new MemberViewDto(null , null, false);
+                
+                //현재 로그인한 상태라면 새로운 MemberViewDto를 생성한다
                 if(principal instanceof Member || principal instanceof Oauth2Member){
                     Member member = null;
 

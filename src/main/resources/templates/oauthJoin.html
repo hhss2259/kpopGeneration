@@ -40,9 +40,8 @@
             </div>
         </div>
     </section>
-    <script>
-        
-    // 메세지 설정
+<script>
+         // 메세지 설정
         const successNickname = function(){
             const checking = document.querySelector('#nickname-checker');
             checking.textContent = '사용 가능한 닉네임입니다';
@@ -57,11 +56,9 @@
             checking.classList.remove('noShow');
             document.querySelector('#nicknameValue').value = false;
         }
-   // 메세지 설정     
-       
 
 
-    //이벤트 함수
+        //이벤트 함수
         const nicknameApi = function(testNickname){
             fetch("/api/nickname", {
                 method: "POST",
@@ -92,17 +89,15 @@
                 failNickname("사용할 수 없는 닉네임입니다"); 
             }
         }
-      //이벤트 함수
 
 
 
-    //이벤트 등록
+        //이벤트 등록
         const nickname = document.querySelector('#nickname');
         nickname.addEventListener('keyup', checkNickname);
-    //이벤트 등록
 
 
-    //최종 이벤트 함수
+        //최종 이벤트 함수
         const checkAll = function(event){
             event.preventDefault();
             const agree = document.querySelector('#agreeValue');
@@ -125,18 +120,12 @@
             }
            
         }
-    //최종 이벤트 함수
 
 
-    //최종 이벤트 함수 등록
+        //최종 이벤트 함수 등록
         const submit = document.querySelector('.submit-button');
         submit.addEventListener('click', checkAll);
-    //최종 이벤트 함수 등록
-    </script>
-
+</script>
 </body>
-<!-- 공통 자바스크립트(bottom)-->
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
-<!-- 공통 자바스크립트(bottom)-->
-
 </html>

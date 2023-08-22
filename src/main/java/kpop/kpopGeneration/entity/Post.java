@@ -1,6 +1,7 @@
 package kpop.kpopGeneration.entity;
 
 
+import com.sun.istack.NotNull;
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.PostSaveDto;
 import kpop.kpopGeneration.dto.PostSaveViewDto;
@@ -20,10 +21,11 @@ public class Post extends JpaBaseTimeEntity{
     @Column(name = "post_id")
     Long id;
 
+    @Column(length = 2000)
     String title;
 
 
-    @Column(length = 5000)
+    @Column(length = 8000)
     String body;
 
     @ManyToOne(fetch = FetchType.LAZY)

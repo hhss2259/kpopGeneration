@@ -37,13 +37,11 @@ public class JoinController {
      */
     @PostMapping("/join")
     public String complete(@ModelAttribute JoinForm form, RedirectAttributes redirectAttributes){
-        boolean correct = form.checkForm();
-        if(correct == false){
+        //적합하지 않은 회우너가입 요청
+        if(form.checkForm() == false){
             return "redirect:/post/list";
         }
-
-        Member newMember = form.makeMember();
-        Long save = memberService.save(newMember);
+        Long save = memberService.save(form.makeMember());
 
         redirectAttributes.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         return "redirect:/";
@@ -60,10 +58,8 @@ public class JoinController {
         redirectAttributes.addAttribute("join", LoginInfo.JOIN_SUCCESS);
         Oauth2Member principal = (Oauth2Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         principal.getMember().getUsername();
-
         memberService.updateNickname( principal.getMember().getUsername(), form.getNickname());
         principal.getMember().updateNickname(form.getNickname());
-
         return "redirect:/";
     }
     @Data

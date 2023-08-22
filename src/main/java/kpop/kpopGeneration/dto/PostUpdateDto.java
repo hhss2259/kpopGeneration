@@ -7,12 +7,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostUpdateDto {
 
+    Long id;
     String username;
     String title;
     String body;
     Category category;
 
-    public PostUpdateDto(String username, String title, String body, Category category) {
+    public PostUpdateDto(Long id, String username, String title, String body, Category category) {
+        this.id = id;
         this.username = username;
         this.title = title;
         this.body = body;
