@@ -61,8 +61,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
-    padding-left:10px;
 }
 .detail-info-right{
     display: flex;
@@ -243,7 +241,6 @@
     background-color: black;
 }
 .comment-writer-nickname{
-    padding-left: 10px;
     display: flex;
     align-items: center;
 }

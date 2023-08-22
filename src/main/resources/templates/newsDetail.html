@@ -34,20 +34,6 @@
                         <div class="detail-textdata" th:utext="*{body}">
                             테스트<br>테스트<br>테스트<br>테스트
                         </div>
-                        <div class="writer-posts-container">
-                            <div class="writer-posts">
-                                <div class="writer-posts-header">
-                                    <span th:text="*{nickname}">앤써</span>님이 작성한 최신 글
-                                </div>
-                                <th:block th:each="recentPosts : ${postDetail.recent.content}" >
-                                <a th:href="@{/post/detail(id=${recentPosts.id})}" >
-                                    <div class="writer-posts-details" th:text="${recentPosts.title}">
-                                        최신 글 목록
-                                    </div>
-                                </a>
-                                </th:block>
-                            </div>
-                        </div>
                         <div class="detail-likes-container">
                             <div id="likes" class="detail-likes-circle">
                                 <div class="detail-likes" th:text="*{likes}">2</div>
@@ -155,11 +141,11 @@
            let current =  Number([[${postDetail.commentList.current}]]);
 
            //페이지 정보
-             let basic= "/post/detail?id="+postId+"&";
+            let basic= "/news/detail?id="+postId+"&";
 
 </script>
 <script th:inline="javascript" src="../static/js/basic/paging.js" th:src="@{/js/basic/paging.js}"></script>
-<script th:inline="javascript" src="../static/js/postDetail.js" th:src="@{/js/postDetail.js}"></script>
+<script th:inline="javascript" src="../static/js/newsDetail.js" th:src="@{/js/newsDetail.js}"></script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 
 </html>

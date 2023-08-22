@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -29,7 +31,7 @@ public class CommentController {
      * 댓글 저장하기
      */
     @PostMapping("/comment")
-    public String comment(@ModelAttribute CommentSaveViewDto commentSaveViewDto) {
+    public String comment(@ModelAttribute CommentSaveViewDto commentSaveViewDto, HttpServletRequest request) {
         CommentSaveDto commentSaveDto = new CommentSaveDto(
                 commentSaveViewDto.getPostId(),
                 commentSaveViewDto.getTextBody(),
@@ -39,26 +41,38 @@ public class CommentController {
             commentSaveDto.setIsCommentForComment(false);
         }
         Long aLong = commentService.saveComment(commentSaveDto, SpringSecurityMethod.getUsername());
-        return "redirect:/post/detail?id=" + commentSaveViewDto.getPostId();
+
+        String referer = request.getHeader("referer");
+        System.out.println("referer = " + referer);
+//        return "redirect:/post/detail?id=" + commentSaveViewDto.getPostId();
+        return "redirect:"+referer;
     }
 
     /**
      * 댓글 수정하기
      */
     @PostMapping("/comment/update")
-    String updateComment(@ModelAttribute CommentUpdateViewDto commentUpdateViewDto) {
+    String updateComment(@ModelAttribute CommentUpdateViewDto commentUpdateViewDto, HttpServletRequest request) {
         commentService.updateComment(commentUpdateViewDto);
-        return "redirect:/post/detail?id=" + commentUpdateViewDto.getPostId();
+//        return "redirect:/post/detail?id=" + commentUpdateViewDto.getPostId();
+        String referer = request.getHeader("referer");
+
+        return "redirect:"+referer;
+
     }
 
     /**
      * 댓글 삭제하기
      */
     @GetMapping("/comment/delete")
-    String deleteComment(@RequestParam String comment) {
+    String deleteComment(@RequestParam String comment, HttpServletRequest request) {
         Long id = Long.parseLong(comment);
         Long aLong = commentService.deleteComment(id, SpringSecurityMethod.getUsername());
-        return "redirect:/post/detail?id="+aLong;
+//        return "redirect:/post/detail?id="+aLong;
+        String referer = request.getHeader("referer");
+
+        return "redirect:"+referer;
+
     }
 
     @Data

@@ -42,8 +42,6 @@ function clickLikes(){
     }
 })();
             
-            
-
 
 // 빈 댓글인지 확인
 function checkComment(event){
@@ -96,7 +94,6 @@ function toggleComment_delete(event){
         location.href = "/comment/delete?comment="+event.target.firstElementChild.value;
     }
 };
-
 
 //댓들달기 유효성 검사
 (function(){
@@ -181,35 +178,6 @@ function toggleComment_delete(event){
 })();
 
 
-(function(){
-    let loginMemberId = member.id;
-    let postMemberId = postDetail.memberId;
-
-    if((member.logined == true)&& (loginMemberId == postMemberId)){
-        const update_button = document.querySelector("#post-update");
-        const delete_button = document.querySelector("#post-delete");
-        update_button.classList.remove('no-show');
-        update_button.classList.add('post-update');    
-        delete_button.classList.remove('no-show');
-        delete_button.classList.add('post-delete');    
-
-        delete_button.addEventListener("click", ()=>{
-           let result =  confirm("정말 삭제하시겠습니까?");
-           if(result == true){
-            location.href="/post/delete?post="+postDetail.id;
-           }
-        });
-        update_button.addEventListener("click",()=>{
-            location.href="/post?post="+postDetail.id;
-        })
-    }
-})();
-
-
-
-
-
-
 /*
 * 내가 단 댓글들을 확인할 수 있다
 * 로그인한 member의 id와 comment를 작성한 member의 id가 같다면 댓글을 수정하거나 삭제할 수 있다 
@@ -228,9 +196,6 @@ function toggleComment_delete(event){
         }
     })
 })();
-
-
-
 (function(){
     let list= document.querySelectorAll(".comment-deleted");
     list.forEach( deleted =>{
@@ -263,5 +228,31 @@ function toggleComment_delete(event){
             }
         }
     })
+})();
+
+
+
+(function(){
+    let loginMemberId = member.id;
+    let postMemberId = postDetail.memberId;
+
+    if((member.logined == true)&& (loginMemberId == postMemberId)){
+        const update_button = document.querySelector("#post-update");
+        const delete_button = document.querySelector("#post-delete");
+        update_button.classList.remove('no-show');
+        update_button.classList.add('post-update');    
+        delete_button.classList.remove('no-show');
+        delete_button.classList.add('post-delete');    
+
+        delete_button.addEventListener("click", ()=>{
+           let result =  confirm("정말 삭제하시겠습니까?");
+           if(result == true){
+            location.href="/news/delete?post="+postDetail.id;
+           }
+        });
+        update_button.addEventListener("click", ()=>{
+            location.href="/news?news="+postDetail.id;
+        })
+    }
 })();
 

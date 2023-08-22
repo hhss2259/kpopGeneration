@@ -62,8 +62,5 @@ public class MainController {
         return "error";
     }
 
-    @GetMapping("/news/list")
-    public String news(){
-        return "newsList";
-    }
+
 }

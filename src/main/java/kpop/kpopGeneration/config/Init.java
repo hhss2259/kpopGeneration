@@ -51,16 +51,14 @@ public class Init {
 //        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
 //
 
-        for (int i = 0; i < 17; i++) {
-            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.ALL),member1.getUsername());
+        for (int i = 0; i < 111; i++) {
+            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member1.getUsername());
         }
 
-        for (int i = 0; i < 27; i++) {
-            postService.savePost(new PostSaveDto("포스트","키워드" + i,  Category.MUSIC),member1.getUsername());
-        }
-        for (int i = 0; i < 9; i++) {
-            postService.savePost(new PostSaveDto("이건 아님","이건 아님" + i,  Category.REVIEW),member1.getUsername());
-        }
+//        Long savePost = postService.savePost(new PostSaveDto("키워드", "포스트", Category.MUSIC), member1.getUsername());
+//        for(int i = 1; i<111 ;i++){
+//            commentService.saveComment(new CommentSaveDto(savePost, "댓글" + i, null, false), member1.getUsername());
+//        }
 
 
     }

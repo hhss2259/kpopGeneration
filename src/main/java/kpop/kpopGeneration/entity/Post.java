@@ -1,10 +1,8 @@
 package kpop.kpopGeneration.entity;
 
 
-import com.sun.istack.NotNull;
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.PostSaveDto;
-import kpop.kpopGeneration.dto.PostSaveViewDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

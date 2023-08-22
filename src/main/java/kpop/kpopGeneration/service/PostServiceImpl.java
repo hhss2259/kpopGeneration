@@ -53,6 +53,7 @@ public class PostServiceImpl implements PostService {
 
         // 멤버가 작성한 포스트 갯수를 증가시킨다
         member.increasePostCnt();
+
         return savedPost.getId();
     }
 

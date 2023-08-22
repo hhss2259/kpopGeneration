@@ -38,7 +38,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
 
     /**
-     * 포스트 목록 조회하기(카테고리별)
+     * 카테고리별 포스트 리스트 조회하기
      */
     @Override
     public Page<Post> findPostListByCategory(Category category, Pageable pageable) {
@@ -47,8 +47,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.member, member).fetchJoin()
                 .where(
-                        post.category.eq(category),
-                        post.deletedTrue.eq(false)
+                        post.category.eq(category), //카테고리 지정
+                        post.deletedTrue.eq(false) // 삭제하지 않은 포스트만
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -66,8 +66,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
         return new PageImpl<Post>(fetch,pageable, size);
     }
+    
     /**
-     * 포스트 목록 조회하기(전체 포스트)
+     * 전체 포스트 리스트 조회하기 
      */
     @Override
     public Page<Post> findALLPostList(Pageable pageable) {
@@ -76,17 +77,18 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.member, member).fetchJoin()
                 .where(
-                        post.deletedTrue.eq(false)
+                        post.category.ne(Category.NEWS),
+                        post.deletedTrue.eq(false) // 삭제하지 않은 포스트
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(post.id.desc())
                 .fetch();
 
-
         int size = queryFactory
                 .selectFrom(post)
                 .where(
+                        post.category.ne(Category.NEWS),
                         post.deletedTrue.eq(false)
                 )
                 .fetch()
@@ -95,6 +97,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return new PageImpl<Post>(fetch,pageable, size);
     }
 
+    /**
+     *  한 사용자가 최근에 작상한 포스트 5개 조회해오기
+     */
+    
     @Override
     public Page<RecentPostByMemberDto> findRecentPostListByMember(Member member, Pageable pageable, Long postId) {
         List<RecentPostByMemberDto> fetch = queryFactory
@@ -108,9 +114,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 )
                 .from(post)
                 .where(
-                        post.member.eq(member),
-                        post.id.ne(postId),
-                        post.deletedTrue.eq(false)
+                        post.member.eq(member), //같은 작성자
+                        post.id.ne(postId), // 현재 포스트는 제외한 5개 포스트
+                        post.deletedTrue.eq(false) //삭제하지 않은 포스트
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -125,6 +131,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return new PageImpl<RecentPostByMemberDto>(fetch, pageable, size);
     }
 
+    /**
+     *  포스트의 id로 포스트 조회해오기
+     */
+
     @Override
     public Optional<Post> findPostById(Long Id) {
         Post selectedPost = queryFactory
@@ -132,8 +142,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.member, member).fetchJoin()
                 .where(
-                        post.id.eq(Id),
-                        post.deletedTrue.eq(false)
+                        post.id.eq(Id), //포스트 id
+                        post.deletedTrue.eq(false) //삭제하지 않는 포스트
                 )
                 .fetchOne();
         return Optional.ofNullable(selectedPost);
