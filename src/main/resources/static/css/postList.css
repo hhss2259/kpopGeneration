@@ -1,23 +1,20 @@
 
 .board-header{
-    padding-left: 20px;
-    height: 90px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom:  20px;
-    border-bottom: 1px solid black;
 }
 
 .board-header-title{
-    height: 50px;
+    height: 60px;
+    margin-top:20px;
     font-size: 1.5rem;;
     line-height: 60px;
-
 }
-
 .board-header-category-container{
-    height: 40px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: start;
@@ -25,9 +22,10 @@
 .board-header-category{
     line-height: 0px;
     width: 90px;
-    height: 30px;
+    height: 40px;
     border : 1px solid black;
     border-radius: 20px 20px;
+    margin: 10px;
     margin-right: 10px;
     margin-bottom : 10px;
 
@@ -43,21 +41,20 @@
 /*
     게시글
 */
-.board-line-conatiner{
+.board-line-container{
+    border-top: 1px solid black;
     display: flex;
     flex-direction: column;
-    
+    margin-top:10px;
 }
-
 .board-line{
     display: flex;
-    flex-direction: row;
     align-items: center;
     height: 50px;
     border-bottom: 1px solid black;
 }
 .board-line-number{
-    width: 10%;
+    width: 7%;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +66,7 @@
     align-items: center
 }
 .board-line-title{
+    padding-left: 15px;
     width: 60%;
     height:100%;
     display: flex;
@@ -83,22 +81,16 @@
 
 }
 .line-additionalInfo-commentCnt{
-    width: 4%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding-left:15px;
     color: blue;
 }
 .line-additionalInfo-likes{
-    width: 4%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding-left:15px;
     color: red;
 }
 
 .board-line-writer{
-    width: 8%;
+    width: 10%;
     display:flex;
     justify-content: center;
     align-items: center

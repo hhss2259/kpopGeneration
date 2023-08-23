@@ -14,7 +14,7 @@
                 <div class="card-container">
                     <th:block th:each="card : ${big}">
                         <div class="big-card-form">
-                            <div class="big-card">
+                            <div class="big-card" th:data-id="${card.postId}">
                                 <div class="card-picture">
                                     <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
                                 </div>
@@ -33,7 +33,7 @@
                 <div class="card-container">
                     <th:block  th:each=" card : ${small}">
                         <div class="small-card-form">
-                            <div class="small-card">
+                            <div class="small-card" th:data-id="${card.postId}">
                                 <div class="card-picture">
                                     <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
                                 </div>
@@ -51,5 +51,24 @@
         </div>
     </section>
 </body>
+<script>
+    (function(){
+        let bigs = document.querySelectorAll(".big-card");
+        bigs.forEach( card =>{
+            card.addEventListener("click", (event)=>{
+               let id =  event.currentTarget.dataset.id;
+               location.href = "/news/detail?id="+id;
+            });
+        });
+        let smalls = document.querySelectorAll(".small-card");
+        smalls.forEach( card =>{
+            card.addEventListener("click", (event)=>{
+               let id =  event.currentTarget.dataset.id;
+               location.href = "/news/detail?id="+id;
+            });
+        });
+    })();
+
+</script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 </html>

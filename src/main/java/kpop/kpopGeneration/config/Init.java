@@ -52,7 +52,7 @@ public class Init {
 //
 
         for (int i = 0; i < 3; i++) {
-            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member1.getUsername());
+            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.MUSIC),member1.getUsername());
         }
 
 //        Long savePost = postService.savePost(new PostSaveDto("키워드", "포스트", Category.MUSIC), member1.getUsername());
