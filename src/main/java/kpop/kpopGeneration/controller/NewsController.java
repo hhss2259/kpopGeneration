@@ -32,16 +32,16 @@ public class NewsController {
     public String savePost(@ModelAttribute PostSaveViewDto postSaveViewDto){
         PostSaveDto postSaveDto =
                 new PostSaveDto(
-                        postSaveViewDto.getTitle(),
-                        postSaveViewDto.getBody(),
-                        Category.valueOf(postSaveViewDto.getCategory()),
-                        postSaveViewDto.getImages());
+                        postSaveViewDto.getTitle(), // 제목
+                        postSaveViewDto.getBody(), // 본문
+                        Category.valueOf(postSaveViewDto.getCategory()), //카테고리
+                        postSaveViewDto.getImages()); //이미지들
 
         // 포스트 수정
         if(postSaveViewDto.getId() != null){
             postService.updatePost(postSaveViewDto.getId(), postSaveDto);
         }else{ //포스트 새로 작성
-            Long saved = postService.savePost(postSaveDto, SpringSecurityMethod.getUsername());
+            postService.savePost(postSaveDto, SpringSecurityMethod.getUsername());
         }
         return "redirect:/news/list";
     }

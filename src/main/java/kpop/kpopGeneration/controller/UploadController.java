@@ -1,25 +1,13 @@
 package kpop.kpopGeneration.controller;
 
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3AccelerateUnsupported;
-import com.amazonaws.services.s3.transfer.Upload;
 import kpop.kpopGeneration.dto.DefaultResponse;
-import kpop.kpopGeneration.file.S3FileStore;
-import kpop.kpopGeneration.file.UploadFile;
 import kpop.kpopGeneration.service.UploadService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,16 +24,28 @@ public class UploadController {
 
 
     @PostMapping("/api/temp/upload")
-    public DefaultResponse uploadTempFile(@RequestParam("file") MultipartFile file) throws IOException {
-        String url = uploadService.uploadTempFile(file);
+    public DefaultResponse uploadLocal(@RequestParam("file") MultipartFile file) throws IOException {
+        String url = uploadService.uploadLocal(file);
         return DefaultResponse.res(20001, "업로드 성공", url);
     }
 
     @PostMapping("/api/temp/delete")
-    public DefaultResponse deleteTempFile(@RequestBody DeleteDto dto) throws IOException {
-        uploadService.deleteTempFile(dto.getSrc());
-        return DefaultResponse.res(20001, "삭제 성공", dto.getSrc());
+    public DefaultResponse deleteLocal(@RequestBody DeleteDto dto) throws IOException {
+        uploadService.deleteLocal(dto.getSrc());
+        return DefaultResponse.res(20001, "삭제 성공", dto.getSrc().substring(dto.getSrc().indexOf("/images/")));
     }
+
+
+    @GetMapping("/api/temp/savedImages")
+    public DefaultResponse getSavedImages(@RequestParam String id) throws IOException {
+        Long postId = Long.parseLong(id);
+        List<String> srcs = uploadService.findLocalSavedImages(postId);
+        return DefaultResponse.res(20001, "업로드 성공", srcs);
+    }
+
+
+
+
 
     @Data
     static class DeleteDto {

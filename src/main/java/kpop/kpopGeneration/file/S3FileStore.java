@@ -28,7 +28,7 @@ public class S3FileStore {
     private  String bucket;
     final String tempFolder = "temp/";
 
-    public S3UploadFile upload(MultipartFile file) throws IOException {
+    public S3UploadFile saveImages(MultipartFile file) throws IOException {
 
         String originalFilename = file.getOriginalFilename(); //파일의 원래 이름
         String storeFilename = createStoreFilename(originalFilename); // 파일의 저장 이름
@@ -46,7 +46,7 @@ public class S3FileStore {
         return s3UploadFile;
     }
 
-    public S3UploadFile uploadTempFile(MultipartFile file) throws IOException {
+    public S3UploadFile uploadS3(MultipartFile file) throws IOException {
 
         String originalFilename = file.getOriginalFilename(); //파일의 원래 이름
         String storeFilename = tempFolder+createStoreFilename(originalFilename); // 파일의 저장 이름
@@ -63,13 +63,10 @@ public class S3FileStore {
         return s3UploadFile;
     }
 
-    public void deleteTempFile(String src) throws IOException {
+    public void deleteS3(String src) throws IOException {
 
-        System.out.println("src = " + src);
         int index = src.lastIndexOf("temp/");
-        System.out.println("index = " + index);
         String key = src.substring(index);
-        System.out.println("key = " + key);
 
         DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(this.bucket, key);
         amazonS3Client.deleteObject(deleteObjectRequest);

@@ -43,37 +43,53 @@
     let postSaveViewDto = [[${postSaveViewDto}]];
 
     let jsonArray = [];
-    // if(postSaveViewDto.body != null){
-    //     fetch("/api/savedImages")
-    //     .then(response => response.json())
-    //     .then(daata =>{
-    //         console.log(data.data);
-    //     })
-    // }
+    if(postSaveViewDto.id != null ){
+        fetch("/api/temp/savedImages?id="+postSaveViewDto.id)
+        .then(response => response.json())
+        .then(data =>{
+            let srcs = data.data;
+            console.log(srcs);
+            
+            srcs.forEach( src =>{
+                jsonArray.push(src);
+                console.log(jsonArray);
+            });
+        })
+    }
 
 
 
     $(document).ready(function() {
         // summernote 초기화
         $('#summernote').summernote({
-        tabsize: 2,
-        height: 500,
-        lang: "ko-KR",
-        minHeight: 1,             // set minimum height of editor
-        maxHeight: 5000, 
-        callbacks: {
-            //사진 업로드 시 작동하는 콜백 함수
-            onImageUpload : function(files, editor, welEditable){
-                for (var i = files.length - 1; i >= 0; i--) {
-                    uploadSummernoteImageFile(files[i], this);
-                    }
-                },
-            //사진 제거 시 작동하는 콜백 함수
-            onMediaDelete : function(target) {
-                alert(target[0].src); 
-                deleteFile(target[0].src);
-                }      
-            
+            tabsize: 2,
+            height: 500,
+            lang: "ko-KR",
+            minHeight: 1,             // set minimum height of editor
+            maxHeight: 5000, 
+            callbacks: {
+                //사진 업로드 시 작동하는 콜백 함수
+                onImageUpload : function(files, editor, welEditable){
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                //사진 제거 시 작동하는 콜백 함수
+                onMediaDelete : function(target) {
+
+                    console.log(postSaveViewDto.id);
+                    if(postSaveViewDto.id == null){ // 포스트를 새로 작성하는 경우!
+                        alert(target[0].src); 
+                        deleteFile(target[0].src);
+                    }else{
+                        alert("이 경우에는 말이죠~ 업데이트하는 경우 입니다!"); //포스트를 업데이트하는 경우
+                        deleteFileTemp(target[0].src);
+                    } 
+                    
+                
+                }
+                        
+                
             }
         });
         //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
@@ -103,6 +119,15 @@
                     error : function(e) {
                     }
             });
+        };
+
+        function deleteFileTemp(origin){
+            let index = origin.lastIndexOf("/images/");
+            let fileName = origin.substring(index);
+            jsonArray = jsonArray.filter( (src)=> src !== fileName);
+            console.log(jsonArray);
+            console.log(fileName);
+
         };
 
         function deleteFile(src) {

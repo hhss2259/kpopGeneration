@@ -6,54 +6,54 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 멀티파트 파일을 서버에 저장하는 역할을 한다
+ * 멀티파트 파일을 Local에 저장한다
  */
-
 @Component
 public class FileStore {
+    @Value("${custom.path.upload-images}")
+    private String fileDir;
 
-    private String fileDir="/Users/hs/Desktop/study/";
-
-    /**
-     * 파일의 저장 위치를 설정한다
-     */
-    public String getPullPath(String filename){
+    // 파일의 저장 위치를 지정한다
+    public String getLocalSavePath(String filename){
         return fileDir + filename;
     }
+    
+    // 브라우저에서 파일을 요청할 때 필요한 url을 제공한다
+    public String getViewPath(String filename){  return "/images/"+filename;}
 
 
-    /**
-     * 멀티파트 파일이 여러 개 저장할 때 사용한다
-     */
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException{
-        List<UploadFile> storeFileResult = new ArrayList<>();
-
-        for(MultipartFile multipartFile : multipartFiles){
-            if(!multipartFile.isEmpty()){
-                storeFileResult.add(storeFile(multipartFile));
-            }
-        }
-        return storeFileResult;
-    }
-
-    /**
-     * 한 개의 멀티파티 파일을 저장할 때 사용
-     */
-    public UploadFile storeFile(MultipartFile multipartFile)throws IOException{
+    public String storeFile(MultipartFile multipartFile)throws IOException{
         if(multipartFile.isEmpty()){
             return null;
         }
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFilename(originalFilename);
-        multipartFile.transferTo(new File(getPullPath(storeFileName))); // 실제로 파일을 저장하는 코드
-        return new UploadFile(originalFilename, storeFileName);
+        multipartFile.transferTo(new File(getLocalSavePath(storeFileName))); // 로컬 디렉토리에 파일을 저장한다
+        return  getViewPath(storeFileName); // 이미지
     }
+
+
+    public void deleteFile(String src) {
+        int index = src.lastIndexOf("/")+1;
+        String storeFileName = src.substring(index);
+
+        Path filePath = Paths.get(getLocalSavePath(storeFileName));
+        try {
+            Files.delete(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     /**
      * UUID를 사용해 파일의 이름이 겹치지 않게 만들어준다
@@ -69,4 +69,5 @@ public class FileStore {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
+
 }
