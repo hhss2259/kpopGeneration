@@ -12,6 +12,7 @@
                     <div class="news-line" th:data-value="${content.postId}" >
                         <th:block th:object="${content}">
                             <div class="news-image">
+                                <img class="news-thumbnail" th:src="${content.src}" th:if="${content.src != null}"/>
                             </div>
                             <div class="news-content">
                                 <div class="news-title" th:text="*{title}">

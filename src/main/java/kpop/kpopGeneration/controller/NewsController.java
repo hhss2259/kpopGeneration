@@ -54,7 +54,7 @@ public class NewsController {
     public String findPostListByCategory(@PageableDefault(size = 10, page = 0) Pageable pageable,
                                          Model model) {
         // 무조건 News 카테고리를 가지고 온다.
-        PageCustomDto<PostTitleViewDto> postListByCategory = postService.findPostListByCategory(Category.NEWS, pageable);
+        PageCustomDto<PostTitleViewDto> postListByCategory = postService.findNewsListByCategory(Category.NEWS, pageable);
         model.addAttribute("postList", postListByCategory);
         return "newsList";
     }

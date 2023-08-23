@@ -21,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -69,6 +67,30 @@ public class PostServiceImpl implements PostService {
         member.increasePostCnt();
 
         return savedPost.getId();
+    }
+    @Override
+    public PageCustomDto<PostTitleViewDto> findNewsListByCategory(Category category, Pageable pageable) {
+        Page<Post> postList = postRepository.findPostListByCategory(category, pageable);
+        // 포스트 엔티티를 DTO로 변환한다
+        Page<PostTitleViewDto> postTitleList = postList.map(
+                post -> {
+                    PostImage thumbNail = postImageRepository.findThumbNail(post).orElse(null);
+                    String thumbNailSrc = null;
+                    if(thumbNail != null){
+                        thumbNailSrc = thumbNail.getSrc();
+                    }
+                    return new PostTitleViewDto(
+                        post.getId(), post.getCategory(), post.getTitle(),
+                        post.getMember().getNickName(), post.getLastModifiedTime(),
+                        post.getLikes(), post.getCommentCnt(),thumbNailSrc
+                );
+            }
+        );
+        // Page를 PageCustomDTO로 변환한 후 필요한 정보들을 추가적으로 담는다
+        PageCustomDto<PostTitleViewDto> postViewDto = getPageCustom(postTitleList);
+        postViewDto.setCurrent((int)(pageable.getPageNumber()+1));
+        postViewDto.setCategory(category);
+        return postViewDto;
     }
 
     /**
@@ -161,32 +183,68 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public Long updatePost(Long id,  PostSaveDto postSaveDto) {
         // DB에서 Post를 찾아온다
-        Post updatedPost = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
+        Post savedPost = postRepository.findPostById(id).orElseThrow(() -> new NotExistedPostException());
 
          // 변경 감지를 통해 post의 내용을 수정한다(제목, 본문, 카테고리)
-        updatedPost.updatePost(postSaveDto);
+        savedPost.updatePost(postSaveDto);
 
-        // 기존에 저장한 모든 이미지들을 삭제하고 포스트의 이미지들을 새롭게 저장한다.
-        List<PostImage> allPostImage = postImageRepository.findAllPostImage(updatedPost);
-        allPostImage.forEach( pi ->{
-            fileStore.deleteFile(pi.getSrc()); //이미지 디렉토리에 저장되어 있는 실제 이미지 파일들을 삭제
-        });
-        postImageRepository.deleteAllPostImage(updatedPost); //DB에서 이미지 정보 삭제
-        List<String> updatedImages = postSaveDto.getImages();
-        // 이미지 파일들을 새롭게 저장
-        if (updatedImages != null) {
-            for (int i = 0; i < updatedImages.size(); i++) {
-                fileStore.storeFile(updatedImages.get(i));
-
-                PostImage postImage = new PostImage(updatedPost, updatedImages.get(i));
-                if(i == 0){
-                    postImage.changeThumbnail(true);
-                }
-                postImageRepository.save(postImage);
-            }
+        
+        // 수정된 포스트에 이미지가 존재하지 않으면, 기존에 저장해두었던 모든 이미지 파일과 DB의 데이터를 삭제한다.
+        List<String> newSrc = postSaveDto.getImages();
+        List<PostImage> savedImages = postImageRepository.findAllPostImage(savedPost);
+        if (newSrc == null || newSrc.size() == 0) {
+            postImageRepository.deleteAllPostImage(savedPost); // DB에 해당 포스트의 모든 이미지 정보들을 삭제
+            savedImages.forEach( savedInfo ->{
+                fileStore.deleteFile(savedInfo.getSrc()); // 외부 디렉토리에서 해당 포스트의 이미지 파일들 모두 삭제
+            });
+            return savedPost.getId();
         }
+        // 수정된 포스트에 이미지가 존재한다면
+        // 1. 수정되기 전에 저장됐던 이미지 리스트와 수정된 후에 존재할 이미지 리스트를 비교한다
+        // 2. 수정된 후에도 유지되어야 할 이미지들을 제외하고, 삭제되어야 할 이미지들을 삭제한다 
+        // 3. 새롭게 등장한 이미지 데이터를 DB에 저장해야 된다(이미지 파일 자체는 외부 디렉토리에 먼저 저장되어 있는 상태)
+        // 4. 썸네일을 변경해준다  1) 썸네일 유지되거나 2) 기존 썸네일이 새로운 썸내일로 바뀌거나 3) 아예 새로운 썸내일 생기거나
 
-        return updatedPost.getId();
+        Map<String, Boolean> map = new HashMap<>(); // 유지될 이미지들과 삭제될 이미지들을 비교
+        List<String> survival = new ArrayList<>(); // 유지될 이미지들
+        savedImages.forEach( savedInfo ->{
+            map.put(savedInfo.getSrc(), false);
+        });
+        newSrc.forEach( image ->{
+            map.put(image, true); // 중첩되는 이미지들(유지될 이미지들)의 value는 true로 바꾼다.
+        });
+        map.keySet().forEach( src ->{
+            if(map.get(src) == true){ // 중첩되는 이미지들은 survival에 담는다
+                survival.add(src);
+            }else{
+                postImageRepository.deletePostImageBySrc(src); // 중첩되지 않은 이미지들을 수정 과정에서 삭제된 이미지들이므로 삭제해주어야 한다.
+                fileStore.deleteFile(src);
+            }
+        });
+
+        List<String> savedSrc = new ArrayList<>();
+        savedImages.forEach( savedImage ->{
+            savedSrc.add(savedImage.getSrc());
+        });
+        newSrc.forEach( src ->{
+            if(!savedSrc.contains(src)){ // 새롭게 추가된 이미지들  정보를 DB에 저장한다.
+                postImageRepository.save( new PostImage(savedPost, src));
+            }
+        });
+
+        Optional<PostImage> thumbNail = postImageRepository.findThumbNail(savedPost);
+        if(thumbNail.isPresent()){
+            PostImage oldThumbnail = thumbNail.get();
+            if(!oldThumbnail.getSrc().equals(newSrc.get(0))){
+                oldThumbnail.changeThumbnail(false);
+                PostImage newThumbnail = postImageRepository.findPostImageBySrc(newSrc.get(0), savedPost).get();
+                newThumbnail.changeThumbnail(true);
+            }
+        }else{
+            PostImage newThumbnail = postImageRepository.findPostImageBySrc(newSrc.get(0),savedPost).get();
+            newThumbnail.changeThumbnail(true);
+        }
+        return savedPost.getId();
     }
 
     /**
@@ -208,34 +266,6 @@ public class PostServiceImpl implements PostService {
         member.decreasePostCnt();
         return post.getId();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

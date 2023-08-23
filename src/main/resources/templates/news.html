@@ -48,17 +48,14 @@
         .then(response => response.json())
         .then(data =>{
             let srcs = data.data;
-            console.log(srcs);
-            
+            if(srcs == null ){
+                return;
+            }
             srcs.forEach( src =>{
                 jsonArray.push(src);
-                console.log(jsonArray);
             });
         })
     }
-
-
-
     $(document).ready(function() {
         // summernote 초기화
         $('#summernote').summernote({
@@ -79,17 +76,11 @@
 
                     console.log(postSaveViewDto.id);
                     if(postSaveViewDto.id == null){ // 포스트를 새로 작성하는 경우!
-                        alert(target[0].src); 
                         deleteFile(target[0].src);
                     }else{
-                        alert("이 경우에는 말이죠~ 업데이트하는 경우 입니다!"); //포스트를 업데이트하는 경우
                         deleteFileTemp(target[0].src);
                     } 
-                    
-                
                 }
-                        
-                
             }
         });
         //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
@@ -110,11 +101,7 @@
                 processData : false,
                 success : function(json) {
                         $(summernote).summernote('editor.insertImage', json.data);
-                        console.log(json.data);
-                        console.log('몇번찍히는지 보자구');
                         jsonArray.push(json.data);
-                        console.log(jsonArray);
-
                     },
                     error : function(e) {
                     }
@@ -125,9 +112,6 @@
             let index = origin.lastIndexOf("/images/");
             let fileName = origin.substring(index);
             jsonArray = jsonArray.filter( (src)=> src !== fileName);
-            console.log(jsonArray);
-            console.log(fileName);
-
         };
 
         function deleteFile(src) {
@@ -139,9 +123,7 @@
                 cache: false,
                 success: function(json) {
                     console.log('몇번찍히는지 보자구22');
-                    console.log(json.data);
                     jsonArray = jsonArray.filter( (src)=> src !== json.data);
-                    console.log(jsonArray);
                 }
             });
         };

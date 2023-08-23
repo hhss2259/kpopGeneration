@@ -7,89 +7,46 @@
     <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
-            <div class="topic-container">
+            <div class="news-container">
                 <div class="container-name">
                     Topic
                 </div>
-                <div class="big-card-container">
-                    <div class="big-card">
-                        <div class="card-picture">
-
+                <div class="card-container">
+                    <th:block th:each="card : ${big}">
+                        <div class="big-card-form">
+                            <div class="big-card">
+                                <div class="card-picture">
+                                    <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
+                                </div>
+                                <div class="card-title" th:text="${card.title}">
+                                    엔믹스
+                                </div>
+                                <div class="card-date" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    2023년 7월 27일
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="big-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
             </div>
-        </div>
-    </section>
-    <section>
-        <div class="inner">
-            <div class="news-container">
-                <div class="container-name">
-                    News
+            <div class="news-container second">
+                <div class="card-container">
+                    <th:block  th:each=" card : ${small}">
+                        <div class="small-card-form">
+                            <div class="small-card">
+                                <div class="card-picture">
+                                    <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
+                                </div>
+                                <div class="card-title" th:text="${card.title}">
+                                    엔믹스
+                                </div>
+                                <div class="card-date" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    2023년 7월 27일
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
                 </div>
-                <div class="small-card-container">
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                </div>      
             </div>
         </div>
     </section>

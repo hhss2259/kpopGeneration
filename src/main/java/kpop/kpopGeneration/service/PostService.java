@@ -48,4 +48,6 @@ public interface PostService {
      * 게시글 삭제
      */
     Long deletePost(Long id, String username);
+
+    PageCustomDto<PostTitleViewDto> findNewsListByCategory(Category news, Pageable pageable);
 }

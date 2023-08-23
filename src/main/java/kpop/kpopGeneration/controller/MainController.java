@@ -1,15 +1,20 @@
 package kpop.kpopGeneration.controller;
 
 import kpop.kpopGeneration.config.LoginInfo;
+import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.MemberViewDto;
+import kpop.kpopGeneration.dto.PageCustomDto;
+import kpop.kpopGeneration.dto.PostTitleViewDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.security.oauth2.Oauth2Member;
 import kpop.kpopGeneration.security.service.MemberContext;
+import kpop.kpopGeneration.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +26,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -30,6 +37,8 @@ public class MainController {
     /**
      * 메인 페이지
      */
+
+    private final PostService postService;
     @GetMapping("/")
     public String main(@RequestParam(required = false) String join,
                        Model model) {
@@ -50,6 +59,21 @@ public class MainController {
                 return "oauthJoin";
             }
         }
+
+        PageCustomDto<PostTitleViewDto> newsViewList
+                = postService.findNewsListByCategory(Category.NEWS, PageRequest.of(0, 11));
+
+        List<PostTitleViewDto> content = newsViewList.getContent();
+        List<PostTitleViewDto> bigCard = new ArrayList<>();
+        List<PostTitleViewDto> smallCard = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            bigCard.add(content.get(i));
+        }
+        for (int i = 2; i < content.size(); i++) {
+            smallCard.add(content.get(i));
+        }
+        model.addAttribute("big", bigCard);
+        model.addAttribute("small", smallCard);
         return "main";
     }
 

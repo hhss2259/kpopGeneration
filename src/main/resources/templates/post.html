@@ -57,6 +57,22 @@
     });
 
     let jsonArray = [];
+    if(postSaveViewDto.id != null ){
+        fetch("/api/temp/savedImages?id="+postSaveViewDto.id)
+        .then(response => response.json())
+        .then(data =>{
+            let srcs = data.data;
+            console.log(srcs);
+            
+            if(srcs == null ){
+                return;
+            }
+            srcs.forEach( src =>{
+                jsonArray.push(src);
+                console.log(jsonArray);
+            });
+        })
+    }
     $(document).ready(function() {
 
         // summernote 초기화
@@ -67,18 +83,20 @@
         minHeight: 1,             // set minimum height of editor
         maxHeight: 5000, 
         callbacks: {
-            //사진 업로드 시 작동하는 콜백 함수
-            onImageUpload : function(files, editor, welEditable){
-                for (var i = files.length - 1; i >= 0; i--) {
-                    uploadSummernoteImageFile(files[i], this);
-                    }
-                },
-            //사진 제거 시 작동하는 콜백 함수
-            onMediaDelete : function(target) {
-                alert(target[0].src); 
-                deleteFile(target[0].src);
+                //사진 업로드 시 작동하는 콜백 함수
+                onImageUpload : function(files, editor, welEditable){
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                //사진 제거 시 작동하는 콜백 함수
+                onMediaDelete : function(target) {
+                    if(postSaveViewDto.id == null){ // 포스트를 새로 작성하는 경우!
+                        deleteFile(target[0].src);
+                    }else{
+                        deleteFileTemp(target[0].src);
+                    } 
                 }      
-            
             }
         });
         //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
@@ -100,13 +118,19 @@
                 success : function(json) {
                         $(summernote).summernote('editor.insertImage', json.data);
                         jsonArray.push(json.data);
-                        console.log(json.data);
-                        console.log(jsonArray);
                     },
                     error : function(e) {
                         console.log(e);
                     }
             });
+        };
+
+        function deleteFileTemp(origin){
+            let index = origin.lastIndexOf("/images/");
+            let fileName = origin.substring(index);
+            jsonArray = jsonArray.filter( (src)=> src !== fileName);
+            console.log(jsonArray);
+            console.log(fileName);
         };
 
         function deleteFile(src) {
@@ -117,11 +141,7 @@
                 contentType: 'application/json',
                 cache: false,
                 success: function(json) {
-                    console.log(json);
-                    console.log(json.data);
                     jsonArray = jsonArray.filter( (src)=>{ src !== json.data});
-                    console.log(jsonArray);
-                    console.log(jsonArray.length);
                 }
             });
         };

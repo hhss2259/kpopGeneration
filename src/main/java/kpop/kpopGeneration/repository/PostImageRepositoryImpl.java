@@ -55,4 +55,20 @@ public class PostImageRepositoryImpl implements PostImageRepositoryCustom {
                 .fetch();
         return list;
     }
+
+    @Override
+    public Optional<PostImage> findPostImageBySrc(String src, Post post) {
+        PostImage postImage1 = queryFactory
+                .selectFrom(postImage)
+                .where(postImage.src.eq(src), postImage.post.eq(post))
+                .fetchOne();
+        return Optional.ofNullable(postImage1);
+    }
+
+    @Override
+    public void deletePostImageBySrc(String src) {
+        long execute = queryFactory.delete(postImage)
+                .where(postImage.src.eq(src))
+                .execute();
+    }
 }
