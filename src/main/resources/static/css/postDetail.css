@@ -19,6 +19,7 @@
 .detail-box{
     width:100%;
     height: auto;
+    padding:15px;
 }
 
 .detail-category{
@@ -32,12 +33,10 @@
 .detail-title{
     width: 100%;
     height: auto;
-    color: yellowgreen;
     font-size: 3rem;
     display: flex;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 10px;
+    margin: 10px 0;
 
     word-break: break-all;
     word-wrap: break-word;
@@ -48,14 +47,12 @@
 .detail-info{
     width: 100%;
     height: 50px;
-    color: blueviolet;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    border-bottom: 1px solid black;
 }
 .detail-info-left{
     display: flex;
@@ -133,17 +130,18 @@
     width: 500px;
     min-height:120px;
     height:auto;
-    border: 1px solid black;
+    border: 1px solid #D6E4FF;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 
     display:flex;
     flex-direction: column;
 }
 .writer-posts-header{
     height: 40px;
-    border-bottom: 1px solid black;
     display: flex;
     align-items: center;
     padding-left:10px;
+    background-color: #D6E4FF;
 }
 .writer-posts-details{
     padding-left: 10px;
@@ -160,7 +158,7 @@
 
 .detail-likes-container{
     width: 100%;
-    height : 100px;
+    height : 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -192,13 +190,13 @@
 
 
 .detail-comment-container{
-    margin-top: 30px;
-    border-top : 1px solid black;
     width: 100%;
     min-height: 400px;
+    padding:15px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
 .comment-cnt-container{
-   height: 80px;
+   height: 60px;
    width: 80px;
    display: flex;
    align-items: center;
@@ -297,40 +295,6 @@
 
 
 
-/*
-페이징 css
-*/
-.page-container{
-    width: 100%;
-    height: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
-
-.piece{
-    width:40px;
-    height: 40px;
-    color: red;
-    line-height: 40px;
-    text-align: center;
-}
-
-.page-list{
-    display: flex;
-    flex: row;
-    width: auto;
-}
-
-.currentPage{
-    border-radius: 50% 50%;
-    background-color: antiquewhite;
-}
-/*
-페이징 css
-*/
 
 
 .comment-write-container{
@@ -354,6 +318,8 @@
 .comment-write-textarea{
     width: 100%;
     height: 100px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+
 }
 .comment-write-button{
     width: 80px;

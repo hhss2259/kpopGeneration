@@ -10,6 +10,7 @@
 .board-header-title{
     height: 60px;
     margin-top:20px;
+    margin-left: 10px;
     font-size: 1.5rem;;
     line-height: 60px;
 }
@@ -23,26 +24,24 @@
     line-height: 0px;
     width: 90px;
     height: 40px;
-    border : 1px solid black;
     border-radius: 20px 20px;
     margin: 10px;
-    margin-right: 10px;
-    margin-bottom : 10px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 
-   display: flex;
-   align-items: center;
-   justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .currentCategory{
-    background-color: wheat;
+    background-color: #3366FF;
+    color: white;
 }
 
 /*
     게시글
 */
 .board-line-container{
-    border-top: 1px solid black;
     display: flex;
     flex-direction: column;
     margin-top:10px;
@@ -51,8 +50,19 @@
     display: flex;
     align-items: center;
     height: 50px;
-    border-bottom: 1px solid black;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
+.board-line:first-child{
+    background-color: #D6E4FF;
+    color: white;
+}
+.board-line:not(.board-line:first-child):hover{
+    opacity: 0.5;
+    transition: transform 1s;
+    transform: translateY(-5px);
+    
+}
+
 .board-line-number{
     width: 7%;
     display:flex;
@@ -113,10 +123,36 @@
     align-items: center;
 }
 
-.post-new{
-    border: 0px;
+.post-search{
+    border: 0;
+    background-color: #E7F897;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    width: 100px;
+    height : 30px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
 
+.post-new{
+    border: 0;
+    background-color: #3366FF;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    width: 100px;
+    height : 30px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.post-search:hover, .post-new:hover, .board-header-category:hover{
+    transition: transform 1s;
+    transform: translateY(-5px);
+}
 
 
 

@@ -65,7 +65,7 @@ public class SearchingRepositoryImpl {
         if(category == Category.ALL){
             return  null;
         }else{
-            return  post.category.eq(category);
+            return  post.category.eq(category).and(post.category.ne(Category.NEWS));
         }
     }
 
