@@ -4,36 +4,35 @@
         <div class="header-container">
             <div class="header-left">
                 <a th:href="@{/}">
-                    <div class="titile">
+                    <div class="main-title">
                     KpopGeneration
                     </div>
                 </a>
                 <div class="main-menu">
-                    <a th:href="@{/news/list}">
-                        <div class="news">
+                    <div class="menu">
+                        <a th:href="@{/news/list}">
                             뉴스
-                        </div>
-                    </a>
-                    <a th:href="@{/post/list}">
-                       <div class="community">
-                            커뮤니티
-                       </div>
-                    </a>
+                        </a>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="menu">
+                        <a th:href="@{/post/list}">
+                        커뮤니티
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="side-menu">
-                <div class="searching-button">
+            <div class="side-menu-list">
+                <div class="side-menu searching-button">
                     검색
                 </div>
-                <div>
+                <div class="side-menu">
                     <span th:if="${member.logined == false}" class="login-button"> 로그인</span>
-                    <span th:if="${member.logined == true}" class="member-menu-button" onclick="showMemberMenu()"> 로그아웃</span>
+                    <span th:if="${member.logined == true}" class="member-menu-button" onclick="showMemberMenu()"> 내 정보</span>
                     <div class="member-menu">
-                        <div class="member-info">
-                            <div>작성한 글</div>
-                            <div>작성한 댓글</div>
-                        </div> 
-                        <form th:action="@{/logout}" th:method="post">
+                        <div class="posts">작성한 글</div>
+                        <div class="comments">작성한 댓글</div>
+                        <form class="logout" th:action="@{/logout}" th:method="post">
                             <button th:type="submit" class="logout-button">로그아웃</button>
                         </form>
                     </div>
@@ -42,5 +41,4 @@
         </div>
     </div>
 </header>
-<hr>
 <!--공통 헤더-->

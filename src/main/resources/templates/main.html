@@ -18,11 +18,13 @@
                                 <div class="card-picture">
                                     <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
                                 </div>
-                                <div class="card-title" th:text="${card.title}">
-                                    엔믹스
+                                <div class="card-title" >
+                                    <div class="msg" th:text="${card.title}">
+                                    </div>
                                 </div>
-                                <div class="card-date" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
-                                    2023년 7월 27일
+                                <div class="card-date" >
+                                    <div class="msg" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -37,11 +39,13 @@
                                 <div class="card-picture">
                                     <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
                                 </div>
-                                <div class="card-title" th:text="${card.title}">
-                                    엔믹스
+                                <div class="card-title" >
+                                    <div class="msg" th:text="${card.title}">
+                                    </div>
                                 </div>
-                                <div class="card-date" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
-                                    2023년 7월 27일
+                                <div class="card-date" >
+                                    <div class="msg" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    </div>
                                 </div>
                             </div>
                         </div>
