@@ -71,14 +71,14 @@
                                                 불바다
                                             </div>
                                             <input class="comment-writer-id" type="hidden" th:value="${comment.memberId}"/>
-                                            <div class="no-show" >글쓴이</div>
+                                            <div class="no-show" >작성자</div>
                                         </div>
                                         <div class="comment-date" th:text="${#temporals.format(comment.lastModifiedTime, 'yyyy-MM-dd')}">
                                             2023년 8월 13일
                                         </div>
                                     </div>
                                     <div class="comment-textBody-container">
-                                        <span th:if="${comment.parentNickname != null}" class="comment-parent-nickname" th:text="${comment.parentNickname}">
+                                        <span th:if="${comment.parentNickname != null}" class="comment-parent-nickname" th:text="|@${comment.nickname}|">
                                                 TO!
                                         </span>
                                         <span class="comment-textBody" th:text="${comment.textBody}"></span>
@@ -94,12 +94,11 @@
                                         </div>
                                         <div class="no-show comment-update-button">수정</div>
                                         <div class="comment-new">
-                                            댓글달기
+                                            댓글
                                         </div>
                                         <input type="hidden" class="comment-login-check" th:value="${comment.memberId}"/>
                                     </div>
                                     <div class="no-show">
-                                        <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
                                         <form class="comment-write" th:action="@{/comment/update}" method="post">
                                             <textarea class="comment-write-textarea" name="textBody" th:text="${comment.textBody}"  readonly></textarea>
                                             <input type="hidden" name="commentId" th:value="${comment.commentId}"/>
@@ -108,13 +107,13 @@
                                         </form>
                                     </div>
                                     <div class="no-show">
-                                        <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
+                                        <span  class="commentTo" th:text="|@${comment.nickname}|">불바다</span>
                                         <form class="comment-write" th:action="@{/comment}" method="post">
                                             <textarea class="comment-write-textarea" name="textBody"  readonly></textarea>
                                             <input type="hidden" name="postId" th:value="${postDetail.id}"/>
                                             <input type="hidden" name="parentCommentId" th:value="${comment.commentId}"/>
                                             <input type="hidden" name="isCommentForComment" th:value="true"/>
-                                            <button type="submit" class="comment-write-button">등록하기</button>
+                                            <button type="submit" class="comment-write-button">저장</button>
                                         </form>
                                     </div>
                                 </div>
@@ -132,7 +131,7 @@
                             <form class="comment-write" th:action="@{/comment}" method="post">
                                 <textarea class="comment-write-textarea" name="textBody" readonly></textarea>
                                 <input type="hidden" name="postId" th:value="${postDetail.id}"/>
-                                <button type="submit" class="comment-write-button">등록하기</button>
+                                <button type="submit" class="comment-write-button">저장</button>
                             </form>
                         </div>
                     </div>
