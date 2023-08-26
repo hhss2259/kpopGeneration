@@ -8,12 +8,13 @@
                 open()
             })
         }
-        const modal_close = document.querySelector(".modal-close");
-        
-        if(modal_close != null){
-            modal_close.addEventListener('click',()=>{
-                close()
-            })    
+        const modal_close_list = document.querySelectorAll(".modal-close");
+        if(modal_close_list != null){
+            modal_close_list.forEach(modal_close =>{
+                modal_close.addEventListener('click',()=>{
+                    close()
+                })  
+            });
         }
         
         window.addEventListener('click', (e) => {
@@ -48,14 +49,14 @@
                 open();
             })
         }
-        const modal_close = document.querySelectorAll(".modal-close");
-        
-        modal_close.forEach((c)=>{
-            c.addEventListener('click', ()=>{
-                close();
-            })
-        });
-        
+        const modal_close_list = document.querySelectorAll(".modal-close");
+        if(modal_close_list != null){
+            modal_close_list.forEach(modal_close =>{
+                modal_close.addEventListener('click',()=>{
+                    close()
+                })  
+            });
+        }
         window.addEventListener('click', (e) => {
             e.target === modal ?  close() : false
         })

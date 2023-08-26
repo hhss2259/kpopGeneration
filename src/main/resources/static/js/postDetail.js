@@ -4,10 +4,9 @@
     fetch('/api/post/likes?post='+postId)
     .then(response => response.json())
     .then(data => {
-        document.querySelector(".detail-likes").textContent  = data.data.likes;
+        document.querySelector(".detail-likes").textContent  = "좋아요 "+data.data.likes;
         if(data.data.isLiked == true){
-            let circle = document.querySelector(".detail-likes-circle");
-            circle.classList.add('liked');
+            document.querySelector(".detail-likes-circle").classList.add('liked');
         }
     })
 })();
@@ -20,11 +19,9 @@ function clickLikes(){
     fetch("/api/post/likes/toggle?post="+postId)
     .then(response => response.json())
     .then(data => {
-        const likes = data.data.likes;
-        const isLiked = data.data.isLiked;
-        document.querySelector(".detail-likes").textContent  = likes;
+        document.querySelector(".detail-likes").textContent  =  "좋아요 "+data.data.likes;
         let circle = document.querySelector(".detail-likes-circle");
-        if(isLiked == true){
+        if(data.data.isLiked == true){
             circle.classList.add('liked');
         }else{
             circle.classList.remove('liked');
@@ -144,6 +141,7 @@ function toggleComment_delete(event){
     //현재 로그인한 상태라면
     if(member.logined== true){
         commentLikesList.forEach(commentLikes =>{
+            // 이 댓글의 id 정보
             let commentId = commentLikes.firstElementChild.value;
             
             //내가 기존에 좋아요를 누른 댓글인지 아닌지 확인한다
@@ -151,7 +149,7 @@ function toggleComment_delete(event){
             .then(response => response.json())
             .then(data =>{
                 if(data.data.isLiked == true){
-                    commentLikes.lastElementChild.classList.add("liked");
+                    commentLikes.classList.add("liked");
                 }
             });
             // 또한 좋아요 버튼을 누를 시 좋아요 기능이 활성화될 수 있도록
@@ -160,13 +158,11 @@ function toggleComment_delete(event){
                 fetch("/api/comment/likes/toggle?comment="+commentId)
                 .then( response => response.json())
                 .then(data => {
-                    console.log(data.data.likes);
-                    console.log(data.data.isLiked);
                     commentLikes.lastElementChild.textContent = data.data.likes;
                     if(data.data.isLiked == true){
-                        commentLikes.lastElementChild.classList.add("liked");
+                        commentLikes.classList.add("liked");
                     }else{
-                        commentLikes.lastElementChild.classList.remove("liked");
+                        commentLikes.classList.remove("liked");
                     }
                 })
             })   

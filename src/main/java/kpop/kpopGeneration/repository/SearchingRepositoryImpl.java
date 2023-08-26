@@ -63,7 +63,7 @@ public class SearchingRepositoryImpl {
 
     private BooleanExpression checkCategory(Category category) {
         if(category == Category.ALL){
-            return  null;
+            return  post.category.ne(Category.NEWS);
         }else{
             return  post.category.eq(category).and(post.category.ne(Category.NEWS));
         }

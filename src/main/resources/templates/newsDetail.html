@@ -36,8 +36,8 @@
                         </div>
                         <div class="detail-likes-container">
                             <div id="likes" class="detail-likes-circle">
-                                <div class="detail-likes" th:text="*{likes}">2</div>
-                                <div class="detail-likes-title">좋아요</div>
+                                <img src="/img/good.png" class="good">
+                                <div class="detail-likes" th:text="|좋아요 *{likes}|">2</div>
                             </div>
                         </div>
                     </th:block>
@@ -72,6 +72,7 @@
                                     <div class="comment-bottom" >
                                         <div class="comment-likes" >
                                             <input type="hidden" th:value="${comment.commentId}"/>
+                                            <img src="/img/good.png" class="comment-good">
                                             <div class="comment-likes-cnt" th:text="${comment.likes}"></div>
                                         </div>
                                         <div class="no-show comment-delete-button">

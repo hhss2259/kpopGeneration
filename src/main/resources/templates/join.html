@@ -13,8 +13,11 @@
                 </div>
                 <form class="join-content" th:action="@{/join}" action="/join"  th:method="post" >
                     <div class="join-agree">
-                        <div class="join-agree-content">약관에 동의하시겠습니까?</div>
-                        <label><input th:type="checkbox" type="checkbox" name="agree" id="agreeValue"/>네, 동의합니다</label>
+                        <div class="join-agree-text">KpopGeneration 이용 약관</div>
+                        <div class="join-agree-checking">
+                            <div class="join-agree-content">약관에 동의하시겠습니까?</div>
+                            <label><input th:type="checkbox" type="checkbox" name="agree" id="agreeValue"/>네, 동의합니다</label>
+                        </div>
                     </div>
                     <div class="join-info">
                         <div class="info">
