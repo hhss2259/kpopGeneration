@@ -27,7 +27,7 @@
                 </th:block>
             </div>
             <div class="news-info-container">
-                <th:block th:if="${member.logined == true}">
+                <th:block th:if="${member.logined == true && member.managerRole == true}">
                     <form th:action="@{/news}" th:method="get">
                         <button type="submit" class="news-new">
                             작성하기
@@ -46,6 +46,8 @@
             </div>
         </div>
     </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
+
 <script th:inline="javascript">
     let category = String([[${postList.category}]]); 
     let numberOfElements= Number([[${postList.numberOfElements}]]);

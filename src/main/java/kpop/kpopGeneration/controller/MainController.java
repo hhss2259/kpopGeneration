@@ -86,5 +86,12 @@ public class MainController {
         return "error";
     }
 
+    @GetMapping("/denied")
+    public String denied(
+                        Model model){
+//        model.addAttribute("errorMessage", errorMessage);
+//        model.addAttribute("referer", referer );
+        return "denied";
+    }
 
 }

@@ -1,5 +1,6 @@
 package kpop.kpopGeneration.security.service;
 
+import kpop.kpopGeneration.config.AppConfig;
 import kpop.kpopGeneration.security.entity.ResourceRole;
 import kpop.kpopGeneration.security.entity.repository.ResourceRoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,16 @@ public class SecurityResourceService {
 
     @Autowired
     private  ResourceRoleRepository resourceRoleRepository;
+    @Autowired
+    private AppConfig appConfig;
 
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getResourceRoleList(){
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> result = new LinkedHashMap<>();
         Optional<List<ResourceRole>> optional = resourceRoleRepository.findAllResourceRole();
         List<ResourceRole> resourceRoles = optional.orElseGet(() -> null);
+        System.out.println("resourceRoles.size() = " + resourceRoles.size());
+        System.out.println("resourceRoles = " + resourceRoles);
+        System.out.println("resourceRoles != null = " +( resourceRoles != null));
 
         // 만약 하나의 Resouce에 role_user, role_manager, role_admin 세 가지가 있다면
         // resource + role_user, resource+ role_user + role_manager, resouce+ role_user + role+manager+role_admin 세 개 생성
@@ -37,7 +43,9 @@ public class SecurityResourceService {
 //        });
 
         for (ResourceRole resourceRole : resourceRoles) {
+            System.out.println("resourceRole = " + resourceRole.getResource().getUrl());
             RequestMatcher key = new AntPathRequestMatcher(resourceRole.getResource().getUrl());
+            System.out.println("key = " + key);
 
             List<ConfigAttribute> list;
             if(!result.containsKey(key)){

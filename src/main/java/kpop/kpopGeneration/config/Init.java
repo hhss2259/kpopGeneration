@@ -6,6 +6,7 @@ import kpop.kpopGeneration.dto.PostSaveDto;
 import kpop.kpopGeneration.dto.PostSaveViewDto;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.repository.CommentRepository;
+import kpop.kpopGeneration.security.entity.MemberRole;
 import kpop.kpopGeneration.service.PostService;
 import kpop.kpopGeneration.service.CommentService;
 import kpop.kpopGeneration.service.MemberService;
@@ -14,6 +15,8 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Component
@@ -38,27 +41,31 @@ public class Init {
         memberService.save(member3);
         memberService.save(member4);
 
+        List<String> memberRoles = new ArrayList<>();
+        memberRoles.add("ROLE_USER");
+        memberRoles.add("ROLE_MANAGER");
+        memberService.updateMemberRole("yyyy", memberRoles);
 
 
-        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
-        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
-        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
-        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
-        Long aa2 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa3, true), member4.getUsername());
-        Long aa4 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member3.getUsername());
-        Long aa5 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
-        Long aa6 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa5, true), member4.getUsername());
-        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+//        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
+//        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
+//        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
+//        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
+//        Long aa2 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa3, true), member4.getUsername());
+//        Long aa4 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member3.getUsername());
+//        Long aa5 = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+//        Long aa6 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa5, true), member4.getUsername());
+//        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
+////
 //
-
         for (int i = 0; i < 3; i++) {
             postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member1.getUsername());
             postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.MUSIC),member1.getUsername());
         }
-
-        for(int i = 1; i<111 ;i++){
-            commentService.saveComment(new CommentSaveDto(savePost, "댓글" + i, null, false), member1.getUsername());
-        }
+//
+//        for(int i = 1; i<111 ;i++){
+//            commentService.saveComment(new CommentSaveDto(savePost, "댓글" + i, null, false), member1.getUsername());
+//        }
 
 
     }

@@ -1,6 +1,9 @@
 package kpop.kpopGeneration.security.metadatasource;
 
 import kpop.kpopGeneration.security.service.SecurityResourceService;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -12,6 +15,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public class UrlFilterInvocationSecurityMetadatasource implements FilterInvocationSecurityMetadataSource {
 
@@ -20,14 +24,15 @@ public class UrlFilterInvocationSecurityMetadatasource implements FilterInvocati
     private final SecurityResourceService securityResourceService;
 
 
-
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         HttpServletRequest request = ((FilterInvocation) object).getRequest();
 //        requestMap.put(new AntPathRequestMatcher("/testMyPage"), Arrays.asList(new SecurityConfig("ROLE_USER")));
         if (requestMap != null) {
+            System.out.println("request = " + requestMap.toString());
             for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : requestMap.entrySet()) {
                 RequestMatcher matcher = entry.getKey();
+                System.out.println("entry.getKey() = " + entry.getKey());
                 if (matcher.matches(request)) { //인가가 필요한 url이면 어떠한 role을 필요로 하는지 return 한다.
                     return entry.getValue(); // List<ConfigAttribute>를 return 한다.
                 }

@@ -62,11 +62,6 @@ public class PostController {
      */
     @GetMapping("/post")
     public String writePost( @RequestParam(required = false) String post, Model model) {
-        // 로그인하지 않은 사람은 접근할 수 없다
-        if(SpringSecurityMethod.checkLogin()== false){
-            return "redirect:/";
-        }
-
         // 포스트 최초 작성으로, 빈 작성화면을 보여주면 된다
         if(post == null ){
             model.addAttribute("postSaveViewDto", new PostSaveViewDto());

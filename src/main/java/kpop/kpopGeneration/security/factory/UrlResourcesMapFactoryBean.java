@@ -21,17 +21,20 @@ public class UrlResourcesMapFactoryBean implements FactoryBean<LinkedHashMap<Req
         this.securityResourceService = securityResourceService;
     }
 
+    /**
+     *  초기 설정 정보를 담은 resourceMap을 return 한다
+     */
     @Override
     public LinkedHashMap<RequestMatcher, List<ConfigAttribute>> getObject() throws Exception {
         if(resourceMap == null){
             init();
         }
-
         return resourceMap;
     }
 
     private void init() {
         resourceMap = securityResourceService.getResourceRoleList();
+        System.out.println("resourceMap = " + resourceMap);
     }
 
     @Override

@@ -106,6 +106,7 @@
             </div>
         </div>
     </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
 <script th:inline="javascript">
         let category = String([[${postList.category}]]); 
         let numberOfElements= Number([[${postList.numberOfElements}]]);

@@ -28,4 +28,9 @@ public class ResourceRole {
         this.role = role;
         this.orderPriority = 100;
     }
+    public ResourceRole(Resource resource, Role role, Integer orderPriority) {
+        this.resource = resource;
+        this.role = role;
+        this.orderPriority = orderPriority;
+    }
 }
