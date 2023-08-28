@@ -85,7 +85,6 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .join(comment.parentPost, post).fetchJoin()
                 .join(comment.member, member).fetchJoin()
                 .leftJoin(comment.parentComment, parentComment).fetchJoin()
-//                .leftJoin(parentComment.member, parentMember).fetchJoin()
                 .where(
                         comment.parentPost.id.eq(postId)
                 )
