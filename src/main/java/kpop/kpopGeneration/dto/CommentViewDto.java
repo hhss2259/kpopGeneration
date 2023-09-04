@@ -15,6 +15,7 @@ public class CommentViewDto {
 
     Long commentId;
     String nickname;
+    Long memberId;
     String textBody;
     Long likes;
     Long postId;

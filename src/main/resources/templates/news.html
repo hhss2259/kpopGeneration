@@ -1,102 +1,148 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!--favicon 설정-->
-
-    <!--css reset-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
-    <!--fontawesome-->
-    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
-    <!--Spoca Hans Sans Neo-->
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-    
-    
-    <style>
-        /*구글 웹 폰트 적용*/
-        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
-    </style>
-    <link rel ="stylesheet" href="../static/css/basic/basic.css"/>
-    <link rel ="stylesheet" href="../static/css/news/news.css"/> 
-
-
-</head>
+<div th:replace="~{basic/head ::head (@{/css/post.css})}"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 <body>
-    <header>
-        <div class="inner">
-            <div class="header-container">
-                <div class="header-left">
-                    <div class="titile">
-                      KpopGeneration
-                    </div>
-                    <div class="main-menu">
-                        <a th:href="@{/news}">
-                            <div class="news">
-                                뉴스
-                            </div>
-                        </a>
-                        <a th:href="@{/topic}">
-                           <div class="topic">
-                                토픽
-                           </div>
-                        </a>
-                        <a th:href="@{/board}">
-                           <div class="community">
-                                커뮤니티
-                           </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="side-menu">
-                    side-menu
-                </div>
-            </div>
-        </div>
-    </header>
-    <hr>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
-            <div class="news-container">
-                <div class="news-line">
-                    <div class="news-image">
+            <div class="post-container">
+            <form class="post" th:action="@{/news}" th:method="post">
+                <div class="post-header">
+                    <div class="post-header-category">
+                        <div class="category-title">
+                            카테고리
+                        </div>
+                        <select class="category" name="category">
+                            <option value="NEWS">뉴스</option>
+                        </select>
                     </div>
-                    <div class="news-content">
-                        <div class="news-title">
-                            엔믹스
+                    <div class="post-header-title">
+                        <div class="title-title">
+                            제목
                         </div>
-                        <div class="news-date">
-                            2023년 8월 7일 
-                        </div>
-                    </div>
-                </div>
-                <div class="news-line">
-                    <div class="news-image">
-                    </div>
-                    <div class="news-content">
-                        <div class="news-title">
-                            엔믹스
-                        </div>
-                        <div class="news-date">
-                            2023년 8월 7일 
-                        </div>
+                        <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}" minlength="1" maxlength="20"/>
+                        <input type="hidden"  name="id" th:value="${postSaveViewDto.id}"/>
+                        <input type="hidden" name="images" id="images" />
                     </div>
                 </div>
-                <div class="news-line">
-                    <div class="news-image">
-                    </div>
-                    <div class="news-content">
-                        <div class="news-title">
-                            엔믹스
-                        </div>
-                        <div class="news-date">
-                            2023년 8월 7일 
-                        </div>
-                    </div>
+                <div class="post-textdata">
+                    <textarea id="summernote" name="body"></textarea>
                 </div>
+                <button type="button" class="post-button">등록하기</button>
+            </form>
             </div>
         </div>
     </section>
-    
+    <div th:replace="~{basic/footer :: footer}"></div>
+
 </body>
+<script th:inline="javascript">
+    let postSaveViewDto = [[${postSaveViewDto}]];
+
+    let jsonArray = [];
+    if(postSaveViewDto.id != null ){
+        fetch("/api/temp/savedImages?id="+postSaveViewDto.id)
+        .then(response => response.json())
+        .then(data =>{
+            let srcs = data.data;
+            if(srcs == null ){
+                return;
+            }
+            srcs.forEach( src =>{
+                jsonArray.push(src);
+            });
+        })
+    }
+    $(document).ready(function() {
+        // summernote 초기화
+        $('#summernote').summernote({
+            tabsize: 2,
+            height: 500,
+            lang: "ko-KR",
+            minHeight: 1,             // set minimum height of editor
+            maxHeight: 5000, 
+            callbacks: {
+                //사진 업로드 시 작동하는 콜백 함수
+                onImageUpload : function(files, editor, welEditable){
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                //사진 제거 시 작동하는 콜백 함수
+                onMediaDelete : function(target) {
+
+                    console.log(postSaveViewDto.id);
+                    if(postSaveViewDto.id == null){ // 포스트를 새로 작성하는 경우!
+                        deleteFile(target[0].src);
+                    }else{
+                        deleteFileTemp(target[0].src);
+                    } 
+                }
+            }
+        });
+        //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
+        if(postSaveViewDto.body != null){
+            $('#summernote').summernote('pasteHTML', postSaveViewDto.body);
+        }
+
+        function uploadSummernoteImageFile(file, summernote) {
+            var data = new FormData();	
+            data.append("file",file);
+            $.ajax({
+                url: '/api/temp/upload',
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data: data,
+                cache: false,
+                contentType : false,
+                processData : false,
+                success : function(json) {
+                        $(summernote).summernote('editor.insertImage', json.data);
+                        jsonArray.push(json.data);
+                    },
+                    error : function(e) {
+                    }
+            });
+        };
+
+        function deleteFileTemp(origin){
+            let index = origin.lastIndexOf("/images/");
+            let fileName = origin.substring(index);
+            jsonArray = jsonArray.filter( (src)=> src !== fileName);
+        };
+
+        function deleteFile(src) {
+            $.ajax({
+                data: JSON.stringify({src : src}),
+                type: "POST",
+                url: "/api/temp/delete", // replace with your url
+                contentType: 'application/json',
+                cache: false,
+                success: function(json) {
+                    console.log('몇번찍히는지 보자구22');
+                    jsonArray = jsonArray.filter( (src)=> src !== json.data);
+                }
+            });
+        };
+    });
+
+
+    (function(){
+        let button = document.querySelector(".post-button");
+        button.addEventListener("click" , ()=>{
+            if(document.querySelector(".title").value.length == 0 || document.querySelector(".title").value.length >20){
+                alert("제목은 0 ~ 20자까지 가능합니다");
+            }else{
+                document.querySelector("#images").value = jsonArray;
+                button.parentElement.submit();
+            }
+        })
+    })();
+</script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
 </html>

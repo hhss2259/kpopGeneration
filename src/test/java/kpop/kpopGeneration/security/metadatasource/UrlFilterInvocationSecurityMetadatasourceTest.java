@@ -35,23 +35,39 @@ class UrlFilterInvocationSecurityMetadatasourceTest {
     @Test
     @DisplayName("securityMetadatasource 테스트")
     void testMetadataSource(){
-
         //given
+        /**
+         * DB에 저장해놓은 권한 정보를 가지고 온다
+         */
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> requestMap = securityResourceService.getResourceRoleList();
 
         //when
         UrlFilterInvocationSecurityMetadatasource urlFilterInvocationSecurityMetadatasource = new UrlFilterInvocationSecurityMetadatasource(requestMap,securityResourceService);
 
-
         //then
+        /**
+         *  현재 "/test/member"에 접근할 수 있는 role 은 총 세 가지이다.
+         *  1. ROLE_USER
+         *  2. ROLE_MANAGER
+         *  3. ROLE_ADMIN
+         */
         Collection<ConfigAttribute> list1 = urlFilterInvocationSecurityMetadatasource.getAttributes(new FilterInvocation("/test/member", HttpMethod.GET.name()));
         assertEquals(3, list1.size());
 
+
+        /**
+         *  현재 "/test/manager"에 접근할 수 있는 role 은 총 두 가지이다.
+         *  1. ROLE_MANAGER
+         *  2. ROLE_ADMIN
+         */
         Collection<ConfigAttribute> list2 = urlFilterInvocationSecurityMetadatasource.getAttributes(new FilterInvocation("/test/manager", HttpMethod.GET.name()));
-        assertEquals(3, list1.size());
+        assertEquals(2, list2.size());
 
+        /**
+         *  현재 "/test/manager"에 접근할 수 있는 role 은 총 한 가지이다.
+         *  1. ROLE_ADMIN
+         */
         Collection<ConfigAttribute> list3 = urlFilterInvocationSecurityMetadatasource.getAttributes(new FilterInvocation("/test/admin", HttpMethod.GET.name()));
-        assertEquals(3, list1.size());
-
+        assertEquals(1, list3.size());
     }
 }

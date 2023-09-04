@@ -1,0 +1,160 @@
+
+.board-header{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom:  20px;
+}
+
+.board-header-title{
+    height: 60px;
+    margin-top:20px;
+    margin-left: 10px;
+    font-size: 1.5rem;;
+    line-height: 60px;
+}
+.board-header-category-container{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+.board-header-category{
+    line-height: 0px;
+    width: 90px;
+    height: 40px;
+    border-radius: 20px 20px;
+    margin: 10px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.currentCategory{
+    background-color: #3366FF;
+    color: white;
+}
+
+/*
+    게시글
+*/
+.board-line-container{
+    display: flex;
+    flex-direction: column;
+    margin-top:10px;
+}
+.board-line{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.board-line:first-child{
+    background-color: #D6E4FF;
+    color: white;
+}
+.board-line:not(.board-line:first-child):hover{
+    opacity: 0.5;
+    transition: transform 1s;
+    transform: translateY(-5px);
+    
+}
+
+.board-line-number{
+    width: 7%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.board-line-category{
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.board-line-title{
+    padding-left: 15px;
+    width: 60%;
+    height:100%;
+    display: flex;
+    justify-content: start;
+    align-items: center
+}
+.line-title{
+    max-width: 80%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.line-additionalInfo-commentCnt{
+    padding-left:15px;
+    color: blue;
+}
+.line-additionalInfo-likes{
+    padding-left:15px;
+    color: red;
+}
+
+.board-line-writer{
+    width: 10%;
+    display:flex;
+    justify-content: center;
+    align-items: center
+}
+.board-line-date{
+    width: 12%;
+    display:flex;
+    justify-content: center;
+    align-items: center
+}
+
+
+
+.post-info-container{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.post-search{
+    border: 0;
+    background-color: #E7F897;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    width: 100px;
+    height : 30px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.post-new{
+    border: 0;
+    background-color: #3366FF;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    width: 100px;
+    height : 30px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.post-search:hover, .post-new:hover, .board-header-category:hover{
+    transition: transform 1s;
+    transform: translateY(-5px);
+}
+
+
+
+
+

@@ -29,7 +29,7 @@ class SecurityResourceServiceTest {
     ResourceRoleRepository resourceRoleRepository;
 
     @Test
-    @DisplayName("securityResouceService 동작 테스트")
+    @DisplayName("securityResourceService 동작 테스트")
     void testSecurityResourceService(){
         LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceRoleList = securityResourceService.getResourceRoleList();
         assertTrue(resourceRoleList.containsKey(new AntPathRequestMatcher("/test/member")));

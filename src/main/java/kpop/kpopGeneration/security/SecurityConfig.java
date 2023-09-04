@@ -1,6 +1,8 @@
 package kpop.kpopGeneration.security;
 
+import kpop.kpopGeneration.config.AppConfig;
 import kpop.kpopGeneration.entity.QMember;
+import kpop.kpopGeneration.interceptor.ModelInterceptor;
 import kpop.kpopGeneration.repository.MemberRepository;
 import kpop.kpopGeneration.security.common.FormAuthenticationDetailSource;
 import kpop.kpopGeneration.security.entity.repository.MemberRoleRepository;
@@ -36,11 +38,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.util.Arrays;
@@ -159,7 +163,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         /**
-         * 직접 구혀한 CustomSecurityInterceptor를 스프링 시큐리티가 제공하는 기본 인터셉터 앞에 위치시킨다
+         * 직접 구현한 CustomSecurityInterceptor를 스프링 시큐리티가 제공하는 기본 인터셉터 앞에 위치시킨다
          * 따라서 기본 인터셉터보다 먼저 실행되며,
          * 권한 평가에 성공했을 경우, 기본 인터셉터는 사용되지 않고 인증/인가 프로세스를 종료한다
          */
@@ -168,8 +172,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         /**
          * FilterSecurityInterceptor를 통한 권한 평가 시, 해당 접근자에게 권한이 없다면 해당 Handler가 작동한다
+         * The AccessDeniedHandler only applies to authenticated users. The default behaviour for unauthenticated users is to redirect to the login page
          */
         http.exceptionHandling()
+                .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .accessDeniedHandler(accessDeniedHandler());
 
         /**
@@ -253,12 +259,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new UrlFilterInvocationSecurityMetadatasource(urlResourcesMapFactoryBean().getObject(), securityResourceService());
     }
 
-    // SecurityMetadatasource가 사용하는 Service로 실제로 DB에 접근해 각 url 별 인가 권한을 조회해온다
+
+    // SecurityMetadatasource가 사용하는 Service로 실제로 DB에 접근해 각 url별 인가 권한을 조회해온다
     @Bean
     public SecurityResourceService securityResourceService(){
         SecurityResourceService securityResourceService = new SecurityResourceService();
         return securityResourceService;
     }
+
 
     /**
      * 어플리케이션 최초 동작 시 , DB에 저장되어 있는 url 권한 정보를 추출하여 제공한다

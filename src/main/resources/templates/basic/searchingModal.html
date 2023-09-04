@@ -1,0 +1,23 @@
+<div class="searching-modal " th:fragment="searchingModal">
+    <div class="modal-body">
+        <div class="modal-content-container">
+            <div class="modal-close">
+                X
+            </div>
+            <div class="modal-title">
+                검색하기
+            </div>
+            <form th:action="@{/searching}" th:method="get"  class="modal-form-container" >
+                <select class="searchingOption" name="option">
+                    <option value="content">제목+내용</option>
+                    <option value="nickname">작성자 닉네임</option>
+                </select>
+                <input type="text" class="searching-keyword" name="keyword"/>
+                <div class="searching-submit">검색</div>
+                <div class="searching-info">찾고 싶은 키워드를 검색해보세요!</div>
+            </form>
+        </div>
+    </div>
+</div>
+    
+

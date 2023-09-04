@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{basic/head ::head (@{/css/newsList.css})}"></div>
+<body>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <section>
+        <div class="inner">
+            <div class="news-container">
+                <th:block  th:each=" content : ${postList.content}">
+                    <div class="news-line" th:data-value="${content.postId}" >
+                        <th:block th:object="${content}">
+                            <div class="news-image">
+                                <img class="news-thumbnail" th:src="${content.src}" th:if="${content.src != null}"/>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-title" th:text="*{title}">
+                                    엔믹스
+                                </div>
+                                <div class="news-date" th:text="*{#temporals.format(date, 'yyyy-MM-dd')}">
+                                    2023년 8월 7일 
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                </th:block>
+            </div>
+            <div class="news-info-container">
+                <th:block th:if="${member.logined == true && member.managerRole == true}">
+                    <form th:action="@{/news}" th:method="get">
+                        <button type="submit" class="news-new">
+                            작성하기
+                        </div>
+                    </form>
+               </th:block>
+            </div>
+            <div class="page-container" >
+                <div class="piece page-pre">이전</div>
+                <div class="piece page-first">1</div>
+                <div class="piece page-first-dot">...</div>
+                <div class="page-list"></div>
+                <div class="piece page-last-dot">...</div>
+                <div class="piece page-last">last</div>
+                <div class="piece page-next">다음</div>
+            </div>
+        </div>
+    </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
+
+<script th:inline="javascript">
+    let category = String([[${postList.category}]]); 
+    let numberOfElements= Number([[${postList.numberOfElements}]]);
+    let totalElements =  Number([[${postList.totalElements}]]);
+    let totalPages =  Number([[${postList.totalPages}]]);
+    let hasNext = Boolean([[${postList.hasNext}]]);
+    let hasPrevious =  Boolean([[${postList.hasPrevious}]]);
+    let isFirst = Boolean([[${postList.isFirst}]]);
+    let isLast=  Boolean([[${postList.isLast}]]);
+    let current =  Number([[${postList.current}]]);
+    // 설정 정보
+
+    let basic = "/news/list?";
+</script>
+</body>
+<script th:inline="javascript" src="../static/js/basic/paging.js" th:src="@{/js/basic/paging.js}"></script>
+<script th:inline="javascript" src="../static/js/newsList.js" th:src="@{/js/newsList.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+</html>

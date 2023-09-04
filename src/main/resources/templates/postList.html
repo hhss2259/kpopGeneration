@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{basic/head ::head (@{/css/postList.css})}"></div>
+<body>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <section>
+        <div class="inner">
+            <div class="board-header">
+                <div class="board-header-title">
+                    게시판
+                </div>
+                <div class="board-header-category-container">
+                    <div class="board-header-category" data-enum="ALL">
+                        전체
+                    </div>
+                    <div class="board-header-category" data-enum="MUSIC">
+                        음악
+                    </div>
+                    <div class="board-header-category" data-enum="REVIEW">
+                        리뷰
+                    </div>
+                    <div class="board-header-category" data-enum="CERTIFICATION">
+                        인증/후기
+                    </div>
+                    <div class="board-header-category" data-enum="NORMAL">
+                        일반
+                    </div>
+                </div>
+            </div>
+            <div class="board-line-container">
+                <div class="board-line" >
+                    <div class="board-line-number">
+                        번호
+                    </div>
+                    <div class="board-line-category">
+                        카테고리
+                    </div>
+                    <div class="board-line-title">
+                        제목
+                    </div>
+                    <div class="board-line-writer">
+                        글쓴이
+                    </div>
+                    <div class="board-line-date">
+                        작성일
+                    </div>
+                </div>
+                <th:block  th:each=" content : ${postList.content}">
+                    <div class="board-line" >
+                        <th:block th:object="${content}">
+                            <div class="board-line-number" th:text="*{postId}"  >
+                                1
+                            </div>
+                            <div class="board-line-category" th:text="*{category}">
+                                일반
+                            </div>
+                            <div class="board-line-title" th:data-value="*{postId}">
+                                <div class="line-title" th:text="*{title}" >
+                                    엔믹스
+                                </div>
+                                <th:block th:if="*{commentCnt != 0}" >
+                                    <div class="line-additionalInfo-commentCnt" th:text="*{commentCnt}" >
+                                        댓글 갯수
+                                    </div>
+                                </th:block>
+                                <th:block th:if="*{likes != 0}" >
+                                    <div class="line-additionalInfo-likes" th:text="*{likes}">
+                                        좋아요
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div class="board-line-writer" th:text="*{nickname}">
+                                지우
+                            </div>
+                            <div class="board-line-date" th:text="*{#temporals.format(date, 'yyyy-MM-dd')}">
+                                2023.07.27
+                            </div>
+                        </th:block>
+                    </div>
+                </th:block>
+            </div>
+            <div class="post-info-container">
+                <div class="post-search">
+                    검색하기
+                </div>
+                <th:block th:if="${member.logined == true}">
+                    <form th:action="@{/post}" th:method="get">
+                        <button type="submit" class="post-new">
+                            작성하기
+                        </button>
+                    </form>
+                </th:block>
+            </div>
+            <div class="page-container" >
+                <div class="piece page-pre">이전</div>
+                <div class="piece page-first">1</div>
+                <div class="piece page-first-dot">...</div>
+                <div class="page-list"></div>
+                <div class="piece page-last-dot">...</div>
+                <div class="piece page-last">last</div>
+                <div class="piece page-next">다음</div>
+            </div>
+        </div>
+    </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
+
+<script th:inline="javascript">
+        let category = String([[${postList.category}]]); 
+        let numberOfElements= Number([[${postList.numberOfElements}]]);
+        let totalElements =  Number([[${postList.totalElements}]]);
+        let totalPages =  Number([[${postList.totalPages}]]);
+        let hasNext = Boolean([[${postList.hasNext}]]);
+        let hasPrevious =  Boolean([[${postList.hasPrevious}]]);
+        let isFirst = Boolean([[${postList.isFirst}]]);
+        let isLast=  Boolean([[${postList.isLast}]]);
+        let current =  Number([[${postList.current}]]);
+        //페이지 정보
+        let basic= "/post/list?category="+category+"&";
+</script>
+</body>
+<script th:inline="javascript" src="../static/js/basic/paging.js" th:src="@{/js/basic/paging.js}"></script>
+<script th:inline="javascript" src="../static/js/postList.js" th:src="@{/js/postList.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+</html>

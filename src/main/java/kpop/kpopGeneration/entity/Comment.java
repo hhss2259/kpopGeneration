@@ -39,6 +39,7 @@ public class Comment extends JpaBaseTimeEntity{
     LocalDateTime deletedTime;
     Boolean deletedTrue;
     Integer depth;
+    Long orderNumber;
 
     public Comment(String textBody, Post parentPost, Comment parentComment , Member member) {
         this.textBody = textBody;
@@ -47,13 +48,32 @@ public class Comment extends JpaBaseTimeEntity{
         if(parentComment == null){
             this.isCommentForComment = false;
             this.depth = 0 ;
+            this.orderNumber = parentPost.getCommentCnt();
         }else{
             this.isCommentForComment = true;
             this.depth = parentComment.depth+1;
+            this.orderNumber = parentComment.getOrderNumber();
         }
         this.member = member;
         this.deletedTime = null;
         this.deletedTrue = false;
+        this.likes = 0L;
     }
 
+    public void updateTextBody(String textBody) {
+        this.textBody = textBody;
+    }
+
+    public void deleteComment() {
+        this.deletedTrue = true;
+        this.deletedTime = LocalDateTime.now();
+    }
+
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
+    }
 }

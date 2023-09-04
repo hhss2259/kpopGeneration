@@ -2,14 +2,12 @@ package kpop.kpopGeneration.entity;
 
 
 import kpop.kpopGeneration.dto.Category;
-import lombok.Builder;
+import kpop.kpopGeneration.dto.PostSaveDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.metamodel.IdentifiableType;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -21,10 +19,11 @@ public class Post extends JpaBaseTimeEntity{
     @Column(name = "post_id")
     Long id;
 
+    @Column(length = 2000)
     String title;
 
 
-    @Column(length = 5000)
+    @Column(length = 8000)
     String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,7 +31,7 @@ public class Post extends JpaBaseTimeEntity{
     Member member;
 
     LocalDateTime deletedTime;
-    boolean deletedTrue;
+    Boolean deletedTrue;
     Long views;
 
     Long likes;
@@ -57,5 +56,28 @@ public class Post extends JpaBaseTimeEntity{
 
     public void increaseCommentCnt(){
         this.commentCnt++;
+    }
+
+    public void updatePost(PostSaveDto postSaveDto) {
+        this.title = postSaveDto.getTitle();
+        this.body = postSaveDto.getBody();
+        this.category = postSaveDto.getCategory();
+    }
+
+    public void deletePost() {
+        this.deletedTime = LocalDateTime.now();
+        this.deletedTrue = true;
+    }
+
+    public void increaseViews() {
+        this.views++;
+    }
+
+    public void increaseLikes() {
+        this.likes++;
+    }
+
+    public void decreaseLikes() {
+        this.likes--;
     }
 }

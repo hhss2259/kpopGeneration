@@ -2,19 +2,15 @@ package kpop.kpopGeneration.repository;
 
 import kpop.kpopGeneration.dto.Category;
 import kpop.kpopGeneration.dto.CommentViewDto;
-import kpop.kpopGeneration.dto.PageCustomDto;
-import kpop.kpopGeneration.dto.PostDetailDto;
 import kpop.kpopGeneration.entity.Comment;
 import kpop.kpopGeneration.entity.Member;
 import kpop.kpopGeneration.entity.Post;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +29,7 @@ public class CommentForCommentTest {
     MemberRepository memberRepository;
 
     @Autowired
-    BoardRepository boardRepository;
+    PostRepository postRepository;
 
     private Member saveMember(){
         Member member = new Member("aaaa", "1111", "member1");
@@ -43,7 +39,7 @@ public class CommentForCommentTest {
 
     private Post savePost(Member savedMember){
         Post post = new Post("테스트 포스트", "테스트하기", savedMember, Category.MUSIC);
-        Post save = boardRepository.save(post);
+        Post save = postRepository.save(post);
         return save;
     }
     @Test

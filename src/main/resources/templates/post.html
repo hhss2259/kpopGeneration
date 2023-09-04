@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{basic/head ::head (@{/css/post.css})}"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<body>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
+    <section>
+        <div class="inner">
+            <div class="post-container">
+            <form class="post" th:action="@{/post}" th:method="post">
+                <div class="post-header">
+                    <div class="post-header-category">
+                        <div class="category-title">
+                            카테고리
+                        </div>
+                        <select class="category" name="category">
+                            <option value="MUSIC">음악</option>
+                            <option value="REVIEW">리뷰</option>
+                            <option value="CERTIFICATION">인증/후기</option>
+                            <option value="NORMAL">일반</option>
+                        </select>
+                    </div>
+                    <div class="post-header-title">
+                        <div class="title-title">
+                            제목
+                        </div>
+                        <input type="text" class="title" name="title" th:value="${postSaveViewDto.title}" minlength="1" maxlength="20"/>
+                        <input type="hidden"  name="id" th:value="${postSaveViewDto.id}"/>
+                    </div>
+                </div>
+                <div class="post-textdata">
+                    <textarea id="summernote" name="body"></textarea>
+                </div>
+                <button type="button" class="post-button">등록하기</button>
+            </form>
+            </div>
+        </div>
+    </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
+
+</body>
+<script th:inline="javascript">
+    let postSaveViewDto = [[${postSaveViewDto}]];
+    
+    // 포스트 수정 시 기존 타이틀과 기존 카테고리 정보를 가지고 온다
+    (function(){
+        let originalOption = postSaveViewDto.category;
+        let category = document.querySelector(".category");
+        let options = document.querySelectorAll("option");
+        options.forEach( o => {
+            if(o.value === originalOption){
+                o.selected = true;
+            }
+        });
+    });
+
+    let jsonArray = [];
+    if(postSaveViewDto.id != null ){
+        fetch("/api/temp/savedImages?id="+postSaveViewDto.id)
+        .then(response => response.json())
+        .then(data =>{
+            let srcs = data.data;
+            console.log(srcs);
+            
+            if(srcs == null ){
+                return;
+            }
+            srcs.forEach( src =>{
+                jsonArray.push(src);
+                console.log(jsonArray);
+            });
+        })
+    }
+    $(document).ready(function() {
+
+        // summernote 초기화
+        $('#summernote').summernote({
+        tabsize: 2,
+        height: 500,
+        lang: "ko-KR",
+        minHeight: 1,             // set minimum height of editor
+        maxHeight: 5000, 
+        callbacks: {
+                //사진 업로드 시 작동하는 콜백 함수
+                onImageUpload : function(files, editor, welEditable){
+                    for (var i = files.length - 1; i >= 0; i--) {
+                        uploadSummernoteImageFile(files[i], this);
+                        }
+                    },
+                //사진 제거 시 작동하는 콜백 함수
+                onMediaDelete : function(target) {
+                    if(postSaveViewDto.id == null){ // 포스트를 새로 작성하는 경우!
+                        deleteFile(target[0].src);
+                    }else{
+                        deleteFileTemp(target[0].src);
+                    } 
+                }      
+            }
+        });
+        //summernote 텍스트 부분에 기존에 저장한 값을 불러온다.
+         if(postSaveViewDto.body != null){
+            $('#summernote').summernote('pasteHTML', postSaveViewDto.body);
+        }
+
+        function uploadSummernoteImageFile(file, summernote) {
+            var data = new FormData();	
+            data.append("file",file);
+            $.ajax({
+                url: '/api/temp/upload',
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data: data,
+                cache: false,
+                contentType : false,
+                processData : false,
+                success : function(json) {
+                        $(summernote).summernote('editor.insertImage', json.data);
+                        jsonArray.push(json.data);
+                    },
+                    error : function(e) {
+                        console.log(e);
+                    }
+            });
+        };
+
+        function deleteFileTemp(origin){
+            let index = origin.lastIndexOf("/images/");
+            let fileName = origin.substring(index);
+            jsonArray = jsonArray.filter( (src)=> src !== fileName);
+            console.log(jsonArray);
+            console.log(fileName);
+        };
+
+        function deleteFile(src) {
+            $.ajax({
+                data: JSON.stringify({src : src}),
+                type: "POST",
+                url: "/api/temp/delete", // replace with your url
+                contentType: 'application/json',
+                cache: false,
+                success: function(json) {
+                    jsonArray = jsonArray.filter( (src)=>{ src !== json.data});
+                }
+            });
+        };
+    });
+
+
+    (function(){
+        let button = document.querySelector(".post-button");
+        button.addEventListener("click" , ()=>{
+            if(document.querySelector(".title").value.length == 0 || document.querySelector(".title").value.length >20){
+                alert("제목은 0 ~ 20자까지 가능합니다");
+            }else{
+                button.parentElement.submit();
+            }
+        })
+    })();
+</script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+
+</html>

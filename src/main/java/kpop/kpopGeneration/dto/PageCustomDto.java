@@ -13,19 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageCustomDto<T> {
-    List<T> content;
-    Integer size;
-    Integer  numberOfElements;
-    Long totalElements;
-    Integer totalPages;
+    public List<T> content;
+    public Integer size;
+    public Integer  numberOfElements;
+    public Long totalElements;
+    public Integer totalPages;
+    public Boolean hasNext;
+    public Boolean hasPrevious;
+    public Boolean isFirst;
+    public Boolean isLast;
+    public Integer current;
 
-    Boolean hasNext;
-    Boolean hasPrevious;
-    Boolean isFirst;
-    Boolean isLast;
-
-    Pageable nextPageable;
-    Pageable previousPageable;
-
+    public Pageable nextPageable;
+    public Pageable previousPageable;
+    public Category category;
 
 }

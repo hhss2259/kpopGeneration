@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface MemberRoleRepository extends JpaRepository<MemberRole, Long>, MemberRoleRepositoryCustom {
 
-//    void  deleteAllByMember(Member member);
+    //    void  deleteAllByMember(Member member);
 }

@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static kpop.kpopGeneration.entity.QComment.*;
 import static kpop.kpopGeneration.entity.QMember.*;
@@ -25,11 +26,9 @@ import static kpop.kpopGeneration.entity.QPost.*;
 
 public class CommentRepositoryImpl implements CommentRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-
     public CommentRepositoryImpl(EntityManager entityManager) {
         this.queryFactory = new JPAQueryFactory(entityManager);
     }
-
     @Override
     public Page<CommentViewDto> findCommentListByPost(Long postId, Pageable pageable) {
         QComment parentComment = new QComment("parentComment");
@@ -39,6 +38,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                                 CommentViewDto.class,
                                 comment.id.as("commentId"),
                                 member.nickName.as("nickname"),
+                                member.id.as("memberId"),
                                 comment.textBody.as("textBody"),
                                 comment.likes.as("likes"),
                                 post.id.as("postId"),
@@ -75,7 +75,33 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
 
         return new PageImpl<>(fetch, pageable, size);
     }
+    @Override
+    public Page<Comment> findPureCommentListByPost(Long postId, Pageable pageable) {
+        QMember parentMember = new QMember("parentMember");
 
+        QComment parentComment = new QComment("parentComment");
+        List<Comment> fetch = queryFactory
+                .select(comment)
+                .from(comment)
+                .join(comment.parentPost, post).fetchJoin()
+                .join(comment.member, member).fetchJoin()
+                .leftJoin(comment.parentComment, parentComment).fetchJoin()
+                .where(
+                        comment.parentPost.id.eq(postId)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(comment.orderNumber.asc(), comment.createdTime.asc())
+                .fetch();
+        int size = queryFactory
+                .selectFrom(comment)
+                .where(
+                        comment.parentPost.id.eq(postId)
+                )
+                .fetch().size();
+
+        return new PageImpl<>(fetch, pageable, size);
+    }
     @Override
     public Boolean getIsCommentForComment(Long commentId) {
         Boolean aBoolean = queryFactory
@@ -84,5 +110,14 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .where(comment.id.eq(commentId))
                 .fetchOne();
         return aBoolean;
+    }
+    @Override
+    public Optional<Comment> findCommentById(Long commentId) {
+        Comment selected = queryFactory
+                .selectFrom(comment)
+                .join(comment.parentPost, post).fetchJoin()
+                .where(comment.id.eq(commentId), comment.deletedTrue.eq(false))
+                .fetchOne();
+        return Optional.ofNullable(selected);
     }
 }

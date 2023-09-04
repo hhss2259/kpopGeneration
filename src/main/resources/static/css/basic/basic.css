@@ -3,9 +3,8 @@
 *{
     box-sizing: border-box;
     font-family: 'Jeju Gothic', sans-serif;/*웹 폰트 지정*/
-    color: orange;
+    color: black;
 }
-
 a{
     width: 0;
     all: unset;
@@ -22,14 +21,11 @@ a:active{
 a:hover{
     text-decoration: none;
 }
-
 .inner{
     width: 100%;
     height: 100%;
     margin: 0 auto;
 }
-
-
 @media only screen and (min-width:1000px){
     .inner{
         max-width:1000px;
@@ -39,20 +35,185 @@ a:hover{
 
 
 /*
-modal
+ 공통 header
+*/
+header{
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.header-container{
+    height: 130px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-container a:hover{
+    background-color:  #F2F2F2;
+    transition: transform 1s;
+    transform: translateY(-5px);
+}
+.menu a:hover{
+    background-color:  #fff;
+    z-index: 0;
+}
+.header-container .side-menu:hover{
+    background-color:  #F2F2F2;
+    transition: transform 1s;
+    transform: translateY(-5px);
+}
+
+.header-left{
+    margin-top: 10px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.main-title{
+    font-size: 2.4rem;
+    font-weight: 700;
+    text-align: center;
+    color: #102693;
+}
+.main-menu{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    
+    border: 1px solid #102693;
+    z-index: 1;
+    border-radius: 10px 10px;;
+    height: 40px;
+    width: 220px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.divider{
+    height: 20px;
+    width: 1px;
+    border-left: 1px solid #102693;
+}
+.menu{
+    width: 100px;
+    color: #102693;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.side-menu-list{
+    height: 40px;
+    width: 140px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+}
+
+.side-menu{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.member-menu{
+    height: 90px;
+    width: 180px;
+    margin-top:5px;
+
+    position: absolute;
+    right: 0px;
+    top: 30px;
+    z-index : 1;
+
+    background-color: white;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+
+    display: none;
+    flex-direction: column;
+    
+}
+
+.member-menu div{
+    opacity: 0.2;
+}
+
+.member-menu .logout{
+    opacity: 1;
+    margin-top: 20px;
+    color : #112B93;
+}
+
+
+
+.logout-button{
+    background-color: white;
+    border: 0px;
+}
+/*
+ 공통 header
 */
 
-.modal {
-    position: absolute;
+/*공통 footer*/
+.footer-background{
+    margin-top: 50px;
+    background-color: #102693;
+    width: 100%;
+    height: 220px;
+}
+
+.footer-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+
+.footer-title{
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+    color: white;
+}
+.footer-info{
+    width: 180px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.footer-info-title{
+    color: white;
+}
+.footer-info-content{
+    margin-left: 50px;
+    color: white;
+}
+/*공통 footer*/
+
+
+
+
+/*
+modal
+*/
+.login-modal {
+    position:fixed;
     top: 0;
     left: 0;
   
     width: 100%;
     height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
   
     display: none;
-  
-    background-color: rgba(0, 0, 0, 0.4);
   }
   
   
@@ -70,18 +231,27 @@ modal
 
     transform: translateX(-50%) translateY(-50%);
 
-
 }
-
-
 
 .modal-close{
     align-self: end;
-    width: 10px;
-    height:10px;
+    width: 30px;
+    height:30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50% 50%;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.modal-close:hover{
+    background-color:  #F2F2F2;
+    transition: transform 1s;
+    transform: translateY(-5px);
+
 }
 
 .modal-content-container{
+    width: 100%;
+    height: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -90,29 +260,44 @@ modal
 }
 
 .modal-form-container{
+    width: 100%;
+    height: 100%;
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-
 }
 
 .modal-form-input{
     width: 350px;
     height:40px;
+    padding-left:20px;
+    border: none;
+    background-color:  #F2F2F2;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+    border-radius: 30px 30px;
     margin-bottom: 10px;
 }
 
-
 .modal-form-submit{
+    margin-top:20px;
     width: 350px;
     height: 40px;
     text-align: center;
-    background-color: azure;
+    background-color: #3366FF;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+    color : #fff;
     line-height: 40px;
     margin-bottom: 20px;
     border:  0px;
+}
+.google-login{
+    width:350px;
+    height:40px;
+    line-height:40px;
+    text-align: center;
+    margin-bottom:30px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
 .modal-form-info{
     width: 350px;
@@ -123,8 +308,111 @@ modal
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.modal-form-join span{
+    color:#FF3D32;
+    padding-left: 15px;
 }
 
-.modal-form-join{
-    color: cornflowerblue;
+.modal-form-join:hover{
+    background-color:  #F2F2F2;
+   transition: transform 1s;
+   transform: translateY(-5px);
+   box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
+/*
+modal
+*/
+
+
+/*searching modal*/
+.searching-modal {
+    position:fixed;
+    top: 0;
+    left: 0;
+  
+    width: 100%;
+    height: 100%;
+  
+    display: none;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+.searchingOption{
+    width: 350px;
+    height:50px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.searching-keyword{
+    width: 350px;
+    height:50px;
+    padding-left:20px;
+    border: none;
+    background-color:  #F2F2F2;
+    border-radius: 30px 30px;
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+.searching-submit{
+    width: 350px;
+    height: 50px;
+    text-align: center;
+    background-color: #3366FF;
+    border-radius: 30px;
+    color: #fff;
+    line-height: 50px;
+    margin-bottom: 50px;
+    border:  0px;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.searching-info{
+    color: #1939B7;
+}
+
+
+
+
+/*
+페이지 css
+*/
+.page-container{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.piece{
+    width:30px;
+    height: 30px;
+    color: #3366FF;
+    line-height: 30px;
+    text-align: center;
+}
+.piece:hover{
+    transition: transform 1s;
+    transform: translateY(-5px);
+    opacity: 0.5px;
+}
+
+.page-list{
+    display: flex;
+    flex: row;
+    width: auto;
+}
+
+.currentPage{
+    background-color:  #3366FF;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+    color: #fff;
+    border-radius: 50% 50%;
+}
+/*
+페이지 css
+*/

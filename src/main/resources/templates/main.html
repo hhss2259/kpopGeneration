@@ -1,223 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <!--favicon 설정-->
-
-    <!--css reset-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
-    <!--fontawesome-->
-    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
-    <!--Spoca Hans Sans Neo-->
-    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
-
-
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
-    <link rel ="stylesheet" type="text/css" th:href="@{/css/main.css}" href="../static/css/main.css"/>
-</head>
-
-<!-- 공통 자바스크립트(Top)-->
-<script th:inline="javascript" >
-    const errorMessage = [[${errorMessage}]];
-
-    if(errorMessage != null){
-        console.log(errorMessage);
-        window.alert(errorMessage);
-        location.href = "/";
-    }
-
-    const join = [[${join}]];
-    if(join === "success"){
-        alert("회원가입에 성공했습니다.");
-        location.href = "/";
-    }
-
-    const showMemberMenu = function(){
-        if(document.querySelector('.member-menu').style.display === 'block'){
-            document.querySelector('.member-menu').style.display = 'none';
-        }else{
-            document.querySelector('.member-menu').style.display = 'block';
-        }
-    }
-</script>
-<!-- 공통 자바스크립트(Top)-->
+<div th:replace="~{basic/head ::head (@{/css/main.css})}"></div>
 <body>
-<!--공통 헤더-->
-    <header>
-        <div class="inner">
-            <div class="header-container">
-                <div class="header-left">
-                    <div class="titile">
-                      KpopGeneration
-                    </div>
-                    <div class="main-menu">
-                        <a th:href="@{/news}">
-                            <div class="news">
-                                뉴스
-                            </div>
-                        </a>
-                        <a th:href="@{/topic}">
-                           <div class="topic">
-                                토픽
-                           </div>
-                        </a>
-                        <a th:href="@{/board}">
-                           <div class="community">
-                                커뮤니티
-                           </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="side-menu">
-                    <div class="developer-button">
-                        관리자
-                    </div>
-                    <div class="searching-button">
-                        검색
-                    </div>
-                    <div>
-                        <span th:if="${memberDto == null}" class="login-button"> 로그인</span>
-                        <span th:if="${memberDto != null}" class="member-menu-button" onclick="showMemberMenu()"> 로그아웃</span>
-                        <div class="member-menu">
-                            <div class="member-info">
-                                <div>작성한 글</div>
-                                <div>작성한 댓글</div>
-                            </div> 
-                            <form th:action="@{/logout}" th:method="post">
-                                <button th:type="submit" class="logout-button">로그아웃</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <hr>
-    <!--공통 헤더-->
-    
-    <!-- 구체적 페이지-->
-    <section>
-        <div class="inner">
-            <div class="topic-container">
-                <div class="container-name">
-                    Topic
-                </div>
-                <div class="big-card-container">
-                    <div class="big-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="big-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
     <section>
         <div class="inner">
             <div class="news-container">
                 <div class="container-name">
-                    News
+                    Topic
                 </div>
-                <div class="small-card-container">
-                    <div class="small-card">
-                        <div class="card-picture">
-
+                <div class="card-container">
+                    <th:block th:each="card : ${big}">
+                        <div class="big-card-form">
+                            <div class="big-card" th:data-id="${card.postId}">
+                                <div class="card-picture">
+                                    <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
+                                </div>
+                                <div class="card-title" >
+                                    <div class="msg" th:text="${card.title}">
+                                    </div>
+                                </div>
+                                <div class="card-date" >
+                                    <div class="msg" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-title">
-                            엔믹스
+                    </th:block>
+                </div>
+            </div>
+            <div class="news-container second">
+                <div class="card-container">
+                    <th:block  th:each=" card : ${small}">
+                        <div class="small-card-form">
+                            <div class="small-card" th:data-id="${card.postId}">
+                                <div class="card-picture">
+                                    <img class="card-thumbnail" th:src="${card.src}" th:if="${card.src != null}"/>
+                                </div>
+                                <div class="card-title" >
+                                    <div class="msg" th:text="${card.title}">
+                                    </div>
+                                </div>
+                                <div class="card-date" >
+                                    <div class="msg" th:text="${#temporals.format(card.date, 'yyyy-MM-dd')}">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                    <div class="small-card">
-                        <div class="card-picture">
-
-                        </div>
-                        <div class="card-title">
-                            엔믹스
-                        </div>
-                        <div class="card-date">
-                            2023년 7월 27일
-                        </div>
-                    </div>
-                </div>      
+                    </th:block>
+                </div>
             </div>
         </div>
     </section>
-    <!-- 구체적 페이지-->
-
-    <!-- 공통 모달-->    
-    <div class="modal ">
-        <div class="modal-body">
-            <div class="modal-content-container">
-                <div class="modal-close">
-                    X
-                </div>
-                <div class="modal-title">
-                    로그인
-                </div>
-                <form th:action="@{/loginProc}" th:method="post"  class="modal-form-container" >
-                    <input th:type="hidden" type="hidden" name="secret_key" value="secret"/>
-                    <input th:type="text" class="modal-form-input" name="username" placeholder="아이디"/>
-                    <input th:type="password" class="modal-form-input" name="password" placeholder="비밀번호"/>
-                    <div class="modal-form-info">
-                        <label><input type="checkbox" th:type="checkbox" class="modal-form-checkBox" name="rememberMe" placeholder="로그인 상태 유지"/>로그인 상태 유지</label>
-                        <a th:href="@{/findAuthentication}" >ID / Password 찾기</a>
-                    </div>
-                    <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
-                    <a href="/oauth2/authorization/naver">네이버 로그인</a>
-                    <div class="modal-form-join">
-                        <a  th:href="@{/join}">회원가입</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- 공통 모달-->    
-
+    <div th:replace="~{basic/footer :: footer}"></div>
 </body>
-<!-- 공통 자바스크립트(bottom)-->
+<script>
+    (function(){
+        let bigs = document.querySelectorAll(".big-card");
+        bigs.forEach( card =>{
+            card.addEventListener("click", (event)=>{
+               let id =  event.currentTarget.dataset.id;
+               location.href = "/news/detail?id="+id;
+            });
+        });
+        let smalls = document.querySelectorAll(".small-card");
+        smalls.forEach( card =>{
+            card.addEventListener("click", (event)=>{
+               let id =  event.currentTarget.dataset.id;
+               location.href = "/news/detail?id="+id;
+            });
+        });
+    })();
+
+</script>
 <script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
-<!-- 공통 자바스크립트(bottom)-->
 </html>

@@ -1,0 +1,41 @@
+<head th:fragment="head (css)">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--favicon 설정-->
+
+    <!--css reset-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <!--fontawesome-->
+    <script src="https://kit.fontawesome.com/792b7e4f23.js" crossorigin="anonymous"></script>
+    <!--Spoca Hans Sans Neo-->
+    <link href='//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css' rel='stylesheet' type='text/css'>
+
+
+    <link rel ="stylesheet" type="text/css" th:href="@{/css/basic/basic.css}" href="../static/css/basic/basic.css"/>
+    <link rel ="stylesheet" type="text/css" th:href="${css}" href="../static/css/main.css"/>
+    <!-- 공통 자바스크립트(Top)-->
+    <script th:inline="javascript" >
+        const member = [[${member}]];
+        const errorMessage = [[${errorMessage}]];
+        const join = [[${join}]];
+
+        if(errorMessage != null){
+            const redirectUrl = [[${referer}]];
+            console.log(errorMessage);
+            window.alert(errorMessage);
+            location.href= redirectUrl;
+        }
+        if(join === "success"){
+            alert("회원가입에 성공했습니다.");
+            location.href = "/";
+        }
+        const showMemberMenu = function(){
+            if(document.querySelector('.member-menu').style.display === 'flex'){
+                document.querySelector('.member-menu').style.display = 'none';
+            }else{
+                document.querySelector('.member-menu').style.display = 'flex';
+            }
+        }
+    </script>
+    <!-- 공통 자바스크립트(Top)-->
+</head>

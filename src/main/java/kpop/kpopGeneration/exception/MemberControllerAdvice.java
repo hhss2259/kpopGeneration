@@ -9,8 +9,5 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class MemberControllerAdvice {
 
-    @ExceptionHandler(DuplicateException.class)
-    public DefaultResponse<Integer> duplicateUsername(){
-        return DefaultResponse.res(40001, "중복된 username", 0);
-    }
+
 }

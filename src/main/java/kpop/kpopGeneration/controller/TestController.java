@@ -18,17 +18,17 @@ class TestController {
         return "test/testLogin";
     }
 
-    @GetMapping("/testMyPage")
+    @GetMapping("/test/member")
     public String myPage() {
         return "test/testMyPage";
     }
 
-    @GetMapping("/testManager")
+    @GetMapping("/test/manager")
     public String manager() {
         return "test/testManager";
     }
 
-    @GetMapping("/testAdmin")
+    @GetMapping("/test/admin")
     public String admin() {
         return "test/testAdmin";
     }

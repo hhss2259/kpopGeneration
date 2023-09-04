@@ -1,16 +1,28 @@
 package kpop.kpopGeneration.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class PostSaveDto {
-
-    String title;
-    String body;
     Category category;
+    String body;
+    String title;
+    List<String> images;
 
+    public PostSaveDto(String title, String body, Category category ){
+        this.title = title;
+        this.body = body;
+        this.category = category;
+    }
+
+    public PostSaveDto(String title, String body, Category category, List<String> images ){
+        this.title = title;
+        this.body = body;
+        this.category = category;
+        this.images = images;
+    }
 }

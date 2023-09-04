@@ -1,0 +1,23 @@
+<div class="login-modal " th:fragment="loginModal">
+    <div class="modal-body">
+        <div class="modal-content-container">
+            <div class="modal-close">
+                X
+            </div>
+            <div class="modal-title">
+                로그인
+            </div>
+            <form th:action="@{/loginProc}" th:method="post"  class="modal-form-container" >
+                <input th:type="hidden" type="hidden" name="secret_key" value="secret"/>
+                <input th:type="text" class="modal-form-input" name="username" placeholder="아이디"/>
+                <input th:type="password" class="modal-form-input" name="password" placeholder="비밀번호"/>
+                
+                <button th:type="submit" type="submit"  class="modal-form-submit">로그인</button>
+                <a href="/oauth2/authorization/naver"><div class="google-login">네이버 로그인</div></a>
+                <div class="modal-form-join">
+                    <a  th:href="@{/join}">아직 회원가입하지 않으셨나요?  <span >회원가입하기</span></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{basic/head ::head (@{/css/postDetail.css})}"></div>
+<body>
+    <div th:replace="~{basic/header :: header}"></div>
+    <div th:replace="~{basic/searchingModal :: searchingModal}"></div>
+    <div th:replace="~{basic/loginModal :: loginModal}"></div>
+    <section>
+        <div class="inner">
+            <div class="detail-container">
+                <div class="detail">
+                    <div class="detail-box">
+                    <th:block  th:object="${postDetail}">
+                        <div class="detail-category" th:text="*{category}">
+                            음악    
+                        </div>
+                        <div class="detail-title" th:text="*{title}">
+                            테스트
+                        </div>
+                        <div class="detail-info">
+                            <div class="detail-info-left">
+                                <div class="mini-info" th:text="*{nickname}">앤써</div>
+                                <div class="mini-container">최종 수정일 <div class="mini-info" th:text="*{#temporals.format(date, 'yyyy-MM-dd')}">2023년 8월 11일</div></div>
+                                <div class="mini-container">조회수<div class="mini-info" th:text="*{views}">10</div></div>
+                                <div class="mini-container">좋아요 
+                                    <div class="mini-info" th:text="*{likes}">2</div>
+                                </div>
+                            </div>
+                            <div class="detail-info-right">
+                                <div class="no-show" id="post-delete">삭제하기</div>
+                                <div  id="post-update" class="no-show">수정하기</div>
+                            </div>
+                        </div>
+                        <div class="detail-textdata" th:utext="*{body}">
+                            테스트<br>테스트<br>테스트<br>테스트
+                        </div>
+                        <div class="detail-likes-container">
+                            <div id="likes" class="detail-likes-circle">
+                                <img src="/img/good.png" class="good">
+                                <div class="detail-likes" th:text="|좋아요 *{likes}|">2</div>
+                            </div>
+                        </div>
+                    </th:block>
+                    </div>
+                    <div class="detail-comment-container">
+                        <div class="comment-cnt-container">
+                            <div class="comment-cnt-title">댓글</div>
+                            <div class="comment-cnt" th:text="${postDetail.commentCnt}">0</div>
+                        </div>
+                        <th:block th:each="comment :${postDetail.commentList.content}" >
+                                <div class="comment">
+                                    <input type="hidden" th:value="${comment.depth}" class="comment-depth"/>
+                                    <input type="hidden" th:value="${comment.deletedTrue}" class="comment-deleted"/>
+                                    <div class="comment-top">
+                                        <div class="comment-top-left">
+                                            <div class="comment-writer-nickname" th:text="${comment.nickname}">
+                                                불바다
+                                            </div>
+                                            <input class="comment-writer-id" type="hidden" th:value="${comment.memberId}"/>
+                                            <div class="no-show" >글쓴이</div>
+                                        </div>
+                                        <div class="comment-date" th:text="${#temporals.format(comment.lastModifiedTime, 'yyyy-MM-dd')}">
+                                            2023년 8월 13일
+                                        </div>
+                                    </div>
+                                    <div class="comment-textBody-container">
+                                        <span th:if="${comment.parentNickname != null}" class="comment-parent-nickname" th:text="${comment.parentNickname}">
+                                                TO!
+                                        </span>
+                                        <span class="comment-textBody" th:text="${comment.textBody}"></span>
+                                    </div>
+                                    <div class="comment-bottom" >
+                                        <div class="comment-likes" >
+                                            <input type="hidden" th:value="${comment.commentId}"/>
+                                            <img src="/img/good.png" class="comment-good">
+                                            <div class="comment-likes-cnt" th:text="${comment.likes}"></div>
+                                        </div>
+                                        <div class="no-show comment-delete-button">
+                                            <input type="hidden" class="comment-delete-id" th:value="${comment.commentId}"/>
+                                            삭제
+                                        </div>
+                                        <div class="no-show comment-update-button">수정</div>
+                                        <div class="comment-new">
+                                            댓글달기
+                                        </div>
+                                        <input type="hidden" class="comment-login-check" th:value="${comment.memberId}"/>
+                                    </div>
+                                    <div class="no-show">
+                                        <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
+                                        <form class="comment-write" th:action="@{/comment/update}" method="post">
+                                            <textarea class="comment-write-textarea" name="textBody" th:text="${comment.textBody}"  readonly></textarea>
+                                            <input type="hidden" name="commentId" th:value="${comment.commentId}"/>
+                                            <input type="hidden" name="postId" th:value="${postDetail.id}"/>
+                                            <button type="submit" class="comment-write-button">수정하기</button>
+                                        </form>
+                                    </div>
+                                    <div class="no-show">
+                                        <span  class="commentTo" th:text="${comment.nickname}">불바다</span>
+                                        <form class="comment-write" th:action="@{/comment}" method="post">
+                                            <textarea class="comment-write-textarea" name="textBody"  readonly></textarea>
+                                            <input type="hidden" name="postId" th:value="${postDetail.id}"/>
+                                            <input type="hidden" name="parentCommentId" th:value="${comment.commentId}"/>
+                                            <input type="hidden" name="isCommentForComment" th:value="true"/>
+                                            <button type="submit" class="comment-write-button">등록하기</button>
+                                        </form>
+                                    </div>
+                                </div>
+                        </th:block>
+                        <div class="page-container" >
+                            <div class="piece page-pre">이전</div>
+                            <div class="piece page-first">1</div>
+                            <div class="piece page-first-dot">...</div>
+                            <div class="page-list"></div>
+                            <div class="piece page-last-dot">...</div>
+                            <div class="piece page-last">last</div>
+                            <div class="piece page-next">다음</div>
+                        </div>
+                        <div class="comment-write-container">
+                            <form class="comment-write" th:action="@{/comment}" method="post">
+                                <textarea class="comment-write-textarea" name="textBody" readonly></textarea>
+                                <input type="hidden" name="postId" th:value="${postDetail.id}"/>
+                                <button type="submit" class="comment-write-button">등록하기</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div th:replace="~{basic/footer :: footer}"></div>
+
+</body>
+<script th:inline="javascript">
+           let postId = String([[${postDetail.id}]]);
+           let postDetail = [[${postDetail}]];
+           
+           let numberOfElements= Number([[${postDetail.commentList.numberOfElements}]]);
+           let totalElements =  Number([[${postDetail.commentList.totalElements}]]);
+           let totalPages =  Number([[${postDetail.commentList.totalPages}]]);
+           let hasNext = Boolean([[${postDetail.commentList.hasNext}]]);
+           let hasPrevious =  Boolean([[${postDetail.commentList.hasPrevious}]]);
+           let isFirst = Boolean([[${postDetail.commentList.isFirst}]]);
+           let isLast=  Boolean([[${postDetail.commentList.isLast}]]);
+           let current =  Number([[${postDetail.commentList.current}]]);
+
+           //페이지 정보
+            let basic= "/news/detail?id="+postId+"&";
+
+
+</script>
+<script th:inline="javascript" src="../static/js/basic/paging.js" th:src="@{/js/basic/paging.js}"></script>
+<script th:inline="javascript" src="../static/js/newsDetail.js" th:src="@{/js/newsDetail.js}"></script>
+<script th:inline="javascript" src="../static/js/basic/modal.js" th:src="@{/js/basic/modal.js}"></script>
+
+</html>

@@ -1,74 +1,4 @@
 
-.header-container{
-    height: 150px;
-    background-color: antiquewhite;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.header-left{
-    margin-top: 20px;
-    margin-left: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-.titile{
-    font-size: 2rem;
-    font-family: 300;
-    text-align: center;
-}
-
-.main-menu{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 250px;
-}
-
-.side-menu{
-    display: flex;
-    width: 200px;
-    height: 40px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    position: relative;
-    
-}
-
-
-hr{
-    margin:0 0;
-}
-
-.member-menu{
-    height: 100px;
-    margin-top:5px;
-    width: 200px;
-    right: 0px;
-    position: absolute;
-    z-index : 1;
-    display: none;
-    border: 1px solid black;
-    background-color: white;
-}
-
-.logout-button{
-    background-color: white;
-    border: 0px;
-
-}
-
-
-
-
-/*
-여기까지는 공통 header
-*/
-
-
 .join-container{
     width: 100%;
     display: flex;
@@ -77,48 +7,64 @@ hr{
 }
 
 .join-title{
-    width: 95%;
-    height: 100px;
-    line-height: 100px;
+    width: 80%;
     font-size: 1.8rem;
+    padding-top: 40px;
+    padding-bottom: 10px;
 }
 
 .join-content{
     width: 100%;
-    height: 1180px;
+    height: 1100px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: beige;
     justify-content: space-around;
 }
 
 .join-agree{
     width: 80%;
-    height: 300px;
+    height: 200px;
+    padding :10px;
     display: flex;
     flex-direction: column;
+    align-items: start;
+    background-color: white;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 
-    height: 300px;
-    border : 1px solid black;
+}
+
+.join-agree-text{
+    width: 100%;
+    height: 100px;
+    border: 1px solid #E5E5E5;
+}
+.join-agree-checking{
+    margin-top: auto;
+    height: 40px;
+}
+.join-agree-content{
+    margin-bottom:5px;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .join-info{
     width:80%;
     height: 680px;
-    border: 1px solid black;
-
     background-color: white;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
 
 .info{
     width:100%;
     height: 120px;
-    border: 1px solid black;
-
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
     display: flex;
     flex-direction: row;
     align-items: center;
+
 }
 
 .email-container{
@@ -129,7 +75,7 @@ hr{
     width: 20%;
     height: 100%;
     
-    background-color: whitesmoke;
+    background-color: #F2F2F2;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -155,9 +101,15 @@ hr{
 
 
 .info-input{
-    width: 50%;
+    width: 300px;
     height: 40px;
+    padding-left: 20px;
+    border: none;
+    background-color: #F2F2F2;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+    border-radius: 30px 30px;
 }
+
 
 .info-input-checker{
     width: 40%;
@@ -193,7 +145,7 @@ hr{
 }
 
 .email-information{
-    width: 50%;
+    width: 300px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -202,14 +154,17 @@ hr{
 }
 
 .email-send{
-    width: 80px;
-    align-self: self-end;
-    height: 40px;
-    background-color: cornflowerblue;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
+    width: 90px;
+    height: 30px;
+    align-self: end;
+    border: 0;
+    background-color: #3366FF;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 
 }
 
@@ -221,17 +176,26 @@ hr{
     justify-content: space-between;
 }
 .email-authentication-number{
-    width: 70%;
+    width: 120px;
     height: 40px;
+    padding-left: 20px;
+    border: none;
+    background-color: #F2F2F2;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+    border-radius: 30px 30px;
 }
 .email-authentication-checker-button{
-    width:80px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: cornflowerblue;
-    border-radius: 10px;
+    width: 90px;
+    height: 30px;
+    align-self: end;
+    border: 0;
+    background-color: #3366FF;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
 .noTouch{
     pointer-events: none;
@@ -245,11 +209,16 @@ hr{
     flex: row;
     align-items: center;
     justify-content: end;
-    height: 100px;
 }
 .submit-button{
     width: 200px;
-    height: 50px;
-    border : 0px;
-    background-color: brown;
+    height: 40px;
+    border: 0;
+    background-color: #FF7E5C;
+    color: #fff;
+    font-size: 1.1rem;
+    border-radius: 20px 20px;
+    line-height: 30px;
+    text-align: center;
+    box-shadow: 1px 1px 4px rgba(0,0,0,.2);
 }
