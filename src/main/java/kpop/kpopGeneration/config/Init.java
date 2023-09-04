@@ -47,7 +47,7 @@ public class Init {
         memberService.updateMemberRole("yyyy", memberRoles);
 
 
-//        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
+        Long savePost = postService.savePost(new PostSaveDto("테스트 포스트", "포스트 테스트하기 ", Category.NORMAL), member1.getUsername());
 //        Long aa = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member2.getUsername());
 //        Long aa1 = commentService.saveComment(new CommentSaveDto(savePost, "aa", aa, true), member2.getUsername());
 //        Long aa3 = commentService.saveComment(new CommentSaveDto(savePost, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", aa1, true), member3.getUsername());
@@ -58,9 +58,9 @@ public class Init {
 //        Long saveComment = commentService.saveComment(new CommentSaveDto(savePost, "aa", null, false), member1.getUsername());
 ////
 //
-        for (int i = 0; i < 3; i++) {
-            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member1.getUsername());
-            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.MUSIC),member1.getUsername());
+        for (int i = 0; i <200; i++) {
+            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.NEWS),member2.getUsername());
+            postService.savePost(new PostSaveDto("키워드" + i, "포스트", Category.MUSIC),member2.getUsername());
         }
 //
 //        for(int i = 1; i<111 ;i++){

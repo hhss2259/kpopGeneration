@@ -77,8 +77,9 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
     @Override
     public Page<Comment> findPureCommentListByPost(Long postId, Pageable pageable) {
-        QComment parentComment = new QComment("parentComment");
         QMember parentMember = new QMember("parentMember");
+
+        QComment parentComment = new QComment("parentComment");
         List<Comment> fetch = queryFactory
                 .select(comment)
                 .from(comment)

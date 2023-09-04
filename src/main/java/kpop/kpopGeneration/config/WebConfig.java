@@ -18,7 +18,6 @@ public class WebConfig  implements WebMvcConfigurer {
     private String uploadImagePath;
 
 
-
     /**
      * 템플릿 엔진에서 현재 사용자의 정보를 사용할 수 있도록 항상 MemberViewDto을 제공하는 interceptor
      */

@@ -219,16 +219,16 @@
     border-top: 1px solid #E5E5E5;
 }
 .comment-cnt-container{
-   height: 60px;
-   width: 80px;
-   display: flex;
-   align-items: center;
-   justify-content:  space-around;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
 }
 .comment-cnt-title{
     font-size: 1.5rem;
 }
 .comment-cnt{
+    padding-left: 10px;
     font-size: 1.5rem;
     color: red;
 }
